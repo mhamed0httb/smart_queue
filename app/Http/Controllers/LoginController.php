@@ -8,7 +8,7 @@ use Sentinel;
 class LoginController extends Controller
 {
     public function login(){
-        return view('authentication.login');
+        return view('admin.login');
     }
 
     public function postLogin(Request $req){
@@ -16,6 +16,8 @@ class LoginController extends Controller
         if(Sentinel::check()){
             if(Sentinel::getUser()->roles()->first()->slug == 'admin'){
                 return redirect('/dashboard');
+            }elseif (Sentinel::getUser()->roles()->first()->slug == 'manager'){
+                return redirect('/manager');
             }else{
                 return redirect('/');
             }

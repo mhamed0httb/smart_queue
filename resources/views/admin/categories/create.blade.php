@@ -1,7 +1,4 @@
 
-
-
-
 @extends('admin.layouts.master')
 
 @section('content')
@@ -21,25 +18,18 @@
             <!-- Horizontal Form -->
             <div class="box box-info">
                 <div class="box-header with-border">
-                    <h3 class="box-title">Create staff Member</h3>
+                    <h3 class="box-title">Create Category</h3>
                 </div>
                 <!-- /.box-header -->
                 <!-- form start -->
-                <form class="form-horizontal" action="{{ url('/dashboard/staffs') }}" method="POST" id="form_create_manager">
+                <form class="form-horizontal" action="{{ url('/dashboard/categories') }}" method="POST" id="form_create_manager">
                     {{csrf_field()}}
                     <div class="box-body">
                         <div class="form-group">
-                            <label for="first_name" class="col-sm-2 control-label">First Name</label>
+                            <label for="name" class="col-sm-2 control-label">Category Name</label>
 
                             <div class="col-sm-10">
-                                <input type="text" name="first_name" class="form-control" id="first_name" placeholder="first name" required>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="last_name" class="col-sm-2 control-label">Last Name</label>
-
-                            <div class="col-sm-10">
-                                <input type="text" name="last_name" class="form-control" id="last_name" placeholder="last name" required>
+                                <input type="text" name="name" class="form-control" id="name" placeholder="name" required>
                             </div>
                         </div>
                     </div>
@@ -60,6 +50,5 @@
 
 
 @endsection
-
 
 

@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Service;
+use App\Company;
+use App\Category;
 
 class ServicesController extends Controller
 {
@@ -14,7 +16,9 @@ class ServicesController extends Controller
      */
     public function index()
     {
-
+        $allServices = Service::all();
+        return view('admin.services.index')
+            ->with('allServices',$allServices);
     }
 
     /**
@@ -24,7 +28,11 @@ class ServicesController extends Controller
      */
     public function create()
     {
-        return view('admin.services.create');
+        $allCompanies = Company::all();
+        $allCategories = Category::all();
+        return view('admin.services.create')
+            ->with('allCompanies', $allCompanies)
+            ->with('allCategories',$allCategories);
     }
 
     /**
@@ -36,8 +44,11 @@ class ServicesController extends Controller
     public function store(Request $request)
     {
         $service = new Service;
-        $service->text = $request->service;
+        $service->name = $request->name;
+        $service->category_id = $request->category_id;
+        $service->company_id = $request->company_id;
         $service->save();
+        return redirect('/dashboard/services');
     }
 
     /**

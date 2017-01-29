@@ -10,7 +10,11 @@
                 <img src="{{ URL::asset('/img/user2-160x160.jpg') }}" class="img-circle" alt="User Image">
             </div>
             <div class="pull-left info">
-                <p>Alexander Pierce</p>
+                <p>
+                    @if(Sentinel::check())
+                        {{Sentinel::getUser()->first_name}} {{Sentinel::getUser()->last_name}}
+                    @endif
+                </p>
                 <!-- Status -->
                 <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
             </div>
@@ -32,7 +36,7 @@
         <ul class="sidebar-menu">
             <li class="header">HEADER</li>
             <!-- Optionally, you can add icons to the links -->
-            <li class="active"><a href="#"><i class="fa fa-link"></i> <span>Managers</span></a></li>
+            <li class="active"><a href="{{ url('/dashboard/categories/create') }}"><i class="fa fa-link"></i> <span>Add Category</span></a></li>
             <li><a href="#"><i class="fa fa-link"></i> <span>Another Link</span></a></li>
             <li class="treeview">
                 <a href="#"><i class="fa fa-link"></i> <span>Multilevel</span>
@@ -45,6 +49,52 @@
                     <li><a href="#">Link in level 2</a></li>
                 </ul>
             </li>
+
+            <li class="treeview">
+                <a href="#"><i class="fa fa-link"></i> <span>Managers</span>
+                    <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+                </a>
+                <ul class="treeview-menu">
+                    <li><a href="{{ url('/dashboard/manager') }}">All</a></li>
+                    <li><a href="{{ url('/dashboard/manager/create') }}">Create new</a></li>
+                </ul>
+            </li>
+            <li class="treeview">
+                <a href="#"><i class="fa fa-link"></i> <span>Companies</span>
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                </a>
+                <ul class="treeview-menu">
+                    <li ><a href="{{ url('/dashboard/companies') }}">All</a></li>
+                    <li><a href="{{ url('/dashboard/companies/create') }}">Create new</a></li>
+                </ul>
+            </li>
+            <li class="treeview">
+                <a href="#"><i class="fa fa-link"></i> <span>Staff</span>
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                </a>
+                <ul class="treeview-menu">
+                    <li ><a href="{{ url('/dashboard/staffs') }}">All</a></li>
+                    <li><a href="{{ url('/dashboard/staffs/create') }}">Create new</a></li>
+                </ul>
+            </li>
+            <li class="treeview">
+                <a href="#"><i class="fa fa-link"></i> <span>Services</span>
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                </a>
+                <ul class="treeview-menu">
+                    <li ><a href="{{ url('/dashboard/services') }}">All</a></li>
+                    <li><a href="{{ url('/dashboard/services/create') }}">Create new</a></li>
+                </ul>
+            </li>
+
         </ul>
         <!-- /.sidebar-menu -->
     </section>

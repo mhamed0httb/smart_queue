@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Category;
 use Illuminate\Http\Request;
-use App\Staff;
 
-class StaffsController extends Controller
+class CategoryController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,9 +14,7 @@ class StaffsController extends Controller
      */
     public function index()
     {
-        $allStaff = Staff::all();
-        //return view('admin.staff.index')->with('allStaff',$allStaff);
-        return view('manager.staff.index')->with('allStaff',$allStaff);
+        //
     }
 
     /**
@@ -26,8 +24,7 @@ class StaffsController extends Controller
      */
     public function create()
     {
-        //return view('admin.staff.create');
-        return view('manager.staff.create');
+        return view('admin.categories.create');
     }
 
     /**
@@ -38,12 +35,10 @@ class StaffsController extends Controller
      */
     public function store(Request $request)
     {
-        $staff = new Staff;
-        $staff->first_name = $request->first_name;
-        $staff->last_name = $request->last_name;
-        $staff->save();
-        //return redirect('/dashboard/staffs');
-        return redirect('/manager/staffs');
+        $category = new Category;
+        $category->name = $request->name;
+        $category->save();
+        return redirect('/dashboard');
     }
 
     /**

@@ -2,7 +2,7 @@
 
 
 
-@extends('admin.layouts.master')
+@extends('manager.layouts.master')
 
 @section('content')
     <h1>
@@ -10,7 +10,7 @@
         <small>{{ $page_description or null }}</small>
     </h1>
     <ol class="breadcrumb">
-        <li><a href="{{url('/dashboard')}}"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li><a href="{{url('/manager')}}"><i class="fa fa-dashboard"></i> Home</a></li>
         <li><a href="#">{{ $sub_page_title or 'Sub Page Title' }}</a></li>
         <li class="active">{{ $page_title or 'Page Title' }}</li>
     </ol>
@@ -25,7 +25,7 @@
                 </div>
                 <!-- /.box-header -->
                 <!-- form start -->
-                <form class="form-horizontal" action="{{ url('/dashboard/staffs') }}" method="POST" id="form_create_manager">
+                <form class="form-horizontal" action="{{ url('/manager/staffs') }}" method="POST" id="form_create_manager">
                     {{csrf_field()}}
                     <div class="box-body">
                         <div class="form-group">
