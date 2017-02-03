@@ -1,4 +1,7 @@
 
+
+
+
 @extends('admin.layouts.master')
 
 @section('content')
@@ -7,7 +10,7 @@
         <small>{{ $page_description or null }}</small>
     </h1>
     <ol class="breadcrumb">
-        <li><a href="{{url('/dashboard')}}"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li><a href="{{url('/manager')}}"><i class="fa fa-dashboard"></i> Home</a></li>
         <li><a href="#">{{ $sub_page_title or 'Sub Page Title' }}</a></li>
         <li class="active">{{ $page_title or 'Page Title' }}</li>
     </ol>
@@ -18,15 +21,15 @@
             <!-- Horizontal Form -->
             <div class="box box-info">
                 <div class="box-header with-border">
-                    <h3 class="box-title">Create Category</h3>
+                    <h3 class="box-title">Create Region</h3>
                 </div>
                 <!-- /.box-header -->
                 <!-- form start -->
-                <form class="form-horizontal" action="{{ url('/dashboard/categories') }}" method="POST" id="form_create_manager">
+                <form class="form-horizontal" action="{{ url('/dashboard/regions') }}" method="POST" id="form_create_manager">
                     {{csrf_field()}}
                     <div class="box-body">
                         <div class="form-group">
-                            <label for="name" class="col-sm-2 control-label">Category Name</label>
+                            <label for="name" class="col-sm-2 control-label">Name</label>
 
                             <div class="col-sm-10">
                                 <input type="text" name="name" class="form-control" id="name" placeholder="name" required>
@@ -49,16 +52,7 @@
     <!-- /.row -->
 
 
-
-<form action="{{url('/dashboard/categories/3')}}" method="DELETE">
-    <input type="hidden" name="_method" value="DELETE">
-    <input type="submit" value="Delete this" class="btn btn-warning">
-</form>
-
-
-
-
-
 @endsection
+
 
 

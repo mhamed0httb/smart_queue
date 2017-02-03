@@ -69,12 +69,15 @@
                         </div>
                         <div class="form-group">
                             <label for="company" class="col-sm-2 control-label">Company</label>
-                            <div class="col-sm-10">
+                            <div class="col-sm-8">
                                 <select class="form-control" id="company_id" name="company_id" required>
                                     @foreach ($allCompanies as $company)
                                         <option value="{{ $company->id }}">{{ $company->name }}</option>
                                     @endforeach
                                 </select>
+                            </div>
+                            <div class="col-sm-2">
+                                <a class="btn btn-primary" href="{{url('/dashboard/companies/create')}}">Add new Company</a>
                             </div>
                         </div>
                     </div>

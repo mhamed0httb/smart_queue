@@ -3,11 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Service;
-use App\Company;
-use App\Category;
+use App\Region;
 
-class ServicesController extends Controller
+class RegionsController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,9 +14,7 @@ class ServicesController extends Controller
      */
     public function index()
     {
-        $allServices = Service::all();
-        return view('admin.services.index')
-            ->with('allServices',$allServices);
+
     }
 
     /**
@@ -28,11 +24,7 @@ class ServicesController extends Controller
      */
     public function create()
     {
-        $allCompanies = Company::all();
-        $allCategories = Category::all();
-        return view('admin.services.create')
-            ->with('allCompanies', $allCompanies)
-            ->with('allCategories',$allCategories);
+        return view('admin.regions.create');
     }
 
     /**
@@ -43,12 +35,10 @@ class ServicesController extends Controller
      */
     public function store(Request $request)
     {
-        $service = new Service;
-        $service->name = $request->name;
-        $service->category_id = $request->category_id;
-        $service->company_id = $request->company_id;
-        $service->save();
-        return redirect('/dashboard/services');
+        $region = new Region;
+        $region->name = $request->name;
+        $region->save();
+        return redirect('/dashboard');
     }
 
     /**
@@ -93,9 +83,6 @@ class ServicesController extends Controller
      */
     public function destroy($id)
     {
-        $service = Service::find($id);
-        $service->delete();
-        Session::flash('message', 'Successfully deleted the nerd!');
-        return ('service deleted');
+        //
     }
 }

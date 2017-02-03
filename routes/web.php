@@ -32,10 +32,15 @@ Route::group(['middleware' => 'admin'], function(){
     Route::get('/dashboard/manager', 'AdminController@allManagers');
     Route::resource('/dashboard/companies', 'CompanyController');
     Route::resource('/dashboard/categories', 'CategoryController');
+    Route::get('/dashboard/categories/', 'AdminController@index');
+    Route::resource('/dashboard/offices', 'OfficesController');
+    Route::resource('/dashboard/regions', 'RegionsController');
 });
 
 Route::group(['middleware' => 'manager'], function(){
     Route::get('/manager', 'ManagerController@index');
     Route::resource('/manager/staffs', 'StaffsController');
+    Route::resource('/manager/ticket_windows', 'TicketWindowsController');
+    Route::post('/manager/ticket_windows/update_status', 'TicketWindowsController@updateStatus');
 });
 

@@ -19,7 +19,7 @@
         <div class="col-xs-12">
             <div class="box">
                 <div class="box-header">
-                    <h3 class="box-title">List of All Services</h3>
+                    <h3 class="box-title">List of All Offices</h3>
 
                     <div class="box-tools">
                         <div class="input-group input-group-sm" style="width: 150px;">
@@ -35,27 +35,27 @@
                 <div class="box-body table-responsive no-padding">
                     <table class="table table-hover">
                         <tr>
-                            <th>Service</th>
-                            <th>Category</th>
-                            <th>Belongs To</th>
+                            <th>Identifier</th>
+                            <th>Region</th>
+                            <th>Manager responsible</th>
                             <th>Date Creation</th>
                             <th>Action</th>
                             <!--th>Status</th>
                             <th>Reason</th-->
                         </tr>
-                        @foreach ($allServices as $service)
+                        @foreach ($allOffices as $office)
                             <tr>
-                                <td>{{ $service->name }}</td>
-                                <td>{{ $service->getCategory->name }}</td>
-                                <td>{{ $service->getCompany->name }}</td>
-                                <td>{{ $service->created_at }}</td>
+                                <td>{{ $office->identifier }}</td>
+                                <td>{{ $office->getRegion->name }}</td>
+                                <td>
+                                    {{ $office->getManager->first_name or null }}
+                                    {{ $office->getManager->last_name or null }}
+                                </td>
+                                <td>{{ $office->created_at }}</td>
                                 <td>
                                     <div class="row">
                                         <a class="btn btn-warning col-xs-4">edit</a>
-                                        <form class="col-xs-4" action="{{url('/dashboard/services/'.$service->id)}}" method="DELETE">
-                                            <input type="hidden" name="delete" value="{{$service->id}}">
-                                            <button class="btn btn-danger" type="submit">delete</button>
-                                        </form>
+
                                     </div>
 
                                 </td>

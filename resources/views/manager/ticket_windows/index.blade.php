@@ -1,7 +1,7 @@
 
 
 
-@extends('admin.layouts.master')
+@extends('manager.layouts.master')
 
 @section('content')
     <h1>
@@ -19,7 +19,7 @@
         <div class="col-xs-12">
             <div class="box">
                 <div class="box-header">
-                    <h3 class="box-title">List of All Services</h3>
+                    <h3 class="box-title">List of All Ticket Windows</h3>
 
                     <div class="box-tools">
                         <div class="input-group input-group-sm" style="width: 150px;">
@@ -35,29 +35,42 @@
                 <div class="box-body table-responsive no-padding">
                     <table class="table table-hover">
                         <tr>
+                            <th>Window Number</th>
+                            <th>Office</th>
+                            <th>Staff Member</th>
                             <th>Service</th>
-                            <th>Category</th>
-                            <th>Belongs To</th>
                             <th>Date Creation</th>
-                            <th>Action</th>
+                            <th>Status</th>
                             <!--th>Status</th>
                             <th>Reason</th-->
                         </tr>
-                        @foreach ($allServices as $service)
+                        @foreach ($allTicketWindows as $window)
                             <tr>
-                                <td>{{ $service->name }}</td>
-                                <td>{{ $service->getCategory->name }}</td>
-                                <td>{{ $service->getCompany->name }}</td>
-                                <td>{{ $service->created_at }}</td>
+                                <td>{{ $window->number }} </td>
+                                <td>
+                                    {{ $window->getOffice->identifier }}
+                                </td>
+                                <td>
+                                    {{ $window->getStaff->first_name or null }} {{ $window->getStaff->last_name or null }}
+                                </td>
+                                <td>
+                                    {{ $window->getService->name or null }}
+                                </td>
+                                <td>{{ $window->created_at }}</td>
                                 <td>
                                     <div class="row">
-                                        <a class="btn btn-warning col-xs-4">edit</a>
-                                        <form class="col-xs-4" action="{{url('/dashboard/services/'.$service->id)}}" method="DELETE">
-                                            <input type="hidden" name="delete" value="{{$service->id}}">
-                                            <button class="btn btn-danger" type="submit">delete</button>
-                                        </form>
+                                        @if($window->status == 'Offline' )
+                                        <a href="{{url('/manager/ticket_windows/'.$window->id)}}">
+                                            <i class="fa fa-circle-o text-red"></i>
+                                            <span>{{ $window->status }}</span>
+                                        </a>
+                                        @else
+                                            <a href="#">
+                                                <i class="fa fa-circle-o text-green"></i>
+                                                <span>{{ $window->status }}</span>
+                                            </a>
+                                        @endif
                                     </div>
-
                                 </td>
                                 <!--td><span class="label label-success">Approved</span></td>
                             <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td-->

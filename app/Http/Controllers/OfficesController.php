@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
 use Illuminate\Http\Request;
-use App\Service;
-use App\Company;
-use App\Category;
+use App\Office;
+use Sentinek;
+use App\Region;
+use Cartalyst\Sentinel\Users\EloquentUser;
 
-class ServicesController extends Controller
+class OfficesController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,9 +18,8 @@ class ServicesController extends Controller
      */
     public function index()
     {
-        $allServices = Service::all();
-        return view('admin.services.index')
-            ->with('allServices',$allServices);
+        $allOffices = Office::all();
+        return view('admin.offices.index')->with('allOffices',$allOffices);
     }
 
     /**
@@ -28,11 +29,12 @@ class ServicesController extends Controller
      */
     public function create()
     {
-        $allCompanies = Company::all();
-        $allCategories = Category::all();
-        return view('admin.services.create')
-            ->with('allCompanies', $allCompanies)
-            ->with('allCategories',$allCategories);
+        $allRegions = Region::all();
+        $role = Sentinel::findRoleBySlug('manager');
+        $allManagers = $role->users()->with('roles')->get();
+        return view('admin.offices.create')
+            ->with('allRegions',$allRegions)
+            ->with('allManagers',$allManagers);
     }
 
     /**
@@ -43,12 +45,18 @@ class ServicesController extends Controller
      */
     public function store(Request $request)
     {
-        $service = new Service;
-        $service->name = $request->name;
-        $service->category_id = $request->category_id;
-        $service->company_id = $request->company_id;
-        $service->save();
-        return redirect('/dashboard/services');
+        $office = new Office;
+        $office->identifier = $request->identifier;
+        $office->manager_id = $request->manager_id;
+        $office->region_id = $request->region_id;
+        $office->save();
+
+        //WE WILL SEE IF WE WILL KEEP THE OFFICE8ID ON USERS TABLE
+        /*$manager = EloquentUser::find($request->manager_id);
+        $manager->office_id = $office->id;
+        $manager->save();*/
+
+        return redirect('/dashboard/offices');
     }
 
     /**
@@ -93,9 +101,6 @@ class ServicesController extends Controller
      */
     public function destroy($id)
     {
-        $service = Service::find($id);
-        $service->delete();
-        Session::flash('message', 'Successfully deleted the nerd!');
-        return ('service deleted');
+        //
     }
 }

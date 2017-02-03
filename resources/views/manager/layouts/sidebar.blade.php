@@ -36,7 +36,6 @@
         <ul class="sidebar-menu">
             <li class="header">HEADER</li>
             <!-- Optionally, you can add icons to the links -->
-            <li><a href="#"><i class="fa fa-link"></i> <span>Another Link</span></a></li>
             <li class="treeview">
                 <a href="#"><i class="fa fa-link"></i> <span>Staff</span>
                     <span class="pull-right-container">
@@ -46,6 +45,17 @@
                 <ul class="treeview-menu">
                     <li ><a href="{{ url('/manager/staffs') }}">All</a></li>
                     <li><a href="{{ url('/manager/staffs/create') }}">Create new</a></li>
+                </ul>
+            </li>
+            <li class="treeview">
+                <a href="#"><i class="fa fa-link"></i> <span>Ticket Windows</span>
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                </a>
+                <ul class="treeview-menu">
+                    <li ><a href="{{ url('/manager/ticket_windows') }}">All</a></li>
+                    <li><a href="{{ url('/manager/ticket_windows/create') }}">Create new</a></li>
                 </ul>
             </li>
 

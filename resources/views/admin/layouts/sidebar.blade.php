@@ -36,19 +36,8 @@
         <ul class="sidebar-menu">
             <li class="header">HEADER</li>
             <!-- Optionally, you can add icons to the links -->
-            <li class="active"><a href="{{ url('/dashboard/categories/create') }}"><i class="fa fa-link"></i> <span>Add Category</span></a></li>
-            <li><a href="#"><i class="fa fa-link"></i> <span>Another Link</span></a></li>
-            <li class="treeview">
-                <a href="#"><i class="fa fa-link"></i> <span>Multilevel</span>
-                    <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-                </a>
-                <ul class="treeview-menu">
-                    <li><a href="#">Link in level 2</a></li>
-                    <li><a href="#">Link in level 2</a></li>
-                </ul>
-            </li>
+            <li class=""><a href="{{ url('/dashboard/categories/create') }}"><i class="fa fa-link"></i> <span>Add Category</span></a></li>
+            <li class=""><a href="{{ url('/dashboard/regions/create') }}"><i class="fa fa-link"></i> <span>Add Region</span></a></li>
 
             <li class="treeview">
                 <a href="#"><i class="fa fa-link"></i> <span>Managers</span>
@@ -72,7 +61,7 @@
                     <li><a href="{{ url('/dashboard/companies/create') }}">Create new</a></li>
                 </ul>
             </li>
-            <li class="treeview">
+            <!--li class="treeview">
                 <a href="#"><i class="fa fa-link"></i> <span>Staff</span>
                     <span class="pull-right-container">
                         <i class="fa fa-angle-left pull-right"></i>
@@ -82,7 +71,7 @@
                     <li ><a href="{{ url('/dashboard/staffs') }}">All</a></li>
                     <li><a href="{{ url('/dashboard/staffs/create') }}">Create new</a></li>
                 </ul>
-            </li>
+            </li-->
             <li class="treeview">
                 <a href="#"><i class="fa fa-link"></i> <span>Services</span>
                     <span class="pull-right-container">
@@ -92,6 +81,17 @@
                 <ul class="treeview-menu">
                     <li ><a href="{{ url('/dashboard/services') }}">All</a></li>
                     <li><a href="{{ url('/dashboard/services/create') }}">Create new</a></li>
+                </ul>
+            </li>
+            <li class="treeview">
+                <a href="#"><i class="fa fa-link"></i> <span>Offices</span>
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                </a>
+                <ul class="treeview-menu">
+                    <li ><a href="{{ url('/dashboard/offices') }}">All</a></li>
+                    <li><a href="{{ url('/dashboard/offices/create') }}">Create new</a></li>
                 </ul>
             </li>
 
