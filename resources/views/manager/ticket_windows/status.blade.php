@@ -24,11 +24,7 @@
                     <h3 class="box-title">Activate Ticket Window Number {{ $window->number }} - </h3>
                     <small>
                         Office :
-                        @foreach($allOffices as $office)
-                            @if($office->id == $window->office_id)
-                                {{ $office->identifier }}
-                            @endif
-                        @endforeach
+                        {{ $window->getOffice->identifier }}
                     </small>
                 </div>
                 <!-- /.box-header -->

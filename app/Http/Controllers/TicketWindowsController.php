@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Company;
 use Illuminate\Http\Request;
 use App\TicketWindow;
 use App\Office;
 use App\Staff;
 use App\Service;
+use Cartalyst\Sentinel\Users\EloquentUser;
+use Sentinel;
 
 class TicketWindowsController extends Controller
 {
@@ -17,16 +20,11 @@ class TicketWindowsController extends Controller
      */
     public function index()
     {
-        $allTicketWindows = TicketWindow::all();
-        $allOffices = Office::all();
-        $allStaffs = Staff::all();
-        $allServices = Service::all();
-        //$allTicketWindows = TicketWindow::with(array('office'))->get();
+        //$allTicketWindows = TicketWindow::all();
+        $office = EloquentUser::find(Sentinel::getUser()->id)->office; //GET OFFICE OF MANAGER LOGGED IN
+        $allTicketWindows = Office::find($office->id)->ticketWindow;
         return view ('manager.ticket_windows.index')
-            ->with('allTicketWindows',$allTicketWindows)
-            ->with('allOffices',$allOffices)
-            ->with('allStaffs',$allStaffs)
-            ->with('allServices',$allServices);
+            ->with('allTicketWindows',$allTicketWindows);
     }
 
     /**
@@ -51,7 +49,8 @@ class TicketWindowsController extends Controller
     {
         $ticketWindow = new TicketWindow;
         $ticketWindow->number = $request->number;
-        $ticketWindow->office_id = $request->office_id;
+        $office = EloquentUser::find(Sentinel::getUser()->id)->office;
+        $ticketWindow->office_id = $office->id;
         $ticketWindow->status = 'Offline';
         $ticketWindow->save();
         return redirect('/manager/ticket_windows');
@@ -66,15 +65,14 @@ class TicketWindowsController extends Controller
      */
     public function show($id)
     {
-        $staffs = Staff::all();
-        $services = Service::all();
+        $office = EloquentUser::find(Sentinel::getUser()->id)->office; //GET OFFICE OF MANAGER LOGGED IN
+        $staffs = Office::find($office->id)->staff;
+        $services = Company::find(Sentinel::getUser()->getCompany->id)->service;
         $window = TicketWindow::find($id);
-        $offices = Office::all();
         return view('manager.ticket_windows.status')
             ->with('window',$window)
             ->with('allStaffs',$staffs)
-            ->with('allServices',$services)
-            ->with('allOffices',$offices);
+            ->with('allServices',$services);
     }
 
     /**
@@ -119,5 +117,16 @@ class TicketWindowsController extends Controller
         $ticketWindow->status = 'Online';
         $ticketWindow->save();
         return redirect('/manager/ticket_windows');
+    }
+
+    public function deactivateWindow($id)
+    {
+        $window = TicketWindow::find($id);
+        $window->staff_id = null;
+        $window->service_id = null;
+        $window->status = 'Offline';
+        $window->save();
+        return redirect('/manager/ticket_windows');
+
     }
 }

@@ -35,7 +35,7 @@
                                 <input type="number" name="number" class="form-control" id="number" placeholder="number" required>
                             </div>
                         </div>
-                        <div class="form-group">
+                        <!--div class="form-group">
                             <label for="office_id" class="col-sm-2 control-label">Office</label>
                             <div class="col-sm-10">
                                 <select class="form-control" id="office_id" name="office_id" required>
@@ -44,7 +44,7 @@
                                     @endforeach
                                 </select>
                             </div>
-                        </div>
+                        </div-->
 
                     </div>
                     <!-- /.box-body -->

@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Office;
 use Sentinek;
 use App\Region;
+use App\Company;
 use Cartalyst\Sentinel\Users\EloquentUser;
 
 class OfficesController extends Controller
@@ -30,11 +31,13 @@ class OfficesController extends Controller
     public function create()
     {
         $allRegions = Region::all();
+        $allCompanies = Company::all();
         $role = Sentinel::findRoleBySlug('manager');
         $allManagers = $role->users()->with('roles')->get();
         return view('admin.offices.create')
             ->with('allRegions',$allRegions)
-            ->with('allManagers',$allManagers);
+            ->with('allManagers',$allManagers)
+            ->with('allCompanies',$allCompanies);
     }
 
     /**
@@ -49,12 +52,14 @@ class OfficesController extends Controller
         $office->identifier = $request->identifier;
         $office->manager_id = $request->manager_id;
         $office->region_id = $request->region_id;
+        $office->office_lat = $request->office_lat;
+        $office->office_lng = $request->office_lng;
         $office->save();
 
-        //WE WILL SEE IF WE WILL KEEP THE OFFICE8ID ON USERS TABLE
-        /*$manager = EloquentUser::find($request->manager_id);
+        //WE WILL KEEP THE OFFICE_ID ON USERS TABLE
+        $manager = EloquentUser::find($request->manager_id);
         $manager->office_id = $office->id;
-        $manager->save();*/
+        $manager->save();
 
         return redirect('/dashboard/offices');
     }

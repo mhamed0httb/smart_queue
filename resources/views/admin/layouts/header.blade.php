@@ -134,7 +134,7 @@
                             <p>
                                 @if(Sentinel::check())
                                     {{Sentinel::getUser()->first_name}} {{Sentinel::getUser()->last_name}}
-                                @endif - Web Developer
+                                @endif - ADMIN
                                 <small>
                                     Member since
                                     @if(Sentinel::check())

@@ -15,7 +15,10 @@ class CreateTicketsTable extends Migration
     {
         Schema::create('tickets', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('owner_id');
+            $table->integer('number');
+            $table->integer('owner_id')->nullable();
+            $table->integer('office_id');
+            $table->integer('ticket_window_id')->nullable();
             $table->boolean('expired');
             $table->timestamps();
         });

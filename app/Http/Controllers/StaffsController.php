@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Staff;
+use App\Office;
+use Sentinel;
+use Cartalyst\Sentinel\Users\EloquentUser;
 
 class StaffsController extends Controller
 {
@@ -14,8 +17,11 @@ class StaffsController extends Controller
      */
     public function index()
     {
-        $allStaff = Staff::all();
-        //return view('admin.staff.index')->with('allStaff',$allStaff);
+        //$allStaff = Staff::all();
+
+
+        $office = EloquentUser::find(Sentinel::getUser()->id)->office; //GET OFFICE OF MANAGER LOGGED IN
+        $allStaff = Office::find($office->id)->staff; //GET ALL STAFF OF OFFICE OF MANAGER LOGGED IN
         return view('manager.staff.index')->with('allStaff',$allStaff);
     }
 
@@ -41,8 +47,10 @@ class StaffsController extends Controller
         $staff = new Staff;
         $staff->first_name = $request->first_name;
         $staff->last_name = $request->last_name;
+
+        $office = EloquentUser::find(Sentinel::getUser()->id)->office;
+        $staff->office_id = $office->id;
         $staff->save();
-        //return redirect('/dashboard/staffs');
         return redirect('/manager/staffs');
     }
 
@@ -90,4 +98,6 @@ class StaffsController extends Controller
     {
         //
     }
+
+
 }

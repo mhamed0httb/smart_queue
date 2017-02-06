@@ -41,6 +41,15 @@ Route::group(['middleware' => 'manager'], function(){
     Route::get('/manager', 'ManagerController@index');
     Route::resource('/manager/staffs', 'StaffsController');
     Route::resource('/manager/ticket_windows', 'TicketWindowsController');
+    Route::get('/manager/ticket_windows/deactivate/{id}', 'TicketWindowsController@deactivateWindow');
+    Route::resource('/manager/tickets', 'TicketsController');
     Route::post('/manager/ticket_windows/update_status', 'TicketWindowsController@updateStatus');
 });
+
+Route::get('/webservices/tickets/create', 'TicketsController@createTicket');
+Route::get('/webservices/tickets/update', 'TicketsController@updateTicket');
+Route::get('/webservices/managers/byCompany', 'ManagerController@getNotAffectedManagersByCompany');
+
+
+
 

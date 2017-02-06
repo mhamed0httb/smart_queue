@@ -18,6 +18,8 @@ class CreateOfficesTable extends Migration
             $table->string('identifier');
             $table->integer('manager_id');
             $table->integer('region_id');
+            $table->float('office_lat', 20, 18);
+            $table->float('office_lng', 20, 18);
             $table->timestamps();
         });
     }
