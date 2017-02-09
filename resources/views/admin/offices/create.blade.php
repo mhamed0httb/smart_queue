@@ -100,7 +100,7 @@
 @section('scripts')
     <script>
         function companiesLoaded(id){
-            $.get('{{ url('webservices/managers/byCompany') }}'+'?company_id='+id, function(data) {
+            $.get('{{ url('api/managers/byCompany') }}'+'?company_id='+id, function(data) {
                 //var obj = jQuery.parseJSON(data);
                 $.each(data, function(i, item) {
                     $('#manager_id').append('<option value="'+item.id+'">'+item.first_name +' '+ item.last_name+'</option>');
@@ -110,7 +110,7 @@
 
         function companyChanged(id){
             $('#manager_id').empty();
-            $.get('{{ url('webservices/managers/byCompany') }}'+'?company_id='+id, function(data) {
+            $.get('{{ url('api/managers/byCompany') }}'+'?company_id='+id, function(data) {
                 //var obj = jQuery.parseJSON(data);
                 $.each(data, function(i, item) {
                     $('#manager_id').append('<option value="'+item.id+'">'+item.first_name +' '+ item.last_name+'</option>');

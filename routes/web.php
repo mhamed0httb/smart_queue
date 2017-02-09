@@ -46,9 +46,9 @@ Route::group(['middleware' => 'manager'], function(){
     Route::post('/manager/ticket_windows/update_status', 'TicketWindowsController@updateStatus');
 });
 
-Route::get('/webservices/tickets/create', 'TicketsController@createTicket');
-Route::get('/webservices/tickets/update', 'TicketsController@updateTicket');
-Route::get('/webservices/managers/byCompany', 'ManagerController@getNotAffectedManagersByCompany');
+//Route::get('/webservices/tickets/create', 'TicketsController@createTicket');
+//Route::get('/webservices/tickets/update', 'TicketsController@updateTicket');
+//Route::get('/webservices/managers/byCompany', 'ManagerController@getNotAffectedManagersByCompany');
 
 
 

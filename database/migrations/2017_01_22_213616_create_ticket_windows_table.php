@@ -24,6 +24,7 @@ class CreateTicketWindowsTable extends Migration
             $table->foreign('staff_id')->references('id')->on('staffs');
             $table->integer('service_id')->unsigned()->nullable();
             $table->foreign('service_id')->references('id')->on('services');
+            $table->integer('ticket_id')->nullable();
             $table->timestamps();
         });
     }

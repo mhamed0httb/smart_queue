@@ -25,4 +25,10 @@ class TicketWindow extends Model
         return $this->belongsTo('App\Service','service_id');
         //return $this->hasOne('Office','office_id');
     }
+
+    public function getTicket()
+    {
+        return $this->belongsTo('App\Ticket','ticket_id');
+        //return $this->hasOne('Office','office_id');
+    }
 }

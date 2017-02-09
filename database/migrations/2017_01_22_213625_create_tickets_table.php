@@ -19,7 +19,8 @@ class CreateTicketsTable extends Migration
             $table->integer('owner_id')->nullable();
             $table->integer('office_id');
             $table->integer('ticket_window_id')->nullable();
-            $table->boolean('expired');
+            $table->boolean('expired')->default(false);
+            $table->string('status')->default('waiting');
             $table->timestamps();
         });
     }

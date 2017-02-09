@@ -20,6 +20,8 @@ class CreateHistoryTable extends Migration
             $table->integer('user_id');
             $table->integer('service_id');
             $table->integer('office_id');
+            $table->integer('staff_id');
+            $table->boolean('ticket_served')->default(false);
             $table->timestamps();
         });
     }

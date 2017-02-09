@@ -17,4 +17,8 @@ class Ticket extends Model
     {
         return $this->belongsTo('App\TicketWindow','ticket_window_id');
     }
+
+    function history() {
+        return $this->hasOne('App\History','ticket_id');
+    }
 }

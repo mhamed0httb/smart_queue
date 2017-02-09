@@ -18,7 +18,7 @@
                                 <div class="box-body">
                                         <ul>
                                                 @foreach ($allStaff as $staff)
-                                                        <li>{{ $staff->first_name }} {{ $staff->last_name }}</li>
+                                                        <li>{{ $staff->first_name }} {{ $staff->last_name }} </li>
                                                 @endforeach
                                         </ul>
 
@@ -27,14 +27,10 @@
 
 
                                 </div><!-- /.box-body -->
-                                <div class="box-footer">
-                                        <form action='#'>
-                                                <input type='text' placeholder='New task' class='form-control input-sm' />
-                                        </form>
+
                                 </div><!-- /.box-footer-->
                         </div><!-- /.box -->
                 </div><!-- /.col -->
 
         </div><!-- /.row -->
 @endsection
-

@@ -7,7 +7,7 @@
         <!-- Sidebar user panel (optional) -->
         <div class="user-panel">
             <div class="pull-left image">
-                <img src="{{ URL::asset('/img/user2-160x160.jpg') }}" class="img-circle" alt="User Image">
+                <img src="{{ URL::asset('/img/user.png') }}" class="img-circle" alt="User Image">
             </div>
             <div class="pull-left info">
                 <p>
@@ -69,6 +69,7 @@
                     <li><a href="#"></a></li>
                 </ul>
             </li>
+            <li class=""><a href="#"><i class="fa fa-link"></i> <span>Request Services</span></a></li>
 
         </ul>
         <!-- /.sidebar-menu -->

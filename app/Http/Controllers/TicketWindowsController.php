@@ -124,6 +124,7 @@ class TicketWindowsController extends Controller
         $window = TicketWindow::find($id);
         $window->staff_id = null;
         $window->service_id = null;
+        $window->ticket_id = null;
         $window->status = 'Offline';
         $window->save();
         return redirect('/manager/ticket_windows');
