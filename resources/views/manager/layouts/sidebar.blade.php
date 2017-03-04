@@ -36,7 +36,7 @@
         <ul class="sidebar-menu">
             <li class="header">HEADER</li>
             <!-- Optionally, you can add icons to the links -->
-            <li class="treeview">
+            <!--li-- class="treeview">
                 <a href="#"><i class="fa fa-link"></i> <span>Staff</span>
                     <span class="pull-right-container">
                         <i class="fa fa-angle-left pull-right"></i>
@@ -46,8 +46,8 @@
                     <li ><a href="{{ url('/manager/staffs') }}">All</a></li>
                     <li><a href="{{ url('/manager/staffs/create') }}">Create new</a></li>
                 </ul>
-            </li>
-            <li class="treeview">
+            </li-->
+            <!--li class="treeview">
                 <a href="#"><i class="fa fa-link"></i> <span>Ticket Windows</span>
                     <span class="pull-right-container">
                         <i class="fa fa-angle-left pull-right"></i>
@@ -57,8 +57,8 @@
                     <li ><a href="{{ url('/manager/ticket_windows') }}">All</a></li>
                     <li><a href="{{ url('/manager/ticket_windows/create') }}">Create new</a></li>
                 </ul>
-            </li>
-            <li class="treeview">
+            </li-->
+            <!--li-- class="treeview">
                 <a href="#"><i class="fa fa-link"></i> <span>Tickets</span>
                     <span class="pull-right-container">
                         <i class="fa fa-angle-left pull-right"></i>
@@ -68,7 +68,10 @@
                     <li ><a href="{{url('/manager/tickets')}}">All</a></li>
                     <li><a href="#"></a></li>
                 </ul>
-            </li>
+            </li-->
+            <li class=""><a href="{{ url('/manager/staffs') }}"><i class="fa fa-link"></i> <span>Staff members</span></a></li>
+            <li class=""><a href="{{ url('/manager/ticket_windows') }}"><i class="fa fa-link"></i> <span>Ticket Windows</span></a></li>
+            <li class=""><a href="{{url('/manager/tickets')}}"><i class="fa fa-link"></i> <span>Tickets</span></a></li>
             <li class=""><a href="#"><i class="fa fa-link"></i> <span>Request Services</span></a></li>
 
         </ul>

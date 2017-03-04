@@ -18,6 +18,7 @@ class CreateStaffsTable extends Migration
             $table->string('first_name');
             $table->string('last_name');
             $table->integer('office_id');
+            $table->integer('ticket_window_id')->nullable();
             $table->timestamps();
         });
     }

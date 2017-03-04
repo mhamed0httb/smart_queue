@@ -8,8 +8,11 @@ use App\TicketWindow;
 use App\Office;
 use App\Staff;
 use App\Service;
+use App\Ticket;
 use Cartalyst\Sentinel\Users\EloquentUser;
 use Sentinel;
+use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 class TicketWindowsController extends Controller
 {
@@ -53,6 +56,7 @@ class TicketWindowsController extends Controller
         $ticketWindow->office_id = $office->id;
         $ticketWindow->status = 'Offline';
         $ticketWindow->save();
+        $request->session()->flash('status', 'Window was successfully created!');
         return redirect('/manager/ticket_windows');
 
     }
@@ -66,7 +70,11 @@ class TicketWindowsController extends Controller
     public function show($id)
     {
         $office = EloquentUser::find(Sentinel::getUser()->id)->office; //GET OFFICE OF MANAGER LOGGED IN
-        $staffs = Office::find($office->id)->staff;
+        //$staffs = Office::find($office->id)->staff;
+        $staffs = DB::table('staffs')
+            ->where('office_id', '=', $office->id)
+            ->where('ticket_window_id', '=', null)
+            ->get();
         $services = Company::find(Sentinel::getUser()->getCompany->id)->service;
         $window = TicketWindow::find($id);
         return view('manager.ticket_windows.status')
@@ -116,6 +124,9 @@ class TicketWindowsController extends Controller
         $ticketWindow->service_id = $request->service_id;
         $ticketWindow->status = 'Online';
         $ticketWindow->save();
+        $staff = Staff::find($request->staff_id);
+        $staff->ticket_window_id = $request->window_id;
+        $staff->save();
         return redirect('/manager/ticket_windows');
     }
 
@@ -127,7 +138,39 @@ class TicketWindowsController extends Controller
         $window->ticket_id = null;
         $window->status = 'Offline';
         $window->save();
+        $staff =  DB::table('staffs')
+            ->where('ticket_window_id', '=', $id)
+            ->first();
+        $stf = Staff::find($staff->id);
+        $stf->ticket_window_id = null;
+        $stf->save();
         return redirect('/manager/ticket_windows');
 
+    }
+
+    public function getTicketWindowsStatus(Request $request)
+    {
+        $result = array();
+        $allWindows = DB::table('ticket_windows')
+            ->where('office_id', '=', $request->office_id)
+            ->where('status', '=', 'Online')
+            ->get();
+        foreach ($allWindows as $one){
+            $service = Service::find($one->service_id);
+            $member = Staff::find($one->staff_id);
+            $ticket = Ticket::find($one->ticket_id);
+            $oneWindowInfo = array();
+            $oneWindowInfo['service'] = $service->name;
+            $oneWindowInfo['member'] = $member->first_name . ' ' . $member->last_name;
+            if($ticket == null){
+                $oneWindowInfo['ticket_number'] = 'not_yet';
+            }else{
+                $oneWindowInfo['ticket_number'] = $ticket->number;
+            }
+            $oneWindowInfo['window_number'] = $one->number;
+
+            array_push($result,$oneWindowInfo);
+        }
+        return $result;
     }
 }

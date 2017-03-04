@@ -108,4 +108,16 @@ class OfficesController extends Controller
     {
         //
     }
+
+    public function getOfficesByCompany(Request $request)
+    {
+      $resOffices = array();
+      $managers = Company::find($request->company_id)->manager;
+      foreach ($managers as $one) {
+        $office = EloquentUser::find($one->id)->office;
+        array_push($resOffices,$office);
+      }
+      //$offices = EloquentUser::find($manager->id)->office;
+      return($resOffices);
+    }
 }

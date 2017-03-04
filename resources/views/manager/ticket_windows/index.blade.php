@@ -16,6 +16,9 @@
 
     <!-- /.row -->
     <div class="row">
+        <a class="btn btn-app" href="{{ url('/manager/ticket_windows/create') }}">
+            <i class="fa fa-plus"></i> Add new
+        </a>
         <div class="col-xs-12">
             <div class="box">
                 <div class="box-header">
@@ -23,10 +26,10 @@
 
                     <div class="box-tools">
                         <div class="input-group input-group-sm" style="width: 150px;">
-                            <input type="text" name="table_search" class="form-control pull-right" placeholder="Search">
+                            <input type="text" name="table_search" id="input_search" class="form-control pull-right" placeholder="Search...">
 
                             <div class="input-group-btn">
-                                <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
+                                <button type="submit" class="btn btn-default" id="btn_clear_search"><i class="fa fa-close"></i></button>
                             </div>
                         </div>
                     </div>
@@ -91,7 +94,7 @@
 
     <!-- Button trigger modal -->
     <button type="button" class="btn btn-primary btn-lg hide" data-toggle="modal" data-target="#modal_deactivate" id="btn_dectivate_modal">
-        Launch demo modal
+        Launch modal
     </button>
 
     <!-- Modal -->
@@ -113,6 +116,31 @@
         </div>
     </div>
 
+
+    <button class="hide modal-trigger" data-toggle="modal" data-target="#modal_success" href="#modal_success" id="btn_modal_success"></button>
+    <div class="modal modal-success" id="modal_success">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Success</h4>
+                </div>
+                <div class="modal-body">
+                    <p>{{ Session::get('status') }}</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline pull-left" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
+
+
+
     <script>
         function deactivateWindow(id){
             $('#btn_dectivate_modal').click();
@@ -120,6 +148,77 @@
                 window.location = '{{ url('manager/ticket_windows/deactivate') }}'+'/'+id;
             });
         }
+    </script>
+@endsection
+
+@section('scripts')
+    @if(Session::has('status'))
+        <script>
+            $('#btn_modal_success').click()
+        </script>
+    @endif
+
+    <script>
+        /*$("#input_search").on("keyup", function() {
+            var value = $(this).val();
+
+            $("table tr").each(function(index) {
+                if (index !== 0) {
+
+                    $row = $(this);
+
+                    var id = $row.find("td:first").text();
+
+                    if (id.indexOf(value) !== 0) {
+                        $row.hide();
+                    }
+                    else {
+                        $row.show();
+                    }
+                }
+            });
+        });*/
+
+
+
+
+
+
+        $(document).ready(function()
+        {
+            $('#input_search').keyup(function()
+            {
+                searchTable($(this).val());
+            });
+        });
+
+        function searchTable(inputVal)
+        {
+            var table = $('.table');
+            table.find('tr').each(function(index, row)
+            {
+                var allCells = $(row).find('td');
+                if(allCells.length != 0)
+                {
+                    var found = false;
+                    allCells.each(function(index, td)
+                    {
+                        var regExp = new RegExp(inputVal, 'i');
+                        if(regExp.test($(td).text()))
+                        {
+                            found = true;
+                            return false;
+                        }
+                    });
+                    if(found == true)$(row).show();else $(row).hide();
+                }
+            });
+        }
+
+        $('#btn_clear_search').click(function() {
+            $('#input_search').val('');
+            searchTable('');
+        });
     </script>
 @endsection
 

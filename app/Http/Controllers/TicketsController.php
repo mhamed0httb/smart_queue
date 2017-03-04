@@ -10,6 +10,7 @@ use App\History;
 use Cartalyst\Sentinel\Users\EloquentUser;
 use Sentinel;
 use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 class TicketsController extends Controller
 {
@@ -20,9 +21,18 @@ class TicketsController extends Controller
      */
     public function index()
     {
-        $office = EloquentUser::find(Sentinel::getUser()->id)->office;
-        $allTickets = Office::find($office->id)->ticket;
-        return view('manager.tickets.index')->with('allTickets',$allTickets);
+        //$office = EloquentUser::find(Sentinel::getUser()->id)->office;
+        //$allTickets = Office::find($office->id)->ticket;
+        $allTicketsToday = DB::table('tickets')
+            ->whereDate('created_at',Carbon::now()->toDateString())
+            ->get();
+        $res = array();
+        foreach($allTicketsToday as $one){
+            $tik = Ticket::find($one->id);
+            array_push($res,$one);
+        }
+        $converted = Ticket::hydrate($res);
+        return view('manager.tickets.index')->with('allTickets',$converted);
     }
 
     /**
@@ -93,69 +103,55 @@ class TicketsController extends Controller
 
     public function createTicket(Request $request)
     {
-        $allTicketsByOffice = DB::table('tickets') //GET ALL TICKETS WAITING
+
+
+        $checkTickets = DB::table('tickets') //CHECK IF USER HAVE ALREADY A TICKET
             ->where('expired', '=', false)
+            ->where('status', '=', 'waiting')
             ->where('office_id', '=', $request->office_id)
+            ->where('owner_id', '=', $request->owner_id)
+            ->whereDate('created_at', Carbon::now()->toDateString())
             ->get();
-        if($allTicketsByOffice->count() == 0){
-            $newNumber = 1;
-        }else{
-            $initTicket = DB::table('tickets')
-                ->where('expired', '=', false)
+        if ($checkTickets->count() == 0) {
+            $allTicketsByOffice = DB::table('tickets') //GET ALL TICKETS WAITING
+            ->where('expired', '=', false)
                 ->where('office_id', '=', $request->office_id)
-                ->first();
-            $maximumNumber = $initTicket->number;
-            foreach ($allTicketsByOffice as $one)
-            {
-                if($one->number > $maximumNumber)
-                {
-                    $maximumNumber = $one->number;
-                }
-            }
-            if($maximumNumber == 20)
-            {
+                ->whereDate('created_at', Carbon::now()->toDateString())
+                ->get();
+            if($allTicketsByOffice->count() == 0){
                 $newNumber = 1;
             }else{
-                $newNumber = $maximumNumber + 1;
+                $initTicket = DB::table('tickets')
+                    ->where('expired', '=', false)
+                    ->where('office_id', '=', $request->office_id)
+                    ->orderBy('number', 'desc')
+                    ->first();
+                $maximumNumber = $initTicket->number;
+                if($maximumNumber == 20)
+                {
+                    $newNumber = 1;
+                }else{
+                    $newNumber = $maximumNumber + 1;
+                }
             }
-        }
 
-        $ticket = new Ticket;
-        $ticket->office_id = $request->office_id;
-        $ticket->owner_id = $request->owner_id;
-        $ticket->number = $newNumber;
-        $ticket->expired = false;
-        $ticket->save();
-        return 'ticket created';
+            $ticket = new Ticket;
+            $ticket->office_id = $request->office_id;
+            $ticket->owner_id = $request->owner_id;
+            $ticket->number = $newNumber;
+            $ticket->expired = false;
+            $ticket->save();
+            return $ticket;
+        }else{
+            return('user have already a ticket');
+        }
     }
 
-    public function updateTicket(Request $request)
-    {
-        $ticket = Ticket::find($request->ticket_id);
-        /*$office = Office::find($ticket->office_id);
-        $TicketWindows = Office::find($office->id)->ticketWindow;
-        //TicketWindow::where('status', '=', 'Online')->first();
-        $windows = DB::table('ticket_windows')
-            ->where('status', 'Online')
-            ->where('office_id','=', $office->id)
-            ->limit(1)
-            ->get();
 
-        $wind = new TicketWindow;
-        foreach($windows as $one){
-            $ticket->ticket_window_id = $one->id;
-        }
-        return $ticket;*/
-
-        $ticket->ticket_window_id = $request->ticket_window_id;
-        $ticket->expired = true;
-        $ticket->save();
-        return 'ticket updated';
-    }
-
-    public function ServeTicket2(Request $request)
+    public function ServeTicket(Request $request)
     {
         $ticketWindow = TicketWindow::find($request->ticket_window_id);
+        $ticketChosenNumber = 0;
         //IF TICKET WINDOW IS NOT SERVING ANYONE
         if($ticketWindow->ticket_id == null){
             $allTicketsWaiting = DB::table('tickets') //GET ALL TICKETS WAITING
@@ -168,16 +164,11 @@ class TicketsController extends Controller
                     ->where('expired', '=', false)
                     ->where('office_id', '=', $ticketWindow->office_id)
                     ->where('status', '=', 'waiting')
+                    ->orderBy('number', 'asc')
                     ->first();
                 $minimumNumber = $initTicket->number; //INITIALIZE MINIMUM NUMBER OF TICKETS
                 $idTicketChosen = $initTicket->id; //INITIALIZE TICKET ID WHICH HAVE THE MINIMUM NUMBER
-                foreach ($allTicketsWaiting as $one){  //FETCH THE TICKET WHO HAVE THE MINIMUM NUMBER
-                    if($one->number < $minimumNumber)
-                    {
-                        $minimumNumber = $one->number;
-                        $idTicketChosen = $one->id;
-                    }
-                }
+
                 $ticketChosen = Ticket::find($idTicketChosen);
                 $ticketChosen->status = 'in_service';
                 $ticketChosen->ticket_window_id = $ticketWindow->id;
@@ -192,6 +183,8 @@ class TicketsController extends Controller
                 $history->office_id = $ticketWindow->office_id;
                 $history->staff_id = $ticketWindow->staff_id;
                 $history->save();
+
+                $ticketChosenNumber = $ticketChosen->number;
             }
         }
         //IF TICKET WINDOW IS SERVING A CUSTOMER
@@ -214,16 +207,11 @@ class TicketsController extends Controller
                     ->where('expired', '=', false)
                     ->where('office_id', '=', $ticketWindow->office_id)
                     ->where('status', '=', 'waiting')
+                    ->orderBy('number', 'asc')
                     ->first();
                 $minimumNumber = $initTicket->number;
                 $idTicketChosen = $initTicket->id;
-                foreach ($allTicketsWaiting as $one){
-                    if($one->number < $minimumNumber)
-                    {
-                        $minimumNumber = $one->number;
-                        $idTicketChosen = $one->id;
-                    }
-                }
+
                 $ticketChosen = Ticket::find($idTicketChosen);
                 $ticketChosen->status = 'in_service';
                 $ticketChosen->ticket_window_id = $ticketWindow->id;
@@ -238,11 +226,28 @@ class TicketsController extends Controller
                 $history->office_id = $ticketWindow->office_id;
                 $history->staff_id = $ticketWindow->staff_id;
                 $history->save();
+
+                $ticketChosenNumber = $ticketChosen->number;
             }else{
                 $ticketWindow->ticket_id = null;
                 $ticketWindow->save();
             }
         }
-        return("servinggg");
+
+        return($ticketChosenNumber);
+        //return("serving");
+    }
+
+
+    public function getTicketsWaiting(Request $request)
+    {
+        $office = Office::find($request->office_id);
+        $tickets = DB::table('tickets')
+            ->where('office_id', '=', $request->office_id)
+            ->where('status', '=', 'waiting')
+            ->whereDate('created_at', Carbon::now()->toDateString())
+            ->orderBy('number', 'asc')
+            ->get();
+        return $tickets->count();
     }
 }

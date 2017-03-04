@@ -12,4 +12,9 @@ class Staff extends Model
     {
         return $this->belongsTo('App\Office','office_id');
     }
+
+    public function ticketWindow()
+    {
+        return $this->hasMany('App\TicketWindow','staff_id');
+    }
 }

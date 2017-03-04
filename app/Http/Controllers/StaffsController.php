@@ -96,7 +96,18 @@ class StaffsController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $staff = Staff::find($id);
+        $windows = Staff::find($id)->ticketWindow;
+        foreach($windows as $one){
+            $one->staff_id = null;
+            $one->service_id = null;
+            $one->ticket_id = null;
+            $one->status = 'Offline';
+            $one->save();
+        }
+        $staff->delete();
+        //Session::flash('message', 'Successfully deleted the staff member!');
+        return redirect('/manager/staffs');
     }
 
 
