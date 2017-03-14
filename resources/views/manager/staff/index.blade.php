@@ -48,8 +48,11 @@
                                                                 <td>{{ $staff->first_name }}  </td>
                                                                 <td>{{ $staff->last_name }}</td>
                                                                 <td>
-                                                                        <a class="btn btn-warning">Edit</a>
-                                                                        <a onclick="deleteMember({{$staff->id}})" class="btn btn-danger">Delete</a>
+                                                                        <!--a class="btn btn-warning">Edit</a-->
+                                                                        <a href="{{ url('/manager/statistics/staff/' . $staff->id) }}" class="btn btn-warning"><i class="fa fa-bar-chart" aria-hidden="true"></i>
+                                                                             Stats</a>
+                                                                        <a onclick="deleteMember({{$staff->id}})" class="btn btn-danger"><i class="fa fa-trash" aria-hidden="true"></i>
+                                                                             Delete</a>
                                                                 </td>
                                                                 <!--td><span class="label label-success">Approved</span></td>
                                                             <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td-->

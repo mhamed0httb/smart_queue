@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Service;
 use App\Company;
 use App\Category;
+use Sentinel;
+use Cartalyst\Sentinel\Users\EloquentUser;
 
 class ServicesController extends Controller
 {
@@ -97,5 +99,12 @@ class ServicesController extends Controller
         $service->delete();
         Session::flash('message', 'Successfully deleted the nerd!');
         return ('service deleted');
+    }
+
+
+    public function servicesStatAllDay()
+    {
+        $office = EloquentUser::find(Sentinel::getUser()->id)->office;
+        return view('manager.services.statistics_all')->with('office',$office);
     }
 }

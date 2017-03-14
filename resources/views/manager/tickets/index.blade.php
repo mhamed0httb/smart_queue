@@ -66,12 +66,17 @@
 
                                 <td>
                                     <div class="row">
-                                        @if($ticket->expired == false )
+                                        @if($ticket->status == 'waiting' )
                                             <a href="#">
                                                 <i class="fa fa-circle-o text-red"></i>
                                                 <span> Waiting</span>
                                             </a>
-                                        @else
+                                        @elseif($ticket->status == 'in_service')
+                                            <a href="#">
+                                                <i class="fa fa-circle-o text-yellow"></i>
+                                                <span> In Service</span>
+                                            </a>
+                                            @else
                                             <a href="#">
                                                 <i class="fa fa-circle-o text-green"></i>
                                                 <span> Served</span>

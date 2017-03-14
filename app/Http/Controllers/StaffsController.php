@@ -7,6 +7,7 @@ use App\Staff;
 use App\Office;
 use Sentinel;
 use Cartalyst\Sentinel\Users\EloquentUser;
+use Illuminate\Support\Facades\DB;
 
 class StaffsController extends Controller
 {
@@ -108,6 +109,30 @@ class StaffsController extends Controller
         $staff->delete();
         //Session::flash('message', 'Successfully deleted the staff member!');
         return redirect('/manager/staffs');
+    }
+
+    public function getAllStaff(Request $req)
+    {
+        $allMembers = DB::table('staffs')
+            ->where('office_id', '=', $req->office_id)
+            ->get();
+        $res = array();
+
+        foreach ($allMembers as $one){
+            $oneMember = array();
+            $oneMember["id"] = $one->id;
+            $oneMember["first_name"] = $one->first_name;
+            $oneMember["last_name"] = $one->last_name;
+            array_push($res,$oneMember);
+        }
+        return $res;
+    }
+
+    public function staffStatAllDay($id)
+    {
+        $stafMember = Staff::find($id);
+        return view('manager.staff.staff_statistics')
+            ->with('member',$stafMember);
     }
 
 

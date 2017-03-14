@@ -72,7 +72,18 @@
             <li class=""><a href="{{ url('/manager/staffs') }}"><i class="fa fa-link"></i> <span>Staff members</span></a></li>
             <li class=""><a href="{{ url('/manager/ticket_windows') }}"><i class="fa fa-link"></i> <span>Ticket Windows</span></a></li>
             <li class=""><a href="{{url('/manager/tickets')}}"><i class="fa fa-link"></i> <span>Tickets</span></a></li>
-            <li class=""><a href="#"><i class="fa fa-link"></i> <span>Request Services</span></a></li>
+            <!--li class=""><a href="#"><i class="fa fa-link"></i> <span>Request Services</span></a></li-->
+            <li class="treeview">
+                <a href="#"><i class="fa fa-link"></i> <span>Statistics</span>
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                </a>
+                <ul class="treeview-menu">
+                    <li ><a href="{{url('/manager/statistics/services')}}">Services</a></li>
+                    <li><a href="#"></a></li>
+                </ul>
+            </li>
 
         </ul>
         <!-- /.sidebar-menu -->
