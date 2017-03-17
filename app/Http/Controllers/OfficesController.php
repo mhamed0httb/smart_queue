@@ -50,16 +50,24 @@ class OfficesController extends Controller
     {
         $office = new Office;
         $office->identifier = $request->identifier;
-        $office->manager_id = $request->manager_id;
+        if($request->manager_id == "not_yet"){
+            $office->manager_id = 0;
+        }else{
+            $office->manager_id = $request->manager_id;
+        }
+        $office->company_id = $request->company_id;
         $office->region_id = $request->region_id;
         $office->office_lat = $request->office_lat;
         $office->office_lng = $request->office_lng;
         $office->save();
 
         //WE WILL KEEP THE OFFICE_ID ON USERS TABLE
-        $manager = EloquentUser::find($request->manager_id);
-        $manager->office_id = $office->id;
-        $manager->save();
+        if($request->manager_id != "not_yet"){
+            $manager = EloquentUser::find($request->manager_id);
+            $manager->office_id = $office->id;
+            $manager->save();
+        }
+
 
         return redirect('/dashboard/offices');
     }

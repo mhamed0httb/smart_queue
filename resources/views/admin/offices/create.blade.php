@@ -5,14 +5,15 @@
 @extends('admin.layouts.master')
 
 @section('content')
+    <link src="{{ asset ("/css/OFFLINE.css") }}" type="text/javascript"/>
     <h1>
         {{ $page_title or null }}
         <small>{{ $page_description or null }}</small>
     </h1>
     <ol class="breadcrumb">
         <li><a href="{{url('/manager')}}"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li><a href="#">{{ $sub_page_title or 'Sub Page Title' }}</a></li>
-        <li class="active">{{ $page_title or 'Page Title' }}</li>
+        <li><a href="{{url('/dashboard/offices')}}">{{ $sub_page_title or 'Offices' }}</a></li>
+        <li class="active">{{ $page_title or 'Create' }}</li>
     </ol>
 
     <div class="row">
@@ -32,7 +33,7 @@
                 </div>
                 <!-- /.box-header -->
                 <!-- form start -->
-                <form class="form-horizontal" action="{{ url('/dashboard/offices') }}" method="POST" id="form_create_manager">
+                <form class="form-horizontal" action="{{ url('/dashboard/offices') }}" method="POST" id="form_create_office">
                     {{csrf_field()}}
                     <div class="box-body">
                         <div class="form-group">
@@ -55,7 +56,8 @@
                                 </select>
                             </div>
                             <div class="col-sm-2">
-                                <a class="btn btn-primary" href="{{url('/dashboard/regions/create')}}">Add new Region</a>
+                                <!--a class="btn btn-primary" href="{{url('/dashboard/regions/create')}}">Add new Region</a-->
+                                <a class="btn btn-primary modal-trigger" data-toggle="modal" data-target="#modal_create_region" href="#modal_create_region" >Add new Region</a>
                             </div>
                         </div>
                         <div class="form-group">
@@ -72,6 +74,7 @@
 
                         <input type="hidden" name="office_lat" class="form-control" id="office_lat" value="0"  required>
                         <input type="hidden" name="office_lng" class="form-control" id="office_lng" value="0"  required>
+                        <input type="hidden" name="company_id" class="form-control" id="company_id" >
                     </div>
                     <!-- /.box-body -->
                     <div class="box-footer">
@@ -94,12 +97,49 @@
 
 
 
+    <div class="modal" id="modal_create_region">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Create new region</h4>
+                </div>
+                <div class="modal-body">
+                        <div class="box-body">
+                            <div class="form-group">
+                                <label for="name" class="col-sm-3 control-label">Region Name</label>
+
+                                <div class="col-sm-8">
+                                    <input type="text" name="region_name" class="form-control" id="region_name" placeholder="region name..." required>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.box-body -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default pull-left" data-dismiss="modal" id="btn_close_modal_create_region">Close</button>
+                    <button type="button" class="btn btn-primary" onclick="addRegion()">Create</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
+
+    <div id="div_alert" style="position: fixed; top: 10%; right: 0%"></div>
+
+
+    <div data-phase="1" class="offline-ui offline-ui-down offline-ui-down-5s"><div class="offline-ui-content" data-retry-in="" data-retry-in-abbr=""></div><a class="offline-ui-retry"></a></div>
 
 @endsection
 
 @section('scripts')
     <script>
         function companiesLoaded(id){
+            $('#company_id').val(id);
+            $('#manager_id').append('<option value="not_yet">Not Yet</option>');
             $.get('{{ url('api/managers/byCompany') }}'+'?company_id='+id, function(data) {
                 //var obj = jQuery.parseJSON(data);
                 $.each(data, function(i, item) {
@@ -109,7 +149,9 @@
         }
 
         function companyChanged(id){
+            $('#company_id').val(id);
             $('#manager_id').empty();
+            $('#manager_id').append('<option value="not_yet">Not Yet</option>');
             $.get('{{ url('api/managers/byCompany') }}'+'?company_id='+id, function(data) {
                 //var obj = jQuery.parseJSON(data);
                 $.each(data, function(i, item) {
@@ -121,6 +163,62 @@
 
         companiesLoaded($('#select_company').val());
         $('#map').css('height',$('.box-info').height());
+    </script>
+
+    <script>
+        function addRegion(){
+            var regionName = $('#region_name').val();
+            $.get('{{ url('api/regions/create') }}'+'?name='+regionName, function(data) {
+                //var obj = jQuery.parseJSON(data);
+                $('#region_id').append('<option value="'+data.id+'">'+data.name +'</option>');
+                $('#btn_close_modal_create_region').click();
+                $('#div_alert').html('<div class="alert alert-success alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button> <h4><i class="icon fa fa-check"></i> SUCCESS!</h4>The new region has been successfully added.</div>');
+                $('#div_alert').fadeIn();
+                dismissAlertMessage();
+            });
+            $('#btn_close_modal_create_region').click();
+        }
+
+        function dismissAlertMessage(){
+            setTimeout(function() {
+                $('#div_alert').fadeOut();
+            }, 3000);
+        }
+
+        /*function doesConnectionExist() {
+            var xhr = new XMLHttpRequest();
+            var file = "https://www.google.tn/";
+            var randomNum = Math.round(Math.random() * 10000);
+
+            xhr.open('HEAD', file + "?rand=" + randomNum, true);
+            xhr.send();
+
+            xhr.addEventListener("readystatechange", processRequest, false);
+
+            function processRequest(e) {
+                if (xhr.readyState == 4) {
+                    if (xhr.status >= 200 && xhr.status < 304) {
+                        alert("connection exists!");
+                    } else {
+                        alert("connection doesn't exist!");
+                    }
+                }
+            }
+        }
+        doesConnectionExist();*/
+
+        function online() {
+            // Show a different icon based on offline/online
+            alert("online");
+        }
+        function offline() {
+            // Show a different icon based on offline/online
+            alert("offline");
+        }
+
+        // Update the online status icon based on connectivity
+        window.addEventListener('online',  online);
+        window.addEventListener('offline', offline);
     </script>
 
 
@@ -211,6 +309,10 @@
     </script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDk-sJhPAI3ivCyIQqGTw2EmkRbdtRFLxY&signed_in=true&callback=initMap"
             async defer></script>
+
+
+
+
 @endsection
 
 

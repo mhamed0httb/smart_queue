@@ -5,7 +5,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
 -->
 <html>
 <head>
-
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>AdminLTE 2 | Starter</title>
@@ -24,6 +23,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
           apply the skin class to the body tag so the changes take effect.
     -->
     <link href="{{ URL::asset("/css/skin-blue.min.css")}}" rel="stylesheet" type="text/css" />
+
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -71,11 +71,11 @@ desired effect
                 {{ $page_title or null }}
                 <small>{{ $page_description or null }}</small>
             </h1>
-            <ol class="breadcrumb">
+            <!--ol class="breadcrumb">
                 <li><a href="{{url('/dashboard')}}"><i class="fa fa-dashboard"></i> Home</a></li>
                 <li><a href="{{ $sub_page_url or '#' }}">{{ $sub_page_title or null }}</a></li>
                 <li class="active">{{ $page_title or null }}</li>
-            </ol>
+            </ol-->
         </section>
 
         <!-- Main content -->
@@ -187,6 +187,8 @@ desired effect
      Both of these plugins are recommended to enhance the
      user experience. Slimscroll is required when using the
      fixed layout. -->
+
+
 @yield('scripts')
 </body>
 </html>

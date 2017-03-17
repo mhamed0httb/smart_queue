@@ -28,6 +28,7 @@ Route::get('/regions', function()
 {
     return (Region::all());
 });
+Route::get('/regions/create', 'RegionsController@add');
 
 Route::post('/staff/add', function(Request $req)
 {
@@ -349,3 +350,7 @@ Route::get('/statistics/staff/allDays', function(Request $req)
 Route::get('/offices/all', 'OfficesController@getOfficesByCompany');
 Route::get('/companies/all', 'CompanyController@getAllCompanies');
 Route::get('/staff/all', 'StaffsController@getAllStaff');
+
+
+
+

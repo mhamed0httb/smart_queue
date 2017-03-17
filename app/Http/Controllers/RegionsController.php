@@ -85,4 +85,13 @@ class RegionsController extends Controller
     {
         //
     }
+
+    public function add(Request $request)
+    {
+        $region = new Region;
+        $region->name = $request->name;
+        $region->save();
+        return ($region);
+    }
+
 }

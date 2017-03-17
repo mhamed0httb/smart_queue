@@ -83,7 +83,8 @@
                     <li><a href="{{ url('/dashboard/services/create') }}">Create new</a></li>
                 </ul>
             </li>
-            <li class="treeview">
+            <li class=""><a href="{{ url('/dashboard/offices') }}"><i class="fa fa-link"></i> <span>Offices</span></a></li>
+            <!--li class="treeview">
                 <a href="#"><i class="fa fa-link"></i> <span>Offices</span>
                     <span class="pull-right-container">
                         <i class="fa fa-angle-left pull-right"></i>
@@ -93,7 +94,7 @@
                     <li ><a href="{{ url('/dashboard/offices') }}">All</a></li>
                     <li><a href="{{ url('/dashboard/offices/create') }}">Create new</a></li>
                 </ul>
-            </li>
+            </li-->
 
         </ul>
         <!-- /.sidebar-menu -->
