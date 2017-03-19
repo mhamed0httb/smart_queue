@@ -13,13 +13,14 @@ class CreateTicketWindowsTable extends Migration
      */
     public function up()
     {
+        Schema::enableForeignKeyConstraints();
         Schema::create('ticket_windows', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('number');
             $table->string('status');
             //$table->integer('office_id');
             $table->integer('office_id')->unsigned();
-            $table->foreign('office_id')->references('id')->on('offices');
+            $table->foreign('office_id')->references('id')->on('offices')->onDelete('cascade');;
             $table->integer('staff_id')->unsigned()->nullable();
             $table->foreign('staff_id')->references('id')->on('staffs');
             $table->integer('service_id')->unsigned()->nullable();
@@ -27,6 +28,7 @@ class CreateTicketWindowsTable extends Migration
             $table->integer('ticket_id')->nullable();
             $table->timestamps();
         });
+
     }
 
     /**

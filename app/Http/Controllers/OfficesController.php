@@ -91,7 +91,16 @@ class OfficesController extends Controller
      */
     public function edit($id)
     {
-        //
+        $office = Office::find($id);
+        $allRegions = Region::all();
+        $allCompanies = Company::all();
+        $role = Sentinel::findRoleBySlug('manager');
+        $allManagers = $role->users()->with('roles')->get();
+        return view('admin.offices.edit')
+            ->with('office', $office)
+            ->with('allRegions',$allRegions)
+            ->with('allManagers',$allManagers)
+            ->with('allCompanies',$allCompanies);
     }
 
     /**
@@ -114,7 +123,13 @@ class OfficesController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $office = Office::find($id);
+        $office->ticketWindow()->delete();
+        $office->staff()->delete();
+        $office->delete();
+        //Session::flash('delete_success', 'Successfully deleted the office!');
+        return redirect('/dashboard/offices');
+        //return('ok');
     }
 
     public function getOfficesByCompany(Request $request)

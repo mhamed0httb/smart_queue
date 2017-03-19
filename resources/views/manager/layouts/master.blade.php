@@ -32,6 +32,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 
     <![endif]-->
+
+    <link rel="stylesheet" type="text/css" href="{{ URL::asset("/css/sweetalert.css")}}">
 </head>
 <!--
 BODY TAG OPTIONS:
@@ -187,6 +189,8 @@ desired effect
      Both of these plugins are recommended to enhance the
      user experience. Slimscroll is required when using the
      fixed layout. -->
+
+<script src="{{ asset ("/js/sweetalert.min.js") }}"></script>
 @yield('scripts')
 </body>
 </html>

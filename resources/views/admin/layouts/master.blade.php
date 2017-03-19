@@ -5,33 +5,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 -->
 <html>
 <head>
-    <script src="{{ URL::asset('/js/offline.js') }}"></script>
-    <script src="{{ URL::asset('/css/offline-simulate-ui.min.js') }}"></script>
-    <script>
-        $(function(){
 
-            var
-                $online = $('.online'),
-                $offline = $('.offline');
-
-            Offline.on('confirmed-down', function () {
-                alert('offline');
-                $online.fadeOut(function () {
-                    alert('offline');
-                    $offline.fadeIn();
-                });
-            });
-
-            Offline.on('confirmed-up', function () {
-                alert('online');
-                $offline.fadeOut(function () {
-                    alert('online');
-                    $online.fadeIn();
-                });
-            });
-
-        });
-    </script>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>AdminLTE 2 | Starter</title>
@@ -59,6 +33,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 
     <![endif]-->
+
+
+
+    <link rel="stylesheet" type="text/css" href="{{ URL::asset("/css/sweetalert.css")}}">
 </head>
 <!--
 BODY TAG OPTIONS:
@@ -214,6 +192,8 @@ desired effect
      Both of these plugins are recommended to enhance the
      user experience. Slimscroll is required when using the
      fixed layout. -->
+
+<script src="{{ asset ("/js/sweetalert.min.js") }}"></script>
 
 
 @yield('scripts')

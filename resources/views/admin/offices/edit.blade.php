@@ -55,7 +55,7 @@
                                 </select>
                             </div>
                             <div class="col-sm-2">
-                                <!--a class="btn btn-primary" href="{{url('/dashboard/regions/create')}}">Add new Region</a-->
+                            <!--a class="btn btn-primary" href="{{url('/dashboard/regions/create')}}">Add new Region</a-->
                                 <a class="btn btn-primary modal-trigger" data-toggle="modal" data-target="#modal_create_region" href="#modal_create_region" >Add new Region</a>
                             </div>
                         </div>
@@ -105,16 +105,16 @@
                     <h4 class="modal-title">Create new region</h4>
                 </div>
                 <div class="modal-body">
-                        <div class="box-body">
-                            <div class="form-group">
-                                <label for="name" class="col-sm-3 control-label">Region Name</label>
+                    <div class="box-body">
+                        <div class="form-group">
+                            <label for="name" class="col-sm-3 control-label">Region Name</label>
 
-                                <div class="col-sm-8">
-                                    <input type="text" name="region_name" class="form-control" id="region_name" placeholder="region name..." required>
-                                </div>
+                            <div class="col-sm-8">
+                                <input type="text" name="region_name" class="form-control" id="region_name" placeholder="region name..." required>
                             </div>
                         </div>
-                        <!-- /.box-body -->
+                    </div>
+                    <!-- /.box-body -->
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default pull-left" data-dismiss="modal" id="btn_close_modal_create_region">Close</button>
@@ -192,32 +192,32 @@
                 //alert('company exist');
                 $('#btn_submit_form').prop('disabled', false);
             }
-         }
+        }
         checkCompanyExists();
 
 
 
         /*function doesConnectionExist() {
-            var xhr = new XMLHttpRequest();
-            var file = "https://www.google.tn/";
-            var randomNum = Math.round(Math.random() * 10000);
+         var xhr = new XMLHttpRequest();
+         var file = "https://www.google.tn/";
+         var randomNum = Math.round(Math.random() * 10000);
 
-            xhr.open('HEAD', file + "?rand=" + randomNum, true);
-            xhr.send();
+         xhr.open('HEAD', file + "?rand=" + randomNum, true);
+         xhr.send();
 
-            xhr.addEventListener("readystatechange", processRequest, false);
+         xhr.addEventListener("readystatechange", processRequest, false);
 
-            function processRequest(e) {
-                if (xhr.readyState == 4) {
-                    if (xhr.status >= 200 && xhr.status < 304) {
-                        alert("connection exists!");
-                    } else {
-                        alert("connection doesn't exist!");
-                    }
-                }
-            }
-        }
-        doesConnectionExist();*/
+         function processRequest(e) {
+         if (xhr.readyState == 4) {
+         if (xhr.status >= 200 && xhr.status < 304) {
+         alert("connection exists!");
+         } else {
+         alert("connection doesn't exist!");
+         }
+         }
+         }
+         }
+         doesConnectionExist();*/
 
 
     </script>
@@ -260,10 +260,10 @@
                 if (status === google.maps.GeocoderStatus.OK) {
                     resultsMap.setCenter(results[0].geometry.location);
                     /*marker = new google.maps.Marker({
-                        map: resultsMap,
-                        position: results[0].geometry.location,
-                        draggable: true
-                    });*/
+                     map: resultsMap,
+                     position: results[0].geometry.location,
+                     draggable: true
+                     });*/
                     marker.setPosition(results[0].geometry.location);
                     document.getElementById('office_lat').value = results[0].geometry.location.lat();
                     document.getElementById('office_lng').value = results[0].geometry.location.lng();
@@ -287,12 +287,12 @@
                 if (status === google.maps.GeocoderStatus.OK) {
                     if (results[1]) {
                         /*map.setZoom(11);
-                        var marker = new google.maps.Marker({
-                            position: latlng,
-                            map: map
-                        });
-                        infowindow.setContent(results[1].formatted_address);
-                        infowindow.open(map, marker);*/
+                         var marker = new google.maps.Marker({
+                         position: latlng,
+                         map: map
+                         });
+                         infowindow.setContent(results[1].formatted_address);
+                         infowindow.open(map, marker);*/
                         document.getElementById('identifier').value = results[1].formatted_address;
                     } else {
                         window.alert('No results found');
