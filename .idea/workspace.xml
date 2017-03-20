@@ -2,23 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="6f1eec14-85c6-42a6-929c-e3f665c2977f" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Http/Controllers/CategoryController.php" afterPath="$PROJECT_DIR$/app/Http/Controllers/CategoryController.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Http/Controllers/ServicesController.php" afterPath="$PROJECT_DIR$/app/Http/Controllers/ServicesController.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Http/Controllers/StaffsController.php" afterPath="$PROJECT_DIR$/app/Http/Controllers/StaffsController.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Service.php" afterPath="$PROJECT_DIR$/app/Service.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/admin/companies/create.blade.php" afterPath="$PROJECT_DIR$/resources/views/admin/companies/create.blade.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/admin/companies/index.blade.php" afterPath="$PROJECT_DIR$/resources/views/admin/companies/index.blade.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/admin/layouts/sidebar.blade.php" afterPath="$PROJECT_DIR$/resources/views/admin/layouts/sidebar.blade.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/admin/offices/index.blade.php" afterPath="$PROJECT_DIR$/resources/views/admin/offices/index.blade.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/manager/layouts/master.blade.php" afterPath="$PROJECT_DIR$/resources/views/manager/layouts/master.blade.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/manager/layouts/sidebar.blade.php" afterPath="$PROJECT_DIR$/resources/views/manager/layouts/sidebar.blade.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/manager/staff/create.blade.php" afterPath="$PROJECT_DIR$/resources/views/manager/staff/create.blade.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/manager/staff/index.blade.php" afterPath="$PROJECT_DIR$/resources/views/manager/staff/index.blade.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/manager/staff/staff_statistics.blade.php" afterPath="$PROJECT_DIR$/resources/views/manager/staff/staff_statistics.blade.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/manager/ticket_windows/index.blade.php" afterPath="$PROJECT_DIR$/resources/views/manager/ticket_windows/index.blade.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/routes/api.php" afterPath="$PROJECT_DIR$/routes/api.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/routes/web.php" afterPath="$PROJECT_DIR$/routes/web.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gitignore" afterPath="$PROJECT_DIR$/.gitignore" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -661,12 +645,12 @@
       <workItem from="1489600662995" duration="2291000" />
       <workItem from="1489685702276" duration="14658000" />
       <workItem from="1489797075741" duration="18649000" />
-      <workItem from="1489923734314" duration="13290000" />
+      <workItem from="1489923734314" duration="13580000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="283583000" />
+    <option name="totallyTimeSpent" value="283873000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
