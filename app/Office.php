@@ -23,6 +23,11 @@ class Office extends Model
         return $this->belongsTo('Cartalyst\Sentinel\Users\EloquentUser','manager_id');
     }
 
+    public function getCompany()
+    {
+        return $this->belongsTo('App\Company','company_id');
+    }
+
     function staff() {
         return $this->hasMany('App\Staff','office_id');
     }

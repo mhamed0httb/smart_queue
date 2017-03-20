@@ -151,7 +151,6 @@
     </div>
 
 
-    <div id="div_alert" style="position: fixed; top: 10%; right: 0%"></div>
 
 @endsection
 
@@ -160,6 +159,23 @@
         <script>
             //$('#btn_modal_success').click()
             $('#div_alert').html('<div class="alert alert-success alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button> <h4><i class="icon fa fa-check"></i> SUCCESS!</h4>{{ Session::get('success') }}</div>');
+            dismissAlertMessage();
+        </script>
+    @endif
+    @if(Session::has('update'))
+        <script>
+            //$('#btn_modal_success').click()
+            $('#div_alert').html('<div class="alert alert-success alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button> <h4><i class="icon fa fa-check"></i> UPDATE!</h4>{{ Session::get('update') }}</div>');
+            $('#div_alert').fadeIn();
+            dismissAlertMessage();
+        </script>
+    @endif
+    @if(Session::has('delete'))
+        <script>
+            //$('#btn_modal_success').click()
+            $('#div_alert').html('<div class="alert alert-success alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button> <h4><i class="icon fa fa-check"></i> DELETE!</h4>{{ Session::get('delete') }}</div>');
+            $('#div_alert').fadeIn();
+            dismissAlertMessage();
         </script>
     @endif
     <script>
@@ -202,7 +218,7 @@
        function confirmDelete(id){
            swal({
                    title: "Are you sure?",
-                   text: "This Office will be deleted permanently!",
+                   text: "This Office and the MANAGER ACCOUNT associated will be deleted permanently !",
                    type: "warning",
                    showCancelButton: true,
                    confirmButtonColor: "#DD6B55",

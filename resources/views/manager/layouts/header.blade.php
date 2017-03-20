@@ -93,7 +93,7 @@
                                     <a href="#">
                                         <!-- Task title and progress text -->
                                         <h3>
-                                            Design some buttons
+                                                Design some buttons
                                             <small class="pull-right">20%</small>
                                         </h3>
                                         <!-- The progress bar -->
@@ -144,7 +144,7 @@
                             </p>
                         </li>
                         <!-- Menu Body -->
-                        <li class="user-body">
+                        <!--li-- class="user-body">
                             <div class="row">
                                 <div class="col-xs-4 text-center">
                                     <a href="#">Followers</a>
@@ -157,7 +157,7 @@
                                 </div>
                             </div>
                             <!-- /.row -->
-                        </li>
+                        </li-->
                         <!-- Menu Footer-->
                         <li class="user-footer">
                             <div class="pull-left">

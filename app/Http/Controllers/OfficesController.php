@@ -9,6 +9,7 @@ use Sentinek;
 use App\Region;
 use App\Company;
 use Cartalyst\Sentinel\Users\EloquentUser;
+use Session;
 
 class OfficesController extends Controller
 {
@@ -67,7 +68,7 @@ class OfficesController extends Controller
             $manager->office_id = $office->id;
             $manager->save();
         }
-
+        $request->session()->flash('success', 'Office was successfully created!');
 
         return redirect('/dashboard/offices');
     }
@@ -126,8 +127,11 @@ class OfficesController extends Controller
         $office = Office::find($id);
         $office->ticketWindow()->delete();
         $office->staff()->delete();
+        $office->ticket()->delete();
+        $office->getManager()->delete();
         $office->delete();
         //Session::flash('delete_success', 'Successfully deleted the office!');
+        Session::flash('delete', 'Successfully deleted the office!');
         return redirect('/dashboard/offices');
         //return('ok');
     }
