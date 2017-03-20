@@ -9,6 +9,7 @@ use App\Category;
 use Sentinel;
 use Cartalyst\Sentinel\Users\EloquentUser;
 use Session;
+use App\Staff;
 use Illuminate\Support\Facades\DB;
 
 class ServicesController extends Controller
@@ -109,8 +110,11 @@ class ServicesController extends Controller
     public function destroy($id)
     {
         $service = Service::find($id);
-        $windows = $windows = Service::find($id)->ticketWindows;
+        $windows = Service::find($id)->ticketWindows;
         foreach($windows as $one){
+            $staff = Staff::find($one->staff_id);
+            $staff->ticket_window_id = null;
+            $staff->save();
             $one->staff_id = null;
             $one->service_id = null;
             $one->ticket_id = null;

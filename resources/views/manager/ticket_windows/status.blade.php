@@ -11,8 +11,8 @@
     </h1>
     <ol class="breadcrumb">
         <li><a href="{{url('/manager')}}"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li><a href="#">{{ $sub_page_title or 'Sub Page Title' }}</a></li>
-        <li class="active">{{ $page_title or 'Page Title' }}</li>
+        <li><a href="{{url('/manager/ticket_windows')}}">{{ $sub_page_title or 'Ticket Windows' }}</a></li>
+        <li class="active">{{ $page_title or 'Activate' }}</li>
     </ol>
 
     <div class="row">

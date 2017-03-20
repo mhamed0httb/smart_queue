@@ -13,6 +13,7 @@ use Cartalyst\Sentinel\Users\EloquentUser;
 use Sentinel;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
+use Session;
 
 class TicketWindowsController extends Controller
 {
@@ -91,7 +92,8 @@ class TicketWindowsController extends Controller
      */
     public function edit($id)
     {
-
+        $window = TicketWindow::find($id);
+        return view('manager.ticket_windows.edit')->with('window', $window);
     }
 
     /**
@@ -103,7 +105,11 @@ class TicketWindowsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $window = TicketWindow::find($id);
+        $window->number = $request->number;
+        $window->save();
+        $request->session()->flash('update', 'Ticket Window was successfully updated!');
+        return redirect('/manager/ticket_windows');
     }
 
     /**
@@ -114,7 +120,15 @@ class TicketWindowsController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $window = TicketWindow::find($id);
+        $staff = TicketWindow::find($id)->getStaff;
+        if($staff != null){
+            $staff->ticket_window_id = null;
+            $staff->save();
+        }
+        $window->delete();
+        Session::flash('delete', 'Successfully deleted the ticket window!');
+        return redirect('/manager/ticket_windows');
     }
 
     public function updateStatus(Request $request)
@@ -127,6 +141,7 @@ class TicketWindowsController extends Controller
         $staff = Staff::find($request->staff_id);
         $staff->ticket_window_id = $request->window_id;
         $staff->save();
+        Session::flash('activate', 'Ticket Window number : ' .$ticketWindow->number.' is now online!');
         return redirect('/manager/ticket_windows');
     }
 
@@ -137,13 +152,21 @@ class TicketWindowsController extends Controller
         $window->service_id = null;
         $window->ticket_id = null;
         $window->status = 'Offline';
-        $window->save();
+
+        $staff = TicketWindow::find($id)->getStaff;
+        $staff->ticket_window_id = null;
+        $staff->save();
+        /*
         $staff =  DB::table('staffs')
             ->where('ticket_window_id', '=', $id)
             ->first();
+
         $stf = Staff::find($staff->id);
         $stf->ticket_window_id = null;
         $stf->save();
+        */
+        $window->save();
+        Session::flash('deactivate', 'Ticket Window number : ' .$window->number.' is now offline!');
         return redirect('/manager/ticket_windows');
 
     }

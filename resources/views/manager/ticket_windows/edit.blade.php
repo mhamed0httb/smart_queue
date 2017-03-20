@@ -12,7 +12,7 @@
     <ol class="breadcrumb">
         <li><a href="{{url('/manager')}}"><i class="fa fa-dashboard"></i> Home</a></li>
         <li><a href="{{url('/manager/ticket_windows')}}">{{ $sub_page_title or 'Ticket Windows' }}</a></li>
-        <li class="active">{{ $page_title or 'Create' }}</li>
+        <li class="active">{{ $page_title or 'Edit' }}</li>
     </ol>
 
     <div class="row">
@@ -21,12 +21,12 @@
             <!-- Horizontal Form -->
             <div class="box box-info">
                 <div class="box-header with-border">
-                    <h3 class="box-title">Create Ticket Window</h3>
+                    <h3 class="box-title">Edit Ticket Window number : {{ $window->number }}</h3>
                 </div>
                 <!-- /.box-header -->
                 <!-- form start -->
-                <form class="form-horizontal" action="{{ url('/manager/ticket_windows') }}" method="POST" id="form_create_manager">
-                    {{csrf_field()}}
+                {{ Form::model($window, array('route' => array('ticket_windows.update', $window->id), 'method' => 'PUT', 'class' => 'form-horizontal')) }}
+
                     <div class="box-body">
                         <div class="form-group">
                             <label for="number" class="col-sm-2 control-label">Number</label>
@@ -35,24 +35,15 @@
                                 <input type="number" name="number" class="form-control" id="number" placeholder="number" required>
                             </div>
                         </div>
-                        <!--div class="form-group">
-                            <label for="office_id" class="col-sm-2 control-label">Office</label>
-                            <div class="col-sm-10">
-                                <select class="form-control" id="office_id" name="office_id" required>
-                                    @foreach ($allOffices as $office)
-                                        <option value="{{ $office->id }}">{{ $office->identifier }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div-->
+
 
                     </div>
                     <!-- /.box-body -->
                     <div class="box-footer">
-                        <button type="submit" class="btn btn-info pull-right" id="btn_submit_form">Create</button>
+                        {{ Form::submit('Edit', array('class' => 'btn btn-info pull-right')) }}
                     </div>
                     <!-- /.box-footer -->
-                </form>
+                {{ Form::close() }}
             </div>
             <!-- /.box -->
 

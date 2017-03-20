@@ -9,9 +9,9 @@
         <small>{{ $page_description or null }}</small>
     </h1>
     <ol class="breadcrumb">
-        <li><a href="{{url('/dashboard')}}"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li><a href="#">{{ $sub_page_title or null }}</a></li>
-        <li class="active">{{ $page_title or null }}</li>
+        <li><a href="{{url('/manager')}}"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li><a href="{{url('/manager/ticket_windows')}}">{{ $sub_page_title or 'Ticket Windows' }}</a></li>
+        <!--li-- class="active">{{ $page_title or null }}</li-->
     </ol>
 
     <!-- /.row -->
@@ -44,6 +44,7 @@
                             <th>Service</th>
                             <!--th>Date Creation</th-->
                             <th>Status</th>
+                            <th>Action</th>
                             <!--th>Status</th>
                             <th>Reason</th-->
                         </tr>
@@ -73,6 +74,20 @@
                                                 <span>{{ $window->status }}</span>
                                             </a>
                                         @endif
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="row">
+                                        <a class="btn btn-warning  pull-left" href="{{ url('/manager/ticket_windows/' . $window->id . '/edit') }}"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                                            Edit</a>
+
+                                        <a onclick="confirmDelete({{$window->id}})" class="btn btn-danger pull-left"><i class="fa fa-trash-o" aria-hidden="true"></i>
+                                            Delete</a>
+
+                                        {{ Form::open(array('url' => 'manager/ticket_windows/' . $window->id, 'class' => 'pull-left col-xs-4', 'id' => 'form_delete')) }}
+                                        {{ Form::hidden('_method', 'DELETE') }}
+                                        {{ Form::button('<i class="fa fa-trash-o" aria-hidden="true"></i> Delete', ['type' => 'submit', 'class' => 'btn btn-danger hide ', 'id' => 'btn_delete'. $window->id] )  }}
+                                        {{ Form::close() }}
                                     </div>
                                 </td>
                                 <!--td><span class="label label-success">Approved</span></td>
@@ -160,6 +175,39 @@
             dismissAlertMessage();
         </script>
     @endif
+    @if(Session::has('update'))
+        <script>
+            //$('#btn_modal_success').click()
+            $('#div_alert').html('<div class="alert alert-success alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button> <h4><i class="icon fa fa-check"></i> UPDATE!</h4>{{ Session::get('update') }}</div>');
+            $('#div_alert').fadeIn();
+            dismissAlertMessage();
+        </script>
+    @endif
+    @if(Session::has('delete'))
+        <script>
+            //$('#btn_modal_success').click()
+            $('#div_alert').html('<div class="alert alert-success alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button> <h4><i class="icon fa fa-check"></i> DELETE!</h4>{{ Session::get('delete') }}</div>');
+            $('#div_alert').fadeIn();
+            dismissAlertMessage();
+        </script>
+    @endif
+    @if(Session::has('activate'))
+        <script>
+            //$('#btn_modal_success').click()
+            $('#div_alert').html('<div class="alert alert-info alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button> <h4><i class="icon fa fa-info"></i> ONLINE!</h4>{{ Session::get('activate') }}</div>');
+            $('#div_alert').fadeIn();
+            dismissAlertMessage();
+        </script>
+    @endif
+    @if(Session::has('deactivate'))
+        <script>
+            //$('#btn_modal_success').click()
+            $('#div_alert').html('<div class="alert alert-info alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button> <h4><i class="icon fa fa-info"></i> OFFLINE!</h4>{{ Session::get('deactivate') }}</div>');
+            $('#div_alert').fadeIn();
+            dismissAlertMessage();
+        </script>
+    @endif
+
 
     <script>
         /*$("#input_search").on("keyup", function() {
@@ -222,6 +270,29 @@
             $('#input_search').val('');
             searchTable('');
         });
+
+        function confirmDelete(id){
+            swal({
+                    title: "Are you sure?",
+                    text: "This Ticket Window will be deleted permanently!",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#DD6B55",
+                    confirmButtonText: "Yes, delete it!",
+                    cancelButtonText: "No, cancel!",
+                    closeOnConfirm: false,
+                    closeOnCancel: true
+                },
+                function(isConfirm){
+                    if (isConfirm) {
+                        swal("Deleted!", "Ticket Window has been deleted.", "success");
+                        $('#btn_delete'+id).click();
+                    } else {
+                        //swal("Cancelled", "Your imaginary file is safe :)", "error");
+
+                    }
+                });
+        }
     </script>
 @endsection
 
