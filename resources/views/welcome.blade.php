@@ -65,6 +65,7 @@
         </style>
     </head>
     <body>
+    <script>window.location = '{{ url('/login') }}';</script>
         <div class="flex-center position-ref full-height">
             @if (!Sentinel::check())
                 <div class="top-right links">

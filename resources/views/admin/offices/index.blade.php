@@ -51,9 +51,10 @@
                                 <td>{{ $office->identifier }}</td>
                                 <td>{{ $office->getRegion->name }}</td>
                                 <td>
-                                    @if($office->manager_id == 0)
+                                    @if($office->manager_id == null)
                                         Not Yet Assigned
-                                        <a class="modal-trigger btn btn-primary" data-toggle="modal" data-target="#modal_assign_manager" href="#modal_assign_manager" id="btn_modal_assign_manager">Assign</a>
+                                        <a class="modal-trigger btn btn-primary hide" data-toggle="modal" data-target="#modal_assign_manager" href="#modal_assign_manager" id="btn_modal_assign_manager">Assign</a>
+                                        <a class="btn btn-primary"id="btn_assign_manager" onclick="modalAssignManager('{{ $office->id }}', '{{ $office->identifier }}', '{{ $office->company_id }}', '{{ $office->getCompany->name }}')">Assign</a>
                                     @else
                                         {{ $office->getManager->first_name or null }}
                                         {{ $office->getManager->last_name or null }}
@@ -93,21 +94,32 @@
     <!-- /.row -->
 
 
-    <button class="hide modal-trigger" data-toggle="modal" data-target="#modal_assign_manager" href="#modal_assign_manager" id="btn_modal_assign_manager"></button>
     <div class="modal" id="modal_assign_manager">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title">Default Modal</h4>
+                    <h4 class="modal-title">Choose a MANAGER for the office : <span id="modal_office_name">office name here</span></h4>
                 </div>
                 <div class="modal-body">
-                    <p>One fine body&hellip;</p>
+                    <div class="callout callout-warning" id="warning_no_manager_available">
+                        <p><i class="icon fa fa-warning"></i> No manager found. you can add a manager <a href="{{ url('/dashboard/manager/create') }}">here</a></p>
+                    </div>
+
+                    <div class="col-sm-6" id="select_manager_holder">
+                        <select class="form-control" id="manager_id" name="manager_id" required>
+
+                        </select>
+                    </div>
+                    <br>
+                    <br>
+                    <input type="hidden" id="manager_chosen" />
+                    <input type="hidden" id="office_chosen" />
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
+                    <button type="button" class="btn btn-primary" id="btn_confirm_assign_manager" onclick="confirmAssign()">Save changes</button>
                 </div>
             </div>
             <!-- /.modal-content -->
@@ -134,8 +146,6 @@
                 </div>
                 <div class="modal-body" id="modal_delete_body">
                     Are you sure you want to delete this office ?
-
-
 
                 </div>
                 <div class="modal-footer">
@@ -178,6 +188,15 @@
             dismissAlertMessage();
         </script>
     @endif
+    @if(Session::has('assign'))
+        <script>
+            //$('#btn_modal_success').click()
+            $('#div_alert').html('<div class="alert alert-info alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button><h4><i class="icon fa fa-info"></i> SUCCESS!</h4>{{ Session::get('assign') }}</div>');
+            $('#div_alert').fadeIn();
+            dismissAlertMessage();
+        </script>
+    @endif
+
     <script>
         $(document).ready(function()
         {
@@ -236,6 +255,43 @@
 
                    }
                });
+       }
+
+       function modalAssignManager(officeId, officeName, companyId, companyName){
+           /*alert(officeId);
+           alert(officeName);
+           alert(companyId);
+           alert(companyName);*/
+           $('#modal_office_name').html(officeName + ' ( For Company : ' + companyName + ' )');
+           $.get('{{ url('api/managers/byCompany') }}'+'?company_id='+companyId, function(data) {
+               //var obj = jQuery.parseJSON(data);
+               $('#manager_id').empty();
+               $.each(data, function(i, item) {
+                   $('#manager_id').append('<option value="'+item.id+'">'+item.first_name +' '+ item.last_name+'</option>');
+               })
+               if($('#manager_id').val() == null){
+                   $('#btn_confirm_assign_manager').prop('disabled', true);
+                   $('#warning_no_manager_available').removeClass('hide');
+               }
+               else{
+                   $('#manager_chosen').val($('#manager_id').val());
+                   $('#office_chosen').val(officeId);
+                   $('#btn_confirm_assign_manager').prop('disabled', false);
+                   $('#warning_no_manager_available').addClass('hide');
+               }
+           });
+
+
+           $('#btn_modal_assign_manager').click();
+       }
+
+       function confirmAssign(){
+           var manager_id = $('#manager_chosen').val();
+           var office_id = $('#office_chosen').val();
+
+           $.get('{{ url('api/offices/assign') }}'+'?manager_id='+manager_id+'&office_id='+office_id, function(data) {
+               location.reload();
+           });
        }
     </script>
 

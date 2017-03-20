@@ -352,6 +352,8 @@ Route::get('/offices/all', 'OfficesController@getOfficesByCompany');
 Route::get('/companies/all', 'CompanyController@getAllCompanies');
 Route::get('/staff/all', 'StaffsController@getAllStaff');
 
+Route::get('/offices/assign', 'OfficesController@assignManagerToOffice');
+
 
 
 

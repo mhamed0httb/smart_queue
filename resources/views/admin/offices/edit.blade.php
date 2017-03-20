@@ -12,7 +12,7 @@
     <ol class="breadcrumb">
         <li><a href="{{url('/manager')}}"><i class="fa fa-dashboard"></i> Home</a></li>
         <li><a href="{{url('/dashboard/offices')}}">{{ $sub_page_title or 'Offices' }}</a></li>
-        <li class="active">{{ $page_title or 'Create' }}</li>
+        <li class="active">{{ $page_title or 'Edit' }}</li>
     </ol>
 
     <div class="row">
@@ -21,25 +21,29 @@
             <!-- Horizontal Form -->
             <div class="box box-info">
                 <div class="box-header with-border">
-                    <h3 class="box-title col-sm-4">Create Office for : </h3>
-                    <div class="col-sm-4 right">
+                    <h3 class="box-title col-sm-6">Edit Office : {{ $office->identifier }} </h3>
+                    <div class="col-sm-6 pull-right">
+                        <strong>Company : </strong>
                         <select class="" onchange="companyChanged(this.value)" id="select_company">
+                            <option value="{{ $office->getCompany->id }}">{{ $office->getCompany->name }}</option>
                             @foreach ($allCompanies as $company)
-                                <option value="{{ $company->id }}">{{ $company->name }}</option>
+                                @if($company->id != $office->getCompany->id)
+                                    <option value="{{ $company->id }}">{{ $company->name }}</option>
+                                @endif
                             @endforeach
                         </select>
                     </div>
                 </div>
                 <!-- /.box-header -->
                 <!-- form start -->
-                <form class="form-horizontal" action="{{ url('/dashboard/offices') }}" method="POST" id="form_create_office">
-                    {{csrf_field()}}
+                {{ Form::model($office, array('route' => array('offices.update', $office->id), 'method' => 'PUT', 'class' => 'form-horizontal', 'id' => 'form_create_office')) }}
+
                     <div class="box-body">
                         <div class="form-group">
                             <label for="identifier" class="col-sm-2 control-label">Identifier</label>
 
                             <div class="col-sm-6">
-                                <input type="text" name="identifier" class="form-control" id="identifier" placeholder="identifier" required>
+                                <input type="text" name="identifier" value="{{ $office->identifier }}" class="form-control" id="identifier" placeholder="identifier" required>
                             </div>
                             <div class="col-sm-2">
                                 <a class="btn btn-warning" href="#" id="btn_map">Check Map </a>
@@ -49,8 +53,11 @@
                             <label for="region_id" class="col-sm-2 control-label">Region</label>
                             <div class="col-sm-6">
                                 <select class="form-control" id="region_id" name="region_id" required>
+                                    <option value="{{ $office->getRegion->id }}">{{ $office->getRegion->name }}</option>
                                     @foreach ($allRegions as $region)
-                                        <option value="{{ $region->id }}">{{ $region->name }}</option>
+                                        @if($region->id != $office->getRegion->id)
+                                            <option value="{{ $region->id }}">{{ $region->name }}</option>
+                                        @endif
                                     @endforeach
                                 </select>
                             </div>
@@ -67,20 +74,30 @@
                                 </select>
                             </div>
                             <div class="col-sm-2">
-                                <a class="btn btn-primary" href="{{url('/dashboard/manager/create')}}">Add new Manager</a>
+                                <!--a class="btn btn-primary modal-trigger" data-toggle="modal" data-target="#modal_create_manager" href="#modal_create_manager" id="btn_create_manager">Add new Manager</a-->
+                                <a class="btn btn-primary" href="{{ url('/dashboard/manager/create') }}">Add new Manager</a>
                             </div>
                         </div>
-
+                        <div class="callout callout-info">
+                            <p>
+                                <i class="icon fa fa-info"></i> &nbsp;
+                                @if($office->manager_id == null)
+                                    this office has no manager yet !
+                                @else
+                                    {{ $office->getManager->first_name }} {{ $office->getManager->last_name }} is managing this office, change it carefully !
+                                @endif
+                            </p>
+                        </div>
                         <input type="hidden" name="office_lat" class="form-control" id="office_lat" value="0"  required>
                         <input type="hidden" name="office_lng" class="form-control" id="office_lng" value="0"  required>
                         <input type="hidden" name="company_id" class="form-control" id="company_id" >
                     </div>
                     <!-- /.box-body -->
                     <div class="box-footer">
-                        <button type="submit" class="btn btn-info pull-right" id="btn_submit_form">Create</button>
+                        {{ Form::submit('Edit', array('class' => 'btn btn-info pull-right', 'id' => 'btn_submit_form')) }}
                     </div>
                     <!-- /.box-footer -->
-                </form>
+                {{ Form::close() }}
             </div>
             <!-- /.box -->
 
@@ -127,14 +144,100 @@
     </div>
     <!-- /.modal -->
 
-    <div id="div_alert" style="position: fixed; top: 10%; right: 0%"></div>
+    <div class="modal" id="modal_create_manager">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Create new manager</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="box-body">
+                        <!-- form start -->
+                        <form class="form-horizontal" action="{{ url('/dashboard/manager') }}" method="POST" id="form_create_manager">
+                            {{csrf_field()}}
+                            <div class="box-body">
+                                <div class="form-group">
+                                    <label for="email" class="col-sm-2 control-label">Email</label>
+
+                                    <div class="col-sm-10">
+                                        <input type="email" name="email" class="form-control" id="email" placeholder="email" required>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="first_name" class="col-sm-2 control-label">First Name</label>
+
+                                    <div class="col-sm-10">
+                                        <input type="text" name="first_name" class="form-control" id="first_name" placeholder="first name" required>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="last_name" class="col-sm-2 control-label">Last Name</label>
+
+                                    <div class="col-sm-10">
+                                        <input type="text" name="last_name" class="form-control" id="last_name" placeholder="last name" required>
+                                    </div>
+                                </div>
+                                <div class="form-group" id="password_group">
+                                    <label for="password" class="col-sm-2 control-label">Password</label>
+
+                                    <div class="col-sm-10">
+                                        <input type="password" name="password" class="form-control" id="password" placeholder="password" required>
+                                        <span class="help-block hide">Help block with error</span>
+                                    </div>
+                                </div>
+                                <div class="form-group" id="password_confirmation_group">
+                                    <label for="password_confirmation" class="col-sm-2 control-label">Password Vonfirmation</label>
+
+                                    <div class="col-sm-10">
+                                        <input type="password" name="password_confirmation" class="form-control" id="password_confirmation" placeholder="password_confirmation" required>
+                                        <span class="help-block hide">Help block with error</span>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="company" class="col-sm-2 control-label">Company</label>
+                                    <div class="col-sm-8">
+                                        <select class="form-control" id="company_id" name="company_id" required>
+                                            @foreach ($allCompanies as $company)
+                                                <option value="{{ $company->id }}">{{ $company->name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <!-- /.box-body -->
+                            <div class="box-footer">
+                                <button type="button" onclick="passwordConfirmation($('#password').val(),$('#password_confirmation').val());" class="btn btn-info pull-right">Create</button>
+                                <button type="submit" class="btn btn-info pull-right hide" id="btn_submit_form">Create</button>
+                            </div>
+                            <!-- /.box-footer -->
+                        </form>
+                    </div>
+                    <!-- /.box-body -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default pull-left" data-dismiss="modal" id="btn_close_modal_create_region">Close</button>
+                    <button type="button" class="btn btn-primary" onclick="addRegion()">Create</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
 
 @endsection
 
 @section('scripts')
     <script>
+        var managerNow = '{{ $office->manager_id }}';
         function companiesLoaded(id){
             $('#company_id').val(id);
+            if(managerNow != ''){
+                $('#manager_id').append('<option value="same">Keep the same manager</option>');
+            }
             $('#manager_id').append('<option value="not_yet">Not Yet</option>');
             $.get('{{ url('api/managers/byCompany') }}'+'?company_id='+id, function(data) {
                 //var obj = jQuery.parseJSON(data);
@@ -147,6 +250,9 @@
         function companyChanged(id){
             $('#company_id').val(id);
             $('#manager_id').empty();
+            if(managerNow != ''){
+                $('#manager_id').append('<option value="same">Keep the same manager</option>');
+            }
             $('#manager_id').append('<option value="not_yet">Not Yet</option>');
             $.get('{{ url('api/managers/byCompany') }}'+'?company_id='+id, function(data) {
                 //var obj = jQuery.parseJSON(data);

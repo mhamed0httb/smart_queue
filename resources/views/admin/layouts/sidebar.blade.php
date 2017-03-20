@@ -36,8 +36,8 @@
         <ul class="sidebar-menu">
             <li class="header">HEADER</li>
             <!-- Optionally, you can add icons to the links -->
-            <li class=""><a href="{{ url('/dashboard/categories/create') }}"><i class="fa fa-link"></i> <span>Add Category</span></a></li>
-            <li class=""><a href="{{ url('/dashboard/regions/create') }}"><i class="fa fa-link"></i> <span>Add Region</span></a></li>
+            <!--li-- class=""><a href="{{ url('/dashboard/categories/create') }}"><i class="fa fa-link"></i> <span>Add Category</span></a></li-->
+            <li class=""><a href="{{ url('/dashboard/regions/create') }}"><i class="fa fa-link"></i> <span>Regions</span></a></li>
 
             <li class="treeview">
                 <a href="#"><i class="fa fa-link"></i> <span>Managers</span>

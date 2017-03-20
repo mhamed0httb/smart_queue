@@ -10,6 +10,7 @@ use App\Region;
 use App\Company;
 use Cartalyst\Sentinel\Users\EloquentUser;
 use Session;
+use Illuminate\Support\Facades\DB;
 
 class OfficesController extends Controller
 {
@@ -52,7 +53,7 @@ class OfficesController extends Controller
         $office = new Office;
         $office->identifier = $request->identifier;
         if($request->manager_id == "not_yet"){
-            $office->manager_id = 0;
+            $office->manager_id = null;
         }else{
             $office->manager_id = $request->manager_id;
         }
@@ -113,7 +114,59 @@ class OfficesController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $office = Office::find($id);
+
+        //WE WILL KEEP THE OFFICE_ID ON USERS TABLE
+        if($office->manager_id == null){
+            if($request->manager_id == "not_yet"){
+
+            }elseif ($request->manager_id == "same"){
+
+            }else{
+                $manager = EloquentUser::find($request->manager_id);
+                $manager->office_id = $office->id;
+                $manager->save();
+            }
+        }else{
+            if($request->manager_id == "not_yet"){
+                $manager = EloquentUser::find($office->manager_id);
+                $manager->office_id = null;
+                $manager->save();
+            }elseif ($request->manager_id == "same"){
+
+            }else{
+                $managerOld = EloquentUser::find($office->manager_id);
+                $managerOld->office_id = null;
+                $managerOld->save();
+
+                $manager = EloquentUser::find($request->manager_id);
+                $manager->office_id = $office->id;
+                $manager->save();
+            }
+        }
+
+
+        $office->identifier = $request->identifier;
+        if($request->manager_id == "not_yet"){
+            $office->manager_id = null;
+        }elseif ($request->manager_id == "same"){
+
+        }else{
+            $office->manager_id = $request->manager_id;
+        }
+        $office->company_id = $request->company_id;
+        $office->region_id = $request->region_id;
+
+        if($request->office_lat != 0){
+            $office->office_lat = $request->office_lat;
+            $office->office_lng = $request->office_lng;
+        }
+
+        $office->save();
+
+        $request->session()->flash('update', 'Office was successfully updated!');
+
+        return redirect('/dashboard/offices');
     }
 
     /**
@@ -146,5 +199,17 @@ class OfficesController extends Controller
       }
       //$offices = EloquentUser::find($manager->id)->office;
       return($resOffices);
+    }
+
+    public function assignManagerToOffice(Request $request)
+    {
+        $office = Office::find($request->office_id);
+        $manager = EloquentUser::find($request->manager_id);
+        $manager->office_id = $office->id;
+        $office->manager_id = $request->manager_id;
+        $manager->save();
+        $office->save();
+        Session::flash('assign', $manager->first_name . ' is managing the office : ' . $office->identifier);
+        return redirect('/dashboard/offices');
     }
 }

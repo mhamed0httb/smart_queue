@@ -21,8 +21,9 @@
             <!-- Horizontal Form -->
             <div class="box box-info">
                 <div class="box-header with-border">
-                    <h3 class="box-title col-sm-4">Create Office for : </h3>
-                    <div class="col-sm-4 right">
+                    <h3 class="box-title col-sm-6">Create Office for : </h3>
+                    <div class="col-sm-6 pull-right">
+                        <strong>Company : </strong>
                         <select class="" onchange="companyChanged(this.value)" id="select_company">
                             @foreach ($allCompanies as $company)
                                 <option value="{{ $company->id }}">{{ $company->name }}</option>
@@ -67,7 +68,8 @@
                                 </select>
                             </div>
                             <div class="col-sm-2">
-                                <a class="btn btn-primary" href="{{url('/dashboard/manager/create')}}">Add new Manager</a>
+                                <!--a class="btn btn-primary modal-trigger" data-toggle="modal" data-target="#modal_create_manager" href="#modal_create_manager" id="btn_create_manager">Add new Manager</a-->
+                                <a class="btn btn-primary" href="{{ url('/dashboard/manager/create') }}">Add new Manager</a>
                             </div>
                         </div>
 
@@ -127,7 +129,89 @@
     </div>
     <!-- /.modal -->
 
-    <div id="div_alert" style="position: fixed; top: 10%; right: 0%"></div>
+    <div class="modal" id="modal_create_manager">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Create new manager</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="box-body">
+                        <!-- form start -->
+                        <form class="form-horizontal" action="{{ url('/dashboard/manager') }}" method="POST" id="form_create_manager">
+                            {{csrf_field()}}
+                            <div class="box-body">
+                                <div class="form-group">
+                                    <label for="email" class="col-sm-2 control-label">Email</label>
+
+                                    <div class="col-sm-10">
+                                        <input type="email" name="email" class="form-control" id="email" placeholder="email" required>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="first_name" class="col-sm-2 control-label">First Name</label>
+
+                                    <div class="col-sm-10">
+                                        <input type="text" name="first_name" class="form-control" id="first_name" placeholder="first name" required>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="last_name" class="col-sm-2 control-label">Last Name</label>
+
+                                    <div class="col-sm-10">
+                                        <input type="text" name="last_name" class="form-control" id="last_name" placeholder="last name" required>
+                                    </div>
+                                </div>
+                                <div class="form-group" id="password_group">
+                                    <label for="password" class="col-sm-2 control-label">Password</label>
+
+                                    <div class="col-sm-10">
+                                        <input type="password" name="password" class="form-control" id="password" placeholder="password" required>
+                                        <span class="help-block hide">Help block with error</span>
+                                    </div>
+                                </div>
+                                <div class="form-group" id="password_confirmation_group">
+                                    <label for="password_confirmation" class="col-sm-2 control-label">Password Vonfirmation</label>
+
+                                    <div class="col-sm-10">
+                                        <input type="password" name="password_confirmation" class="form-control" id="password_confirmation" placeholder="password_confirmation" required>
+                                        <span class="help-block hide">Help block with error</span>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="company" class="col-sm-2 control-label">Company</label>
+                                    <div class="col-sm-8">
+                                        <select class="form-control" id="company_id" name="company_id" required>
+                                            @foreach ($allCompanies as $company)
+                                                <option value="{{ $company->id }}">{{ $company->name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <!-- /.box-body -->
+                            <div class="box-footer">
+                                <button type="button" onclick="passwordConfirmation($('#password').val(),$('#password_confirmation').val());" class="btn btn-info pull-right">Create</button>
+                                <button type="submit" class="btn btn-info pull-right hide" id="btn_submit_form">Create</button>
+                            </div>
+                            <!-- /.box-footer -->
+                        </form>
+                    </div>
+                    <!-- /.box-body -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default pull-left" data-dismiss="modal" id="btn_close_modal_create_region">Close</button>
+                    <button type="button" class="btn btn-primary" onclick="addRegion()">Create</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
 
 @endsection
 
