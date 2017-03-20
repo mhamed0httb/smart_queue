@@ -10,12 +10,15 @@
     </h1>
     <ol class="breadcrumb">
         <li><a href="{{url('/dashboard')}}"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li><a href="#">{{ $sub_page_title or null }}</a></li>
+        <li><a href="{{url('/dashboard/companies')}}">{{ $sub_page_title or null }}</a></li>
         <li class="active">{{ $page_title or null }}</li>
     </ol>
 
     <!-- /.row -->
     <div class="row">
+        <a class="btn btn-app" href="{{ url('/dashboard/companies/create') }}">
+            <i class="fa fa-plus"></i> Add new Company
+        </a>
         <div class="col-xs-12">
             <div class="box">
                 <div class="box-header">
@@ -23,10 +26,10 @@
 
                     <div class="box-tools">
                         <div class="input-group input-group-sm" style="width: 150px;">
-                            <input type="text" name="table_search" class="form-control pull-right" placeholder="Search">
+                            <input type="text" name="table_search" id="input_search" class="form-control pull-right" placeholder="Search...">
 
                             <div class="input-group-btn">
-                                <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
+                                <button type="submit" class="btn btn-default" id="btn_clear_search"><i class="fa fa-close"></i></button>
                             </div>
                         </div>
                     </div>
@@ -68,4 +71,51 @@
 
 
 @endsection
+
+
+@section('scripts')
+    <script>
+        $(document).ready(function()
+        {
+            $('#input_search').keyup(function()
+            {
+                searchTable($(this).val());
+            });
+        });
+
+        function searchTable(inputVal)
+        {
+            var table = $('.table');
+            table.find('tr').each(function(index, row)
+            {
+                var allCells = $(row).find('td');
+                if(allCells.length != 0)
+                {
+                    var found = false;
+                    allCells.each(function(index, td)
+                    {
+                        var regExp = new RegExp(inputVal, 'i');
+                        if(regExp.test($(td).text()))
+                        {
+                            found = true;
+                            return false;
+                        }
+                    });
+                    if(found == true)$(row).show();else $(row).hide();
+                }
+            });
+        }
+
+        $('#btn_clear_search').click(function() {
+            $('#input_search').val('');
+            searchTable('');
+        });
+
+
+    </script>
+
+
+@endsection
+
+
 

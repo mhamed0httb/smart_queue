@@ -10,9 +10,9 @@
                 <small>{{ $page_description or null }}</small>
         </h1>
         <ol class="breadcrumb">
-                <li><a href="{{url('/dashboard')}}"><i class="fa fa-dashboard"></i> Home</a></li>
-                <li><a href="#">{{ $sub_page_title or null }}</a></li>
-                <li class="active">{{ $page_title or null }}</li>
+                <li><a href="{{url('/manager')}}"><i class="fa fa-dashboard"></i> Home</a></li>
+                <li><a href="{{url('/manager/staffs')}}">{{ $sub_page_title or 'Staff' }}</a></li>
+                <!--li-- class="active">{{ $page_title or null }}</li-->
         </ol>
 
         <!-- /.row -->
@@ -49,10 +49,19 @@
                                                                 <td>{{ $staff->last_name }}</td>
                                                                 <td>
                                                                         <!--a class="btn btn-warning">Edit</a-->
-                                                                        <a href="{{ url('/manager/statistics/staff/' . $staff->id) }}" class="btn btn-warning"><i class="fa fa-bar-chart" aria-hidden="true"></i>
+                                                                        <a href="{{ url('/manager/statistics/staff/' . $staff->id) }}" class="btn btn-info pull-left"><i class="fa fa-bar-chart" aria-hidden="true"></i>
                                                                              Stats</a>
-                                                                        <a onclick="deleteMember({{$staff->id}})" class="btn btn-danger"><i class="fa fa-trash" aria-hidden="true"></i>
-                                                                             Delete</a>
+                                                                    <a class="btn btn-warning  pull-left" href="{{ url('/manager/staffs/' . $staff->id . '/edit') }}"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                                                                        Edit</a>
+                                                                        <!--a-- onclick="deleteMember({{$staff->id}})" class="btn btn-danger"><i class="fa fa-trash" aria-hidden="true"></i>
+                                                                             Delete</a-->
+                                                                    <a onclick="confirmDelete({{$staff->id}})" class="btn btn-danger pull-left"><i class="fa fa-trash-o" aria-hidden="true"></i>
+                                                                        Delete</a>
+
+                                                                    {{ Form::open(array('url' => 'manager/staffs/' . $staff->id, 'class' => 'pull-left col-xs-4', 'id' => 'form_delete')) }}
+                                                                    {{ Form::hidden('_method', 'DELETE') }}
+                                                                    {{ Form::button('<i class="fa fa-trash-o" aria-hidden="true"></i> Delete', ['type' => 'submit', 'class' => 'btn btn-danger hide ', 'id' => 'btn_delete'. $staff->id] )  }}
+                                                                    {{ Form::close() }}
                                                                 </td>
                                                                 <!--td><span class="label label-success">Approved</span></td>
                                                             <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td-->
@@ -101,9 +110,36 @@
                         </div>
                 </div>
         </div>
+
+
 @endsection
 
 @section('scripts')
+
+    @if(Session::has('success'))
+        <script>
+            //$('#btn_modal_success').click()
+            $('#div_alert').html('<div class="alert alert-success alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button> <h4><i class="icon fa fa-check"></i> SUCCESS!</h4>{{ Session::get('success') }}</div>');
+            $('#div_alert').fadeIn();
+            dismissAlertMessage();
+        </script>
+    @endif
+    @if(Session::has('update'))
+        <script>
+            //$('#btn_modal_success').click()
+            $('#div_alert').html('<div class="alert alert-success alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button> <h4><i class="icon fa fa-check"></i> UPDATE!</h4>{{ Session::get('update') }}</div>');
+            $('#div_alert').fadeIn();
+            dismissAlertMessage();
+        </script>
+    @endif
+    @if(Session::has('delete'))
+        <script>
+            //$('#btn_modal_success').click()
+            $('#div_alert').html('<div class="alert alert-success alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button> <h4><i class="icon fa fa-check"></i> DELETE!</h4>{{ Session::get('delete') }}</div>');
+            $('#div_alert').fadeIn();
+            dismissAlertMessage();
+        </script>
+    @endif
 <script>
     function deleteMember(id){
         $('#btn_delete_modal').click();
@@ -150,5 +186,29 @@
         $('#input_search').val('');
         searchTable('');
     });
+
+    function confirmDelete(id){
+        swal({
+                title: "Are you sure?",
+                text: "This Staff member will be deleted permanently!",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "Yes, delete it!",
+                cancelButtonText: "No, cancel!",
+                closeOnConfirm: false,
+                closeOnCancel: true
+            },
+            function(isConfirm){
+                if (isConfirm) {
+                    swal("Deleted!", "Staff member has been deleted.", "success");
+                    $('#btn_delete'+id).click();
+                } else {
+                    //swal("Cancelled", "Your imaginary file is safe :)", "error");
+
+                }
+            });
+    }
+
 </script>
 @endsection

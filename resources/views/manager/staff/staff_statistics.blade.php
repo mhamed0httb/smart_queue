@@ -10,9 +10,9 @@
         <small>{{ $page_description or null }}</small>
     </h1>
     <ol class="breadcrumb">
-        <li><a href="{{url('/dashboard')}}"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li><a href="#">{{ $sub_page_title or null }}</a></li>
-        <li class="active">{{ $page_title or null }}</li>
+        <li><a href="{{url('/manager')}}"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li><a href="{{url('/manager/staffs')}}">{{ $sub_page_title or 'Staff' }}</a></li>
+        <li class="active">{{ $page_title or 'Statistics (' . $member->first_name . ' ' . $member->last_name . ')' }}</li>
     </ol>
 
     <!-- /.row -->
@@ -23,7 +23,7 @@
                 <div class="box-header">
                     <h3 class="box-title">Staff Member : {{$member->first_name . ' ' . $member->last_name}}</h3>
 
-                    <div class="box-tools">
+                    <!--div-- class="box-tools">
                         <div class="input-group input-group-sm" style="width: 150px;">
                             <input type="text" name="table_search" id="input_search" class="form-control pull-right" placeholder="Search...">
 
@@ -31,7 +31,7 @@
                                 <button type="submit" class="btn btn-default" id="btn_clear_search"><i class="fa fa-close"></i></button>
                             </div>
                         </div>
-                    </div>
+                    </div-->
                 </div>
                 <!-- /.box-header -->
                 <div class="box-body table-responsive no-padding">

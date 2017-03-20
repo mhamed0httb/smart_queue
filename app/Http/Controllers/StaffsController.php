@@ -8,6 +8,7 @@ use App\Office;
 use Sentinel;
 use Cartalyst\Sentinel\Users\EloquentUser;
 use Illuminate\Support\Facades\DB;
+use Session;
 
 class StaffsController extends Controller
 {
@@ -52,6 +53,7 @@ class StaffsController extends Controller
         $office = EloquentUser::find(Sentinel::getUser()->id)->office;
         $staff->office_id = $office->id;
         $staff->save();
+        $request->session()->flash('success', 'Staff member was successfully created!');
         return redirect('/manager/staffs');
     }
 
@@ -74,7 +76,9 @@ class StaffsController extends Controller
      */
     public function edit($id)
     {
-        //
+        //abort(404);
+        $member = Staff::find($id);
+        return view('manager.staff.edit')->with('member', $member);
     }
 
     /**
@@ -86,7 +90,12 @@ class StaffsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $member = Staff::find($id);
+        $member->first_name = $request->first_name;
+        $member->last_name = $request->last_name;
+        $member->save();
+        $request->session()->flash('update', 'Staff member was successfully updated!');
+        return redirect('/manager/staffs');
     }
 
     /**
@@ -107,6 +116,7 @@ class StaffsController extends Controller
             $one->save();
         }
         $staff->delete();
+        Session::flash('delete', 'Successfully deleted the staff member!');
         //Session::flash('message', 'Successfully deleted the staff member!');
         return redirect('/manager/staffs');
     }

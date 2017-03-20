@@ -10,7 +10,7 @@
     </h1>
     <ol class="breadcrumb">
         <li><a href="{{url('/dashboard')}}"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li><a href="#">{{ $sub_page_title or 'Sub Page Title' }}</a></li>
+        <li><a href="{{url('/dashboard/companies')}}">{{ $sub_page_title or 'Sub Page Title' }}</a></li>
         <li class="active">{{ $page_title or 'Page Title' }}</li>
     </ol>
 

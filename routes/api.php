@@ -29,6 +29,7 @@ Route::get('/regions', function()
     return (Region::all());
 });
 Route::get('/regions/create', 'RegionsController@add');
+Route::get('/categories/create', 'CategoryController@add');
 
 Route::post('/staff/add', function(Request $req)
 {

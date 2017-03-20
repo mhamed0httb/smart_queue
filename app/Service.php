@@ -17,4 +17,9 @@ class Service extends Model
     {
         return $this->belongsTo('App\Company','company_id');
     }
+
+    public function ticketWindows()
+    {
+        return $this->hasMany('App\TicketWindow','service_id');
+    }
 }

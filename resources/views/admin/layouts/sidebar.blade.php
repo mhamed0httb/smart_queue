@@ -50,7 +50,9 @@
                     <li><a href="{{ url('/dashboard/manager/create') }}">Create new</a></li>
                 </ul>
             </li>
-            <li class="treeview">
+            <li class=""><a href="{{ url('/dashboard/companies') }}"><i class="fa fa-link"></i> <span>Companies</span></a></li>
+
+            <!--li-- class="treeview">
                 <a href="#"><i class="fa fa-link"></i> <span>Companies</span>
                     <span class="pull-right-container">
                         <i class="fa fa-angle-left pull-right"></i>
@@ -60,7 +62,7 @@
                     <li ><a href="{{ url('/dashboard/companies') }}">All</a></li>
                     <li><a href="{{ url('/dashboard/companies/create') }}">Create new</a></li>
                 </ul>
-            </li>
+            </li-->
             <!--li class="treeview">
                 <a href="#"><i class="fa fa-link"></i> <span>Staff</span>
                     <span class="pull-right-container">

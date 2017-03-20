@@ -73,11 +73,11 @@ desired effect
                 {{ $page_title or null }}
                 <small>{{ $page_description or null }}</small>
             </h1>
-            <ol class="breadcrumb">
+            <!--ol-- class="breadcrumb">
                 <li><a href="{{url('/dashboard')}}"><i class="fa fa-dashboard"></i> Home</a></li>
                 <li><a href="{{ $sub_page_url or '#' }}">{{ $sub_page_title or null }}</a></li>
                 <li class="active">{{ $page_title or null }}</li>
-            </ol>
+            </ol-->
         </section>
 
         <!-- Main content -->
@@ -175,6 +175,8 @@ desired effect
 </div>
 <!-- ./wrapper -->
 
+<div id="div_alert" style="position: fixed; top: 10%; right: 0%"></div>
+
 <!-- REQUIRED JS SCRIPTS -->
 
 <!-- jQuery 2.1.3 -->
@@ -191,6 +193,14 @@ desired effect
      fixed layout. -->
 
 <script src="{{ asset ("/js/sweetalert.min.js") }}"></script>
+
+<script>
+    function dismissAlertMessage(){
+        setTimeout(function() {
+            $('#div_alert').fadeOut();
+        }, 3000);
+    }
+</script>
 @yield('scripts')
 </body>
 </html>

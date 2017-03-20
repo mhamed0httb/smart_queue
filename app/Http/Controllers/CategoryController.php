@@ -90,4 +90,12 @@ class CategoryController extends Controller
         Session::flash('message', 'Successfully deleted the nerd!');
         return Redirect('/dashboard');
     }
+
+    public function add(Request $request)
+    {
+        $category = new Category;
+        $category->name = $request->name;
+        $category->save();
+        return ($category);
+    }
 }

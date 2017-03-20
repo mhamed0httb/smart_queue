@@ -72,6 +72,8 @@
             <li class=""><a href="{{ url('/manager/staffs') }}"><i class="fa fa-link"></i> <span>Staff members</span></a></li>
             <li class=""><a href="{{ url('/manager/ticket_windows') }}"><i class="fa fa-link"></i> <span>Ticket Windows</span></a></li>
             <li class=""><a href="{{url('/manager/tickets')}}"><i class="fa fa-link"></i> <span>Tickets</span></a></li>
+            <li class=""><a href="{{url('/manager/services')}}"><i class="fa fa-link"></i> <span>Services</span></a></li>
+
             <!--li class=""><a href="#"><i class="fa fa-link"></i> <span>Request Services</span></a></li-->
             <li class="treeview">
                 <a href="#"><i class="fa fa-link"></i> <span>Statistics</span>

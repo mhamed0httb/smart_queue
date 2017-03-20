@@ -25,7 +25,7 @@ Route::post('/logout', 'LoginController@logout');
 
 Route::group(['middleware' => 'admin'], function(){
     Route::get('/dashboard', 'AdminController@index');
-    Route::resource('/dashboard/services', 'ServicesController');
+    //Route::resource('/dashboard/services', 'ServicesController');
     //Route::resource('/dashboard/staffs', 'StaffsController');
     Route::get('/dashboard/manager/create', 'AdminController@createManager');
     Route::post('/dashboard/manager', 'AdminController@postCreateManager');
@@ -40,6 +40,7 @@ Route::group(['middleware' => 'admin'], function(){
 Route::group(['middleware' => 'manager'], function(){
     Route::get('/manager', 'ManagerController@index');
     Route::resource('/manager/staffs', 'StaffsController');
+    Route::resource('/manager/services', 'ServicesController');
     Route::resource('/manager/ticket_windows', 'TicketWindowsController');
     Route::get('/manager/ticket_windows/deactivate/{id}', 'TicketWindowsController@deactivateWindow');
     Route::resource('/manager/tickets', 'TicketsController');

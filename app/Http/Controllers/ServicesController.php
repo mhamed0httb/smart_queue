@@ -8,6 +8,8 @@ use App\Company;
 use App\Category;
 use Sentinel;
 use Cartalyst\Sentinel\Users\EloquentUser;
+use Session;
+use Illuminate\Support\Facades\DB;
 
 class ServicesController extends Controller
 {
@@ -19,7 +21,7 @@ class ServicesController extends Controller
     public function index()
     {
         $allServices = Service::all();
-        return view('admin.services.index')
+        return view('manager.services.index')
             ->with('allServices',$allServices);
     }
 
@@ -30,10 +32,8 @@ class ServicesController extends Controller
      */
     public function create()
     {
-        $allCompanies = Company::all();
         $allCategories = Category::all();
-        return view('admin.services.create')
-            ->with('allCompanies', $allCompanies)
+        return view('manager.services.create')
             ->with('allCategories',$allCategories);
     }
 
@@ -48,9 +48,12 @@ class ServicesController extends Controller
         $service = new Service;
         $service->name = $request->name;
         $service->category_id = $request->category_id;
-        $service->company_id = $request->company_id;
+        $company = EloquentUser::find(Sentinel::getUser()->id)->getCompany; //GET COMPANY OF MANAGER LOGGED IN
+        $service->company_id = $company->id;
+        //$service->company_id = $request->company_id;
         $service->save();
-        return redirect('/dashboard/services');
+        $request->session()->flash('success', 'Service was successfully created!');
+        return redirect('/manager/services');
     }
 
     /**
@@ -72,7 +75,12 @@ class ServicesController extends Controller
      */
     public function edit($id)
     {
-        //
+        $allCategories = Category::all();
+
+        $service = Service::find($id);
+        return view('manager.services.edit')
+            ->with('allCategories',$allCategories)
+        ->with('service',$service);
     }
 
     /**
@@ -84,7 +92,12 @@ class ServicesController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $service = Service::find($id);
+        $service->name = $request->name;
+        $service->category_id = $request->category_id;
+        $service->save();
+        $request->session()->flash('update', 'Service was successfully updated!');
+        return redirect('/manager/services');
     }
 
     /**
@@ -96,9 +109,17 @@ class ServicesController extends Controller
     public function destroy($id)
     {
         $service = Service::find($id);
+        $windows = $windows = Service::find($id)->ticketWindows;
+        foreach($windows as $one){
+            $one->staff_id = null;
+            $one->service_id = null;
+            $one->ticket_id = null;
+            $one->status = 'Offline';
+            $one->save();
+        }
         $service->delete();
-        Session::flash('message', 'Successfully deleted the nerd!');
-        return ('service deleted');
+        Session::flash('delete', 'Successfully deleted the service!');
+        return redirect('/manager/services');
     }
 
 
