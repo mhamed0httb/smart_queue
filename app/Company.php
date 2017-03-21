@@ -16,4 +16,8 @@ class Company extends Model
         return $this->hasMany('Cartalyst\Sentinel\Users\EloquentUser','company_id');
     }
 
+    function office() {
+        return $this->hasMany('App\Office','company_id');
+    }
+
 }

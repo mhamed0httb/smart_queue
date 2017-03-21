@@ -26,10 +26,10 @@
 
                     <div class="box-tools">
                         <div class="input-group input-group-sm" style="width: 150px;">
-                            <input type="text" name="table_search" class="form-control pull-right" placeholder="Search">
+                            <input type="text" name="table_search" id="input_search" class="form-control pull-right" placeholder="Search...">
 
                             <div class="input-group-btn">
-                                <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
+                                <button type="submit" class="btn btn-default" id="btn_clear_search"><i class="fa fa-close"></i></button>
                             </div>
                         </div>
                     </div>
@@ -40,6 +40,7 @@
                         <tr>
                             <th>ID</th>
                             <th>User</th>
+                            <th>Company</th>
                             <th>Date Creation</th>
                             <th>Action</th>
                             <!--th>Status</th>
@@ -49,10 +50,18 @@
                             <tr>
                                 <td>{{ $manager->id }}</td>
                                 <td>{{ $manager->first_name }}</td>
+                                <td>{{ $manager->getCompany->name }}</td>
                                 <td>{{ $manager->created_at }}</td>
                                 <td>
-                                    <a class="btn btn-warning">edit</a>
-                                    <a class="btn btn-danger">delete</a>
+                                    <a class="btn btn-warning  pull-left" href="{{ url('/dashboard/manager/' . $manager->id . '/edit') }}"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                                        Edit</a>
+                                    <a onclick="confirmDelete({{$manager->id}})" class="btn btn-danger pull-left"><i class="fa fa-trash-o" aria-hidden="true"></i>
+                                        Delete</a>
+
+                                    {{ Form::open(array('url' => 'dashboard/manager/' . $manager->id, 'class' => 'pull-left col-xs-4', 'id' => 'form_delete')) }}
+                                    {{ Form::hidden('_method', 'DELETE') }}
+                                    {{ Form::button('<i class="fa fa-trash-o" aria-hidden="true"></i> Delete', ['type' => 'submit', 'class' => 'btn btn-danger hide ', 'id' => 'btn_delete'. $manager->id] )  }}
+                                    {{ Form::close() }}
                                 </td>
                                 <!--td><span class="label label-success">Approved</span></td>
                             <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td-->
@@ -66,5 +75,68 @@
         </div>
     </div>
     <!-- /.row -->
+@endsection
+
+@section('scripts')
+    <script>
+        $(document).ready(function()
+        {
+            $('#input_search').keyup(function()
+            {
+                searchTable($(this).val());
+            });
+        });
+
+        function searchTable(inputVal)
+        {
+            var table = $('.table');
+            table.find('tr').each(function(index, row)
+            {
+                var allCells = $(row).find('td');
+                if(allCells.length != 0)
+                {
+                    var found = false;
+                    allCells.each(function(index, td)
+                    {
+                        var regExp = new RegExp(inputVal, 'i');
+                        if(regExp.test($(td).text()))
+                        {
+                            found = true;
+                            return false;
+                        }
+                    });
+                    if(found == true)$(row).show();else $(row).hide();
+                }
+            });
+        }
+
+        $('#btn_clear_search').click(function() {
+            $('#input_search').val('');
+            searchTable('');
+        });
+
+        function confirmDelete(id){
+            swal({
+                    title: "Are you sure?",
+                    text: "This Manager will be deleted permanently !",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#DD6B55",
+                    confirmButtonText: "Yes, delete it!",
+                    cancelButtonText: "No, cancel!",
+                    closeOnConfirm: false,
+                    closeOnCancel: true
+                },
+                function(isConfirm){
+                    if (isConfirm) {
+                        swal("Deleted!", "Manager has been deleted.", "success");
+                        $('#btn_delete'+id).click();
+                    } else {
+                        //swal("Cancelled", "Your imaginary file is safe :)", "error");
+
+                    }
+                });
+        }
+    </script>
 @endsection
 

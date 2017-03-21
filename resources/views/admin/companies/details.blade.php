@@ -10,8 +10,8 @@
     </h1>
     <ol class="breadcrumb">
         <li><a href="{{url('/dashboard')}}"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li><a href="#">{{ $sub_page_title or null }}</a></li>
-        <li class="active">{{ $page_title or null }}</li>
+        <li><a href="{{url('/dashboard/companies')}}">{{ $sub_page_title or 'Companies' }}</a></li>
+        <li class="active">{{ $page_title or 'Details' }}</li>
     </ol>
 
     <!-- /.row -->

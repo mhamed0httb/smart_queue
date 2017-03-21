@@ -14,7 +14,7 @@
     <ol class="breadcrumb">
         <li><a href="{{url('/dashboard')}}"><i class="fa fa-dashboard"></i> Home</a></li>
         <li><a href="{{url('/dashboard/manager')}}">{{ $sub_page_title or 'Managers' }}</a></li>
-        <li class="active">{{ $page_title or 'Page Title' }}</li>
+        <li class="active">{{ $page_title or 'Create' }}</li>
     </ol>
 
     <div class="row">

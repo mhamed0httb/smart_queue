@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Company;
 use App\CompanyResponsible;
+use Session;
 
 class CompanyController extends Controller
 {
@@ -109,7 +110,26 @@ class CompanyController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $company  = Company::find($id);
+        $services = $company->service;
+        $managers = $company->manager;
+        $offices = $company->office;
+        foreach ($services as $one){
+            //$one->getCategory->delete();
+            $one->delete();
+        }
+        foreach ($managers as $one){
+            $one->delete();
+        }
+        foreach ($offices as $one){
+            $one->ticketWindow()->delete();
+            $one->staff()->delete();
+            $one->ticket()->delete();
+            $one->delete();
+        }
+        $company->delete();
+        Session::flash('delete', 'Successfully deleted the comapny!');
+        return redirect('/dashboard/companies');
     }
 
     public function getAllCompanies()

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Cartalyst\Sentinel\Users\EloquentUser;
 use Illuminate\Http\Request;
 use Sentinel;
 use App\Company;
@@ -31,6 +32,22 @@ class AdminController extends Controller
         $role = Sentinel::findRoleBySlug('manager');
         $role->users()->attach($user);
         $user->company_id = $request->company_id;
+        return redirect('/dashboard/manager');
+    }
+
+    public function edit($id)
+    {
+        
+    }
+
+    public function destroy($id)
+    {
+        $manager = EloquentUser::find($id);
+        if($manager->office != null){
+            $manager->office->manager_id = null;
+            $manager->office->save();
+        }
+        $manager->delete();
         return redirect('/dashboard/manager');
     }
 

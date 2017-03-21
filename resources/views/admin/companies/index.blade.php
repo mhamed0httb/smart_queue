@@ -11,7 +11,7 @@
     <ol class="breadcrumb">
         <li><a href="{{url('/dashboard')}}"><i class="fa fa-dashboard"></i> Home</a></li>
         <li><a href="{{url('/dashboard/companies')}}">{{ $sub_page_title or null }}</a></li>
-        <li class="active">{{ $page_title or null }}</li>
+        <!--li-- class="active">{{ $page_title or null }}</li-->
     </ol>
 
     <!-- /.row -->
@@ -51,9 +51,16 @@
                                 <td>{{ $company->name }}</td>
                                 <td>{{ $company->created_at }}</td>
                                 <td>
-                                    <a class="btn btn-warning">edit</a>
-                                    <a class="btn btn-danger">delete</a>
-                                    <a href="{{url('/dashboard/companies/'.$company->id)}}" class="btn btn-primary">view more details</a>
+                                    <a class="btn btn-warning  pull-left" href="{{ url('/dashboard/companies/' . $company->id . '/edit') }}"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                                        Edit</a>
+                                    <a onclick="confirmDelete({{$company->id}})" class="btn btn-danger pull-left"><i class="fa fa-trash-o" aria-hidden="true"></i>
+                                        Delete</a>
+
+                                    {{ Form::open(array('url' => 'dashboard/companies/' . $company->id, 'class' => 'pull-left col-xs-4', 'id' => 'form_delete')) }}
+                                    {{ Form::hidden('_method', 'DELETE') }}
+                                    {{ Form::button('<i class="fa fa-trash-o" aria-hidden="true"></i> Delete', ['type' => 'submit', 'class' => 'btn btn-danger hide ', 'id' => 'btn_delete'. $company->id] )  }}
+                                    {{ Form::close() }}
+                                    <a href="{{url('/dashboard/companies/'.$company->id)}}" class="btn btn-primary pull-left">view more details</a>
                                 </td>
                                 <!--td><span class="label label-success">Approved</span></td>
                             <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td-->
@@ -74,6 +81,30 @@
 
 
 @section('scripts')
+    @if(Session::has('success'))
+        <script>
+            //$('#btn_modal_success').click()
+            $('#div_alert').html('<div class="alert alert-success alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button> <h4><i class="icon fa fa-check"></i> SUCCESS!</h4>{{ Session::get('success') }}</div>');
+            dismissAlertMessage();
+        </script>
+    @endif
+    @if(Session::has('update'))
+        <script>
+            //$('#btn_modal_success').click()
+            $('#div_alert').html('<div class="alert alert-success alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button> <h4><i class="icon fa fa-check"></i> UPDATE!</h4>{{ Session::get('update') }}</div>');
+            $('#div_alert').fadeIn();
+            dismissAlertMessage();
+        </script>
+    @endif
+    @if(Session::has('delete'))
+        <script>
+            //$('#btn_modal_success').click()
+            $('#div_alert').html('<div class="alert alert-success alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button> <h4><i class="icon fa fa-check"></i> DELETE!</h4>{{ Session::get('delete') }}</div>');
+            $('#div_alert').fadeIn();
+            dismissAlertMessage();
+        </script>
+    @endif
+
     <script>
         $(document).ready(function()
         {
@@ -112,6 +143,28 @@
         });
 
 
+        function confirmDelete(id){
+            swal({
+                    title: "Are you sure?",
+                    text: "This Comany and EVERYTHING associated to it will be deleted permanently !",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#DD6B55",
+                    confirmButtonText: "Yes, delete it!",
+                    cancelButtonText: "No, cancel!",
+                    closeOnConfirm: false,
+                    closeOnCancel: true
+                },
+                function(isConfirm){
+                    if (isConfirm) {
+                        swal("Deleted!", "Company has been deleted.", "success");
+                        $('#btn_delete'+id).click();
+                    } else {
+                        //swal("Cancelled", "Your imaginary file is safe :)", "error");
+
+                    }
+                });
+        }
     </script>
 
 
