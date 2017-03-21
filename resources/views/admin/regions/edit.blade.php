@@ -12,7 +12,7 @@
     <ol class="breadcrumb">
         <li><a href="{{url('/dashboard')}}"><i class="fa fa-dashboard"></i> Home</a></li>
         <li><a href="{{url('/dashboard/regions')}}">{{ $sub_page_title or 'Regions' }}</a></li>
-        <li class="active">{{ $page_title or 'Create' }}</li>
+        <li class="active">{{ $page_title or 'Edit' }}</li>
     </ol>
 
     <div class="row">
@@ -21,12 +21,12 @@
             <!-- Horizontal Form -->
             <div class="box box-info">
                 <div class="box-header with-border">
-                    <h3 class="box-title">Create Region</h3>
+                    <h3 class="box-title">Edit Region : ({{ $region->name }})</h3>
                 </div>
                 <!-- /.box-header -->
                 <!-- form start -->
-                <form class="form-horizontal" action="{{ url('/dashboard/regions') }}" method="POST" id="form_create_manager">
-                    {{csrf_field()}}
+                {{ Form::model($region, array('route' => array('regions.update', $region->id), 'method' => 'PUT', 'class' => 'form-horizontal')) }}
+
                     <div class="box-body">
                         <div class="form-group">
                             <label for="name" class="col-sm-2 control-label">Name</label>
@@ -38,10 +38,10 @@
                     </div>
                     <!-- /.box-body -->
                     <div class="box-footer">
-                        <button type="submit" class="btn btn-info pull-right" id="btn_submit_form">Create</button>
+                        <button type="submit" class="btn btn-info pull-right" id="btn_submit_form">Edit</button>
                     </div>
                     <!-- /.box-footer -->
-                </form>
+                {{ Form::close() }}
             </div>
             <!-- /.box -->
 

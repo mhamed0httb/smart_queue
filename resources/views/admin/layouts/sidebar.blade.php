@@ -37,20 +37,11 @@
             <li class="header">HEADER</li>
             <!-- Optionally, you can add icons to the links -->
             <!--li-- class=""><a href="{{ url('/dashboard/categories/create') }}"><i class="fa fa-link"></i> <span>Add Category</span></a></li-->
-            <li class=""><a href="{{ url('/dashboard/regions/create') }}"><i class="fa fa-link"></i> <span>Regions</span></a></li>
+            <li class=""><a href="{{ url('/dashboard/regions') }}"><i class="fa fa-link"></i> <span>Regions</span></a></li>
 
-            <li class="treeview">
-                <a href="#"><i class="fa fa-link"></i> <span>Managers</span>
-                    <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-                </a>
-                <ul class="treeview-menu">
-                    <li><a href="{{ url('/dashboard/manager') }}">All</a></li>
-                    <li><a href="{{ url('/dashboard/manager/create') }}">Create new</a></li>
-                </ul>
-            </li>
+
             <li class=""><a href="{{ url('/dashboard/companies') }}"><i class="fa fa-link"></i> <span>Companies</span></a></li>
+            <li class=""><a href="{{ url('/dashboard/manager') }}"><i class="fa fa-link"></i> <span>Managers</span></a></li>
 
             <!--li-- class="treeview">
                 <a href="#"><i class="fa fa-link"></i> <span>Companies</span>
@@ -74,7 +65,7 @@
                     <li><a href="{{ url('/dashboard/staffs/create') }}">Create new</a></li>
                 </ul>
             </li-->
-            <li class="treeview">
+            <!--li-- class="treeview">
                 <a href="#"><i class="fa fa-link"></i> <span>Services</span>
                     <span class="pull-right-container">
                         <i class="fa fa-angle-left pull-right"></i>
@@ -84,7 +75,7 @@
                     <li ><a href="{{ url('/dashboard/services') }}">All</a></li>
                     <li><a href="{{ url('/dashboard/services/create') }}">Create new</a></li>
                 </ul>
-            </li>
+            </li-->
             <li class=""><a href="{{ url('/dashboard/offices') }}"><i class="fa fa-link"></i> <span>Offices</span></a></li>
             <!--li class="treeview">
                 <a href="#"><i class="fa fa-link"></i> <span>Offices</span>

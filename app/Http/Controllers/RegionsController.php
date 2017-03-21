@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Region;
+use Session;
 
 class RegionsController extends Controller
 {
@@ -14,7 +15,8 @@ class RegionsController extends Controller
      */
     public function index()
     {
-
+        $allRegions = Region::all();
+        return view('admin.regions.index')->with('allRegions', $allRegions);
     }
 
     /**
@@ -38,7 +40,8 @@ class RegionsController extends Controller
         $region = new Region;
         $region->name = $request->name;
         $region->save();
-        return redirect('/dashboard');
+        $request->session()->flash('success', 'Region was successfully created!');
+        return redirect('/dashboard/regions');
     }
 
     /**
@@ -60,7 +63,8 @@ class RegionsController extends Controller
      */
     public function edit($id)
     {
-        //
+        $region = Region::find($id);
+        return view('admin.regions.edit')->with('region', $region);
     }
 
     /**
@@ -72,7 +76,11 @@ class RegionsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $region = Region::find($id);
+        $region->name = $request->name;
+        $region->save();
+        $request->session()->flash('update', 'Region was successfully updated!');
+        return redirect('/dashboard/regions');
     }
 
     /**
@@ -83,7 +91,19 @@ class RegionsController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $region = Region::find($id);
+        $offices =Region::find($id)->offices;
+        foreach($offices as $one){
+            $one->ticketWindow()->delete();
+            $one->staff()->delete();
+            $one->ticket()->delete();
+            $one->getManager()->delete();
+            $one->delete();
+        }
+        $region->delete();
+        Session::flash('delete', 'Successfully deleted the region and all the offices related!');
+        //Session::flash('message', 'Successfully deleted the staff member!');
+        return redirect('/dashboard/regions');
     }
 
     public function add(Request $request)

@@ -10,13 +10,16 @@
     </h1>
     <ol class="breadcrumb">
         <li><a href="{{url('/dashboard')}}"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li><a href="#">{{ $sub_page_title or null }}</a></li>
-        <li class="active">{{ $page_title or null }}</li>
+        <li><a href="{{url('/dashboard/manager')}}">{{ $sub_page_title or 'Managers' }}</a></li>
+        <!--li-- class="active">{{ $page_title or null }}</li-->
     </ol>
 
     <!-- /.row -->
     <div class="row">
         <div class="col-xs-12">
+            <a class="btn btn-app" href="{{ url('/dashboard/manager/create') }}">
+                <i class="fa fa-plus"></i> Add new
+            </a>
             <div class="box">
                 <div class="box-header">
                     <h3 class="box-title">List of Managers we work with</h3>
