@@ -60,6 +60,9 @@ Route::group(['middleware' => 'manager'], function(){
 //Route::get('/webservices/tickets/update', 'TicketsController@updateTicket');
 //Route::get('/webservices/managers/byCompany', 'ManagerController@getNotAffectedManagersByCompany');
 
+Route::get('/upload', 'ManagerController@upload');
+Route::post('/upload', 'ManagerController@postUpload');
+
 
 
 
