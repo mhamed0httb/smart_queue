@@ -26,12 +26,16 @@ class ManagerController extends Controller
     }
 
     public function upload(){
-        /*$exists = Storage::disk('local')->exists('storage/9126e8a08d6be4343d5ac0dcb4299a88.jpeg');
+        /*
+        $fileName = 'storage/9126e8a08d6be4343d5ac0dcb4299a88.jpeg';
+        $exists = Storage::disk('local')->exists($fileName);
         if($exists){
-            return Storage::get('storage/9126e8a08d6be4343d5ac0dcb4299a88.jpeg');
+            return asset($fileName);
+            // Storage::get($fileName); RETURN THE ENTIRE FILE
         }else{
             return 'no such file';
-        }*/
+        }
+        */
         return view('upload');
     }
 
