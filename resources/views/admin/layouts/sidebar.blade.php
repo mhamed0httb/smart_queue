@@ -88,6 +88,7 @@
                     <li><a href="{{ url('/dashboard/offices/create') }}">Create new</a></li>
                 </ul>
             </li-->
+            <li class=""><a href="{{ url('/dashboard/ads') }}"><i class="fa fa-link"></i> <span>Advertisements</span></a></li>
 
         </ul>
         <!-- /.sidebar-menu -->

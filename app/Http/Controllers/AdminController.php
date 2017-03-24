@@ -6,6 +6,7 @@ use Cartalyst\Sentinel\Users\EloquentUser;
 use Illuminate\Http\Request;
 use Sentinel;
 use App\Company;
+use Illuminate\Support\Facades\DB;
 
 class AdminController extends Controller
 {
@@ -47,6 +48,9 @@ class AdminController extends Controller
             $manager->office->manager_id = null;
             $manager->office->save();
         }
+        $roles = DB::table('role_users')
+            ->where('user_id', '=', $manager->id)
+            ->delete();
         $manager->delete();
         return redirect('/dashboard/manager');
     }

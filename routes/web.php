@@ -42,6 +42,7 @@ Route::group(['middleware' => 'admin'], function(){
     Route::get('/dashboard/categories/', 'AdminController@index');
     Route::resource('/dashboard/offices', 'OfficesController');
     Route::resource('/dashboard/regions', 'RegionsController');
+    Route::resource('/dashboard/ads', 'AdvertisementsController');
 });
 
 Route::group(['middleware' => 'manager'], function(){

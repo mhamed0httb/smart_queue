@@ -47,9 +47,12 @@ Route::get('/tickets/create', 'TicketsController@createTicket');
 Route::get('/tickets/serve', 'TicketsController@ServeTicket');
 Route::get('/tickets/waiting', 'TicketsController@getTicketsWaiting');
 
+Route::get('/ads/byOffice', 'AdvertisementsController@getAdsByOffice');
+
 Route::get('/ticket_windows/status', 'TicketWindowsController@getTicketWindowsStatus');
 
 Route::get('/managers/byCompany', 'ManagerController@getNotAffectedManagersByCompany');
+Route::get('/offices/byCompany', 'AdvertisementsController@getOfficesByCompany');
 
 Route::get('/statistics/service/byOffice', function(Request $req)
 {
@@ -290,25 +293,44 @@ Route::get('/statistics/staff/allDays', function(Request $req)
 
     $result = array();
     $services = array();
-    $clientArr = array();
+
     $result['total_clients_served'] = $nbrClientsServed;
+
+    //FOR 5OU5A
+    $khoukhaStaff = Staff::find($req->staff_id);
+    $result['staff_id'] = $khoukhaStaff->id;
+    $result['staff_name'] = $khoukhaStaff->first_name . ' ' . $khoukhaStaff->last_name;
+    //END FOR 5OU5A
 
     foreach($his as $one){
         $service  = App\Service::find($one->service_id);
         $serArr = array();
 
+        $checkServiceFound = false;
+        $indexServiceFound = 0;
 
+        $clientArr = array();
         $oneClientServed = array();
         $created_at = Carbon::parse($one->created_at);
         $updated_at = Carbon::parse($one->updated_at);
         $ticketServed = Ticket::find($one->ticket_id);
-        if(array_key_exists($service->id, $services)){
-            $occ = $services[$service->id]['nbr_services_served'];
-            $occ = $occ + 1;
-            $services[$service->id]['nbr_services_served'] = $occ;
+
+        $index = 0;
+        foreach ($services as $checkOne) {
+            if($checkOne['id_service'] == $service->id){
+                $checkServiceFound = true;
+                $indexServiceFound = $index;
+            }
+            $index += 1;
+        }
+
+
+        if($checkServiceFound){
+            $services[$indexServiceFound]['nbr_services_served'] += 1;
         }else{
             $serArr['nbr_services_served'] = 1;
             $serArr['service_name'] = $service->name;
+            $serArr['id_service'] = $service->id;
 
             $hisServ = DB::table('history')
                 ->where('service_id', $service->id)
@@ -337,7 +359,7 @@ Route::get('/statistics/staff/allDays', function(Request $req)
             $serArr['clients_served'] = $clientArr;
 
 
-            $serArr['id_service'] = $service->id;
+
             //$services[$service->id] = $serArr;
             array_push($services,$serArr);
         }
