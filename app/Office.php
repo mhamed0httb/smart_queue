@@ -40,5 +40,9 @@ class Office extends Model
         return $this->hasMany('App\Ticket','office_id');
     }
 
+    function ad() {
+        return $this->hasMany('App\Advertisement','office_id');
+    }
+
 
 }

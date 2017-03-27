@@ -98,6 +98,7 @@ class RegionsController extends Controller
             $one->staff()->delete();
             $one->ticket()->delete();
             $one->getManager()->delete();
+            $one->ad()->delete();
             $one->delete();
         }
         $region->delete();

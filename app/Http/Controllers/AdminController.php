@@ -47,6 +47,7 @@ class AdminController extends Controller
         if($manager->office != null){
             $manager->office->manager_id = null;
             $manager->office->save();
+            $manager->office->ad->delete();
         }
         $roles = DB::table('role_users')
             ->where('user_id', '=', $manager->id)

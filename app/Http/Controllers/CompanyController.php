@@ -125,6 +125,7 @@ class CompanyController extends Controller
             $one->ticketWindow()->delete();
             $one->staff()->delete();
             $one->ticket()->delete();
+            $one->ad()->delete();
             $one->delete();
         }
         $company->delete();

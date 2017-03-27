@@ -6,6 +6,8 @@ use App\TicketWindow;
 use Illuminate\Http\Request;
 use App\Ticket;
 use App\Office;
+use App\Service;
+use App\Staff;
 use App\History;
 use Cartalyst\Sentinel\Users\EloquentUser;
 use Sentinel;
@@ -249,5 +251,59 @@ class TicketsController extends Controller
             ->orderBy('number', 'asc')
             ->get();
         return $tickets->count();
+    }
+
+    public function cancelTicket(Request $request)
+    {
+        $office = Office::find($request->office_id);
+        $owner = EloquentUser::find($request->owner_id);
+        $ticket = DB::table('tickets')
+            ->where('office_id', '=', $request->office_id)
+            ->where('owner_id', '=', $request->owner_id)
+            ->where('status', '=', 'waiting')
+            ->where('expired', '=', false)
+            ->whereDate('created_at', Carbon::now()->toDateString())
+            ->first();
+
+        if($ticket != null){
+            $ticketToCancel = Ticket::find($ticket->id);
+            $ticketToCancel->expired = true;
+            $ticketToCancel->status = 'canceled';
+            $ticketToCancel->save();
+            return 'ticekt canceled';
+        }else{
+            return 'no ticket found';
+        }
+    }
+
+    public function getHistoryTicketsByOwner(Request $request){
+        $historyResults = DB::table('history')
+            ->where('user_id', '=', $request->owner_id)
+            ->get();
+
+        $result = array();
+
+        if($historyResults->count() != 0){
+            foreach ($historyResults as $one) {
+                $oneTicketResult = array();
+
+                $ticket = Ticket::find($one->ticket_id);
+                $window = TicketWindow::find($one->ticket_window_id);
+                $service = Service::find($one->service_id);
+                $office = Office::find($one->office_id);
+                $staff = Staff::find($one->staff_id);
+
+                $oneTicketResult['id_ticket'] = $one->ticket_id;
+                $oneTicketResult['ticekt_number'] = $ticket->number;
+                $oneTicketResult['office'] = $office->identifier;
+                $oneTicketResult['window_number'] = $window->number;
+                $oneTicketResult['service'] = $service->name;
+                $oneTicketResult['staff_member'] = $staff->first_name . ' ' . $staff->last_name;
+                array_push($result, $oneTicketResult);
+            }
+            return $result;
+        }else{
+            return 'no data found';
+        }
     }
 }

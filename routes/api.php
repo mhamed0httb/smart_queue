@@ -44,8 +44,11 @@ Route::post('/staff/add', function(Request $req)
 });
 
 Route::get('/tickets/create', 'TicketsController@createTicket');
+Route::get('/tickets/cancel', 'TicketsController@cancelTicket');
 Route::get('/tickets/serve', 'TicketsController@ServeTicket');
 Route::get('/tickets/waiting', 'TicketsController@getTicketsWaiting');
+
+Route::get('/tickets/byOwner', 'TicketsController@getHistoryTicketsByOwner');
 
 Route::get('/ads/byOffice', 'AdvertisementsController@getAdsByOffice');
 

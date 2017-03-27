@@ -182,6 +182,7 @@ class OfficesController extends Controller
         $office->staff()->delete();
         $office->ticket()->delete();
         $office->getManager()->delete();
+        $office->ad()->delete();
         $office->delete();
         //Session::flash('delete_success', 'Successfully deleted the office!');
         Session::flash('delete', 'Successfully deleted the office!');
