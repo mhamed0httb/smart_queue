@@ -20,4 +20,8 @@ class Company extends Model
         return $this->hasMany('App\Office','company_id');
     }
 
+    function responsible() {
+        return $this->belongsTo('App\CompanyResponsible','responsible_id');
+    }
+
 }

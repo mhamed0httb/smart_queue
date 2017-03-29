@@ -78,6 +78,30 @@
 @endsection
 
 @section('scripts')
+    @if(Session::has('success'))
+        <script>
+            //$('#btn_modal_success').click()
+            $('#div_alert').html('<div class="alert alert-success alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button> <h4><i class="icon fa fa-check"></i> SUCCESS!</h4>{{ Session::get('success') }}</div>');
+            $('#div_alert').fadeIn();
+            dismissAlertMessage();
+        </script>
+    @endif
+    @if(Session::has('update'))
+        <script>
+            //$('#btn_modal_success').click()
+            $('#div_alert').html('<div class="alert alert-success alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button> <h4><i class="icon fa fa-check"></i> UPDATE!</h4>{{ Session::get('update') }}</div>');
+            $('#div_alert').fadeIn();
+            dismissAlertMessage();
+        </script>
+    @endif
+    @if(Session::has('delete'))
+        <script>
+            //$('#btn_modal_success').click()
+            $('#div_alert').html('<div class="alert alert-success alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button> <h4><i class="icon fa fa-check"></i> DELETE!</h4>{{ Session::get('delete') }}</div>');
+            $('#div_alert').fadeIn();
+            dismissAlertMessage();
+        </script>
+    @endif
     <script>
         $(document).ready(function()
         {

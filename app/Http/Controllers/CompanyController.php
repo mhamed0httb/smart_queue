@@ -87,7 +87,8 @@ class CompanyController extends Controller
      */
     public function edit($id)
     {
-        //
+        $company = Company::find($id);
+        return view('admin.companies.edit')->with('company', $company);
     }
 
     /**
@@ -99,7 +100,24 @@ class CompanyController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $company = Company::find($id);
+        $responsible = CompanyResponsible::find($company->responsible_id);
+        $company->name = $request->name;
+        $company->identifier = $request->identifier;
+        $company->description = $request->description;
+        $company->email = $request->email;
+        $company->phone = $request->phone;
+        $company->address = $request->address;
+        $responsible->name = $request->responsible_name;
+        $responsible->title = $request->responsible_title;
+        $responsible->email = $request->responsible_email;
+        $responsible->phone1 = $request->responsible_phone1;
+        $responsible->phone2 = $request->responsible_phone2;
+        $responsible->fax = $request->responsible_fax;
+        $responsible->save();
+        $company->save();
+        Session::flash('update', 'Company was successfully updated!');
+        return redirect('/dashboard/companies');
     }
 
     /**
@@ -128,6 +146,7 @@ class CompanyController extends Controller
             $one->ad()->delete();
             $one->delete();
         }
+        $company->responsible()->delete();
         $company->delete();
         Session::flash('delete', 'Successfully deleted the comapny!');
         return redirect('/dashboard/companies');

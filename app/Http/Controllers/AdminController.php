@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Cartalyst\Sentinel\Users\EloquentUser;
 use Illuminate\Http\Request;
 use Sentinel;
+use Session;
 use App\Company;
 use Illuminate\Support\Facades\DB;
 
@@ -36,9 +37,21 @@ class AdminController extends Controller
         return redirect('/dashboard/manager');
     }
 
-    public function edit($id)
+    public function editManager($id)
     {
+        $manager = EloquentUser::find($id);
+        $allCompanies = Company::all();
+        return view('admin.managers.edit')
+            ->with('manager',$manager)
+            ->with('allCompanies',$allCompanies);
+    }
 
+    public function updateManager(Request $request, $id)
+    {
+        $user = Sentinel::findById($id);
+        $user = Sentinel::update($user, $request->all());
+        Session::flash('update', 'Manager was successfully updated!');
+        return redirect('/dashboard/manager');
     }
 
     public function destroy($id)
@@ -53,6 +66,7 @@ class AdminController extends Controller
             ->where('user_id', '=', $manager->id)
             ->delete();
         $manager->delete();
+        Session::flash('delete', 'Successfully deleted the Manager!');
         return redirect('/dashboard/manager');
     }
 

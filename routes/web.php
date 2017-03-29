@@ -33,9 +33,9 @@ Route::group(['middleware' => 'admin'], function(){
     Route::delete('/dashboard/manager/{manager}', [
         'as' => 'manager.destroy', 'uses' => 'AdminController@destroy'
     ]);
-    Route::get('/dashboard/manager/{manager}/edit', 'AdminController@edit');
+    Route::get('/dashboard/manager/{manager}/edit', 'AdminController@editManager');
     Route::put('/dashboard/manager/{manager}', [
-        'as' => 'manager.update', 'uses' => 'AdminController@update'
+        'as' => 'manager.update', 'uses' => 'AdminController@updateManager'
     ]);
     Route::resource('/dashboard/companies', 'CompanyController');
     Route::resource('/dashboard/categories', 'CategoryController');
