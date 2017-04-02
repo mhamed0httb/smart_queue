@@ -70,5 +70,25 @@ class AdminController extends Controller
         return redirect('/dashboard/manager');
     }
 
+    public function signUp(Request $request)
+    {
+        $user = Sentinel::registerAndActivate($request->all());
+        $role = Sentinel::findRoleBySlug('simple_user');
+        $role->users()->attach($user);
+        return($user);
+    }
+
+    public function signIn(Request $req)
+    {
+        Sentinel::Authenticate($req->all());
+        if(Sentinel::check()){
+            if(Sentinel::getUser()->roles()->first()->slug == 'simple_user'){
+                return Sentinel::getUser();
+            }
+        }else{
+            return ("error");
+        }
+    }
+
 
 }

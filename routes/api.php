@@ -484,6 +484,9 @@ Route::group(['middleware' => 'cors'], function(){
     Route::get('/staff/all', 'StaffsController@getAllStaff');
 
     Route::get('/offices/assign', 'OfficesController@assignManagerToOffice');
+
+    Route::get('/user/signUp', 'AdminController@signUp');
+    Route::get('/user/signIn', 'AdminController@signIn');
 });
 
 
