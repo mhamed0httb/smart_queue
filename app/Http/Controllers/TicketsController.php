@@ -27,6 +27,7 @@ class TicketsController extends Controller
         //$allTickets = Office::find($office->id)->ticket;
         $allTicketsToday = DB::table('tickets')
             ->whereDate('created_at',Carbon::now()->toDateString())
+            ->orderBy('number','ASC')
             ->get();
         $res = array();
         foreach($allTicketsToday as $one){
@@ -105,8 +106,6 @@ class TicketsController extends Controller
 
     public function createTicket(Request $request)
     {
-
-
         $checkTickets = DB::table('tickets') //CHECK IF USER HAVE ALREADY A TICKET
             ->where('expired', '=', false)
             ->where('status', '=', 'waiting')
@@ -116,11 +115,12 @@ class TicketsController extends Controller
             ->get();
         if ($checkTickets->count() == 0) {
             $allTicketsByOffice = DB::table('tickets') //GET ALL TICKETS WAITING
-            ->where('expired', '=', false)
+                ->where('expired', '=', false)
                 ->where('office_id', '=', $request->office_id)
                 ->whereDate('created_at', Carbon::now()->toDateString())
+                ->orderBy('number', 'desc')
                 ->get();
-            if($allTicketsByOffice->count() == 0){
+            /*if($allTicketsByOffice->count() == 0){
                 $newNumber = 1;
             }else{
                 $initTicket = DB::table('tickets')
@@ -135,7 +135,19 @@ class TicketsController extends Controller
                 }else{
                     $newNumber = $maximumNumber + 1;
                 }
-            }
+            }*/
+
+
+
+            $initTicket = DB::table('tickets')
+                ->where('office_id', '=', $request->office_id)
+                ->orderBy('number', 'desc')
+                ->first();
+            $maximumNumber = $initTicket->number;
+            $newNumber = $maximumNumber + 1;
+
+
+
 
             $ticket = new Ticket;
             $ticket->office_id = $request->office_id;

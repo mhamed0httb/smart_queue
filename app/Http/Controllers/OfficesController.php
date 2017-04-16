@@ -213,4 +213,37 @@ class OfficesController extends Controller
         Session::flash('assign', $manager->first_name . ' is managing the office : ' . $office->identifier);
         return redirect('/dashboard/offices');
     }
+
+    public function getOfficeStatus(Request $request)
+    {
+        $office = Office::find($request->office_id);
+        $result = array();
+        $windows = $office->ticketWindow;
+        $numWindows = 0;
+        foreach ($windows as $one){
+            $numWindows = $numWindows + 1;
+        }
+        $result['number_windows'] = $numWindows;
+        $ticket = DB::table('tickets')
+            ->where('office_id', '=', $request->office_id)
+            ->count();
+        return $result;
+    }
+
+    public function getOfficesByCompanyCategory(Request $request)
+    {
+        $result = array();
+        $companies = DB::table('companies')
+            ->where('category', '=', $request->category)
+            ->get();
+        foreach ($companies as $one){
+            $offices = DB::table('offices')
+                ->where('company_id', '=', $one->id)
+                ->get();
+            foreach ($offices as $onee){
+                array_push($result,$onee);
+            }
+        }
+        return $result;
+    }
 }

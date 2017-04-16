@@ -4,9 +4,9 @@
     <!-- Logo -->
     <a href="{{url('/manager')}}" class="logo">
         <!-- mini logo for sidebar mini 50x50 pixels -->
-        <span class="logo-mini"><b>A</b>LT</span>
+        <span class="logo-mini"><b>M</b>SQ</span>
         <!-- logo for regular state and mobile devices -->
-        <span class="logo-lg"><b>Manager </b>LTE</span>
+        <span class="logo-lg"><b>Smart Queue</b> Manager</span>
     </a>
 
     <!-- Header Navbar -->
@@ -162,9 +162,9 @@
                     </ul>
                 </li>
                 <!-- Control Sidebar Toggle Button -->
-                <li>
+                <!--li>
                     <a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a>
-                </li>
+                </li-->
             </ul>
         </div>
     </nav>

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Company;
 use App\CompanyResponsible;
 use Session;
+use Illuminate\Support\Facades\DB;
 
 class CompanyController extends Controller
 {
@@ -51,6 +52,7 @@ class CompanyController extends Controller
         $company->description = $request->description;
         $company->email = $request->email;
         $company->phone = $request->phone;
+        $company->category = $request->category;
         $company->address = $request->address;
         $companyResponsible->name = $request->responsible_name;
         $companyResponsible->title = $request->responsible_title;
@@ -107,6 +109,7 @@ class CompanyController extends Controller
         $company->description = $request->description;
         $company->email = $request->email;
         $company->phone = $request->phone;
+        $company->category = $request->category;
         $company->address = $request->address;
         $responsible->name = $request->responsible_name;
         $responsible->title = $request->responsible_title;
@@ -162,5 +165,13 @@ class CompanyController extends Controller
         }
         //$offices = EloquentUser::find($manager->id)->office;*/
         return($resCompanies);
+    }
+
+    public function getCompaniesByCategory(Request $request)
+    {
+        $companies = DB::table('companies')
+            ->where('category', '=', $request->category)
+            ->get();
+        return $companies;
     }
 }

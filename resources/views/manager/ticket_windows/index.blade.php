@@ -78,7 +78,7 @@
                                 </td>
                                 <td>
                                     <div class="row">
-                                        <a class="btn btn-warning  pull-left" href="{{ url('/manager/ticket_windows/' . $window->id . '/edit') }}"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                                        <a style="margin-right: 10px" class="btn btn-warning  pull-left" href="{{ url('/manager/ticket_windows/' . $window->id . '/edit') }}"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                                             Edit</a>
 
                                         <a onclick="confirmDelete({{$window->id}})" class="btn btn-danger pull-left"><i class="fa fa-trash-o" aria-hidden="true"></i>

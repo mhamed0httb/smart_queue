@@ -34,14 +34,14 @@
 
         <!-- Sidebar Menu -->
         <ul class="sidebar-menu">
-            <li class="header">HEADER</li>
+            <li class="header"> </li>
             <!-- Optionally, you can add icons to the links -->
             <!--li-- class=""><a href="{{ url('/dashboard/categories/create') }}"><i class="fa fa-link"></i> <span>Add Category</span></a></li-->
-            <li class=""><a href="{{ url('/dashboard/regions') }}"><i class="fa fa-link"></i> <span>Regions</span></a></li>
+            <li class=""><a href="{{ url('/dashboard/regions') }}"><i class="fa fa-map"></i> <span>Regions</span></a></li>
 
 
-            <li class=""><a href="{{ url('/dashboard/companies') }}"><i class="fa fa-link"></i> <span>Companies</span></a></li>
-            <li class=""><a href="{{ url('/dashboard/manager') }}"><i class="fa fa-link"></i> <span>Managers</span></a></li>
+            <li class=""><a href="{{ url('/dashboard/companies') }}"><i class="fa fa-building"></i> <span>Companies</span></a></li>
+            <li class=""><a href="{{ url('/dashboard/manager') }}"><i class="fa fa-users"></i> <span>Managers</span></a></li>
 
             <!--li-- class="treeview">
                 <a href="#"><i class="fa fa-link"></i> <span>Companies</span>
@@ -76,7 +76,7 @@
                     <li><a href="{{ url('/dashboard/services/create') }}">Create new</a></li>
                 </ul>
             </li-->
-            <li class=""><a href="{{ url('/dashboard/offices') }}"><i class="fa fa-link"></i> <span>Offices</span></a></li>
+            <li class=""><a href="{{ url('/dashboard/offices') }}"><i class="fa fa-university"></i> <span>Offices</span></a></li>
             <!--li class="treeview">
                 <a href="#"><i class="fa fa-link"></i> <span>Offices</span>
                     <span class="pull-right-container">
@@ -88,7 +88,7 @@
                     <li><a href="{{ url('/dashboard/offices/create') }}">Create new</a></li>
                 </ul>
             </li-->
-            <li class=""><a href="{{ url('/dashboard/ads') }}"><i class="fa fa-link"></i> <span>Advertisements</span></a></li>
+            <li class=""><a href="{{ url('/dashboard/ads') }}"><i class="fa fa-newspaper-o"></i> <span>Advertisements</span></a></li>
 
         </ul>
         <!-- /.sidebar-menu -->

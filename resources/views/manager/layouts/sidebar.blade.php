@@ -34,7 +34,7 @@
 
         <!-- Sidebar Menu -->
         <ul class="sidebar-menu">
-            <li class="header">HEADER</li>
+            <li class="header"></li>
             <!-- Optionally, you can add icons to the links -->
             <!--li-- class="treeview">
                 <a href="#"><i class="fa fa-link"></i> <span>Staff</span>
@@ -69,14 +69,14 @@
                     <li><a href="#"></a></li>
                 </ul>
             </li-->
-            <li class=""><a href="{{ url('/manager/staffs') }}"><i class="fa fa-link"></i> <span>Staff members</span></a></li>
+            <li class=""><a href="{{ url('/manager/staffs') }}"><i class="fa fa-users"></i> <span>Staff members</span></a></li>
             <li class=""><a href="{{ url('/manager/ticket_windows') }}"><i class="fa fa-link"></i> <span>Ticket Windows</span></a></li>
-            <li class=""><a href="{{url('/manager/tickets')}}"><i class="fa fa-link"></i> <span>Tickets</span></a></li>
-            <li class=""><a href="{{url('/manager/services')}}"><i class="fa fa-link"></i> <span>Services</span></a></li>
+            <li class=""><a href="{{url('/manager/tickets')}}"><i class="fa fa-ticket"></i> <span>Tickets</span></a></li>
+            <li class=""><a href="{{url('/manager/services')}}"><i class="fa fa-thumbs-up"></i> <span>Services</span></a></li>
 
             <!--li class=""><a href="#"><i class="fa fa-link"></i> <span>Request Services</span></a></li-->
             <li class="treeview">
-                <a href="#"><i class="fa fa-link"></i> <span>Statistics</span>
+                <a href="#"><i class="fa fa-area-chart"></i> <span>Statistics</span>
                     <span class="pull-right-container">
                         <i class="fa fa-angle-left pull-right"></i>
                     </span>
@@ -86,6 +86,8 @@
                     <li><a href="#"></a></li>
                 </ul>
             </li>
+
+            <li class=""><a href="{{url('/manager/basicConfiguration')}}"><i class="fa fa-cogs"></i> <span>Office Config</span></a></li>
 
         </ul>
         <!-- /.sidebar-menu -->

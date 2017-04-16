@@ -34,6 +34,23 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <![endif]-->
 
     <link rel="stylesheet" type="text/css" href="{{ URL::asset("/css/sweetalert.css")}}">
+    <link rel="stylesheet" type="text/css" href="{{ URL::asset("/css/bootstrap-timepicker.min.css")}}">
+
+
+
+    <script src="https://www.gstatic.com/firebasejs/3.7.8/firebase.js"></script>
+    <script>
+        // Initialize Firebase
+        var config = {
+            apiKey: "AIzaSyBSEsRarnRMhASv252VlcKkH9LlSgxHnLw",
+            authDomain: "smartqueue-157921.firebaseapp.com",
+            databaseURL: "https://smartqueue-157921.firebaseio.com",
+            projectId: "smartqueue-157921",
+            storageBucket: "smartqueue-157921.appspot.com",
+            messagingSenderId: "156715785103"
+        };
+        firebase.initializeApp(config);
+    </script>
 </head>
 <!--
 BODY TAG OPTIONS:
@@ -193,6 +210,8 @@ desired effect
      fixed layout. -->
 
 <script src="{{ asset ("/js/sweetalert.min.js") }}"></script>
+
+<script src="{{ asset ("/js/bootstrap-timepicker.min.js") }}"></script>
 
 <script>
     function dismissAlertMessage(){

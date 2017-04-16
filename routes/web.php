@@ -55,6 +55,10 @@ Route::group(['middleware' => 'manager'], function(){
     Route::post('/manager/ticket_windows/update_status', 'TicketWindowsController@updateStatus');
     Route::get('/manager/statistics/staff/{id}', 'StaffsController@staffStatAllDay');
     Route::get('/manager/statistics/services', 'ServicesController@servicesStatAllDay');
+    Route::get('/manager/basicConfiguration', 'ManagerController@basicConfiguration');
+    Route::post('/manager/basicConfiguration', 'ManagerController@basicConfigurationStore');
+    Route::get('/manager/basicConfiguration/edit', 'ManagerController@basicConfigurationEdit');
+    Route::post('/manager/basicConfiguration/edit', 'ManagerController@basicConfigurationUpdate');
 });
 
 //Route::get('/webservices/tickets/create', 'TicketsController@createTicket');

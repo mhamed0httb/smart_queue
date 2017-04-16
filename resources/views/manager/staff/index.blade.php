@@ -48,10 +48,10 @@
                                                                 <td>{{ $staff->first_name }}  </td>
                                                                 <td>{{ $staff->last_name }}</td>
                                                                 <td>
-                                                                        <!--a class="btn btn-warning">Edit</a-->
-                                                                        <a href="{{ url('/manager/statistics/staff/' . $staff->id) }}" class="btn btn-info pull-left"><i class="fa fa-bar-chart" aria-hidden="true"></i>
+                                                                    <!--a class="btn btn-warning">Edit</a-->
+                                                                    <a style="margin-right: 10px" href="{{ url('/manager/statistics/staff/' . $staff->id) }}" class="btn btn-info pull-left"><i class="fa fa-bar-chart" aria-hidden="true"></i>
                                                                              Stats</a>
-                                                                    <a class="btn btn-warning  pull-left" href="{{ url('/manager/staffs/' . $staff->id . '/edit') }}"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                                                                    <a style="margin-right: 10px" class="btn btn-warning  pull-left" href="{{ url('/manager/staffs/' . $staff->id . '/edit') }}"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                                                                         Edit</a>
                                                                         <!--a-- onclick="deleteMember({{$staff->id}})" class="btn btn-danger"><i class="fa fa-trash" aria-hidden="true"></i>
                                                                              Delete</a-->

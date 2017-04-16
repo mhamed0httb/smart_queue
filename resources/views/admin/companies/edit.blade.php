@@ -41,6 +41,13 @@
                             </div>
                         </div>
                         <div class="form-group">
+                            <label for="category" class="col-sm-2 control-label">Category</label>
+
+                            <div class="col-sm-10">
+                                <input type="text" value="{{ $company->category }}" name="category" class="form-control" id="category" placeholder="category" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
                             <label for="description" class="col-sm-2 control-label">Description</label>
 
                             <div class="col-sm-10">

@@ -6,6 +6,7 @@ use App\Staff;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use App\Ticket;
+use App\Service;
 
 /*
 |--------------------------------------------------------------------------
@@ -211,6 +212,7 @@ Route::group(['middleware' => 'cors'], function(){
             }
         }
         $result['services'] = $services;
+
         //return($updated_at->second - $created_at->second);
         return($result);
     });
@@ -487,6 +489,120 @@ Route::group(['middleware' => 'cors'], function(){
 
     Route::get('/user/signUp', 'AdminController@signUp');
     Route::get('/user/signIn', 'AdminController@signIn');
+
+    Route::get('/offices/status', 'OfficesController@getOfficeStatus');
+
+    Route::get('/tickets/checkAvailable', function(Request $req)
+    {
+
+        $ticket = DB::table('tickets')
+            ->where('office_id', '=', $req->office_id)
+            ->where('owner_id', '=', $req->user_id)
+            ->where('expired', '=', false)
+            ->first();
+        if($ticket == null){
+            return ('not_found');
+        }else{
+            return ('found');
+        }
+
+    });
+
+    Route::get('/estimatedTime', function(Request $req)
+    {
+        $his = DB::table('history')
+            ->where('office_id', '=', $req->office_id)
+            ->get();
+
+        $nbrClientServed = DB::table('history')
+            ->where('office_id', '=', $req->office_id)
+            ->count();
+        $result = array();
+        $services = array();
+        $result['total_clients_served'] = $nbrClientServed;
+        foreach($his as $one){
+            $service  = App\Service::find($one->service_id);
+            $serArr = array();
+            $clientArr = array();
+            //$created_at = Carbon::parse($one->created_at);
+            //$updated_at = Carbon::parse($one->updated_at);
+            //$ticketServed = Ticket::find($one->ticket_id);
+            if(array_key_exists($service->id, $services)){
+                $occ = $services[$service->id]['nbr_clients_served'];
+                $occ = $occ + 1;
+                $services[$service->id]['nbr_clients_served'] = $occ;
+            }else{
+                $serArr['nbr_clients_served'] = 1;
+                $serArr['service_name'] = $service->name;
+
+                $hisServ = DB::table('history')
+                    ->where('office_id', '=', $req->office_id)
+                    ->where('service_id', $service->id)
+                    ->get();
+                foreach($hisServ as $onee){
+                    $ticketServed = App\Ticket::find($onee->ticket_id);
+                    $created_at = Carbon::parse($onee->created_at);
+                    $updated_at = Carbon::parse($onee->updated_at);
+                    //$clientArr[$ticketServed->id]['object_ticket'] = $ticketServed;
+                    //$clientArr[$ticketServed->id]['time_begin'] = $created_at;
+                    //$clientArr[$ticketServed->id]['time_end'] = $updated_at;
+                    $beginSeconds = $created_at->second + ($created_at->minute *60) + ($created_at->hour * 3600);
+                    $endSeconds = $updated_at->second + ($updated_at->minute *60) + ($updated_at->hour * 3600);
+                    $clientArr[$ticketServed->id]['time_difference_minutes'] = ($endSeconds - $beginSeconds) / 60;
+
+                    $clientArr[$ticketServed->id]['date'] = $created_at->toDateString();
+                }
+
+                $serArr['clients_served'] = $clientArr;
+                $services[$service->id] = $serArr;
+            }
+        }
+        $result['services'] = $services;
+
+        $windowsOnline = DB::table('ticket_windows')
+            ->where('status', '=', 'Online')
+            ->where('office_id', $req->office_id)
+            ->get();
+
+
+        $totalTime = 0;
+        foreach ($result['services'] as $one){
+            foreach ($one['clients_served'] as $onee){
+                //return $onee['time_difference_minutes'];
+                $totalTime = $totalTime + $onee['time_difference_minutes'];
+            }
+        }
+
+        $ticketsCount = DB::table('tickets')
+            ->where('office_id', '=', $req->office_id)
+            ->where('expired', '=', false)
+            ->whereDate('created_at', Carbon::now()->toDateString())
+            ->orderBy('number', 'desc')
+            ->count();
+        return $totalTime / $result['total_clients_served'] * $ticketsCount;
+    });
+
+    Route::get('/tickets/lastTicket', function(Request $req)
+    {
+
+        $ticket = DB::table('tickets')
+            ->where('office_id', '=', $req->office_id)
+            ->where('expired', '=', false)
+            ->whereDate('created_at', Carbon::now()->toDateString())
+            ->orderBy('number', 'desc')
+            ->first();
+
+        if($ticket == null){
+            return 1;
+        }else{
+            return $ticket->number + 1;
+        }
+
+
+    });
+
+    Route::get('/offices/byComapny/category', 'OfficesController@getOfficesByCompanyCategory');
+    Route::get('/companies/byCategory', 'CompanyController@getCompaniesByCategory');
 });
 
 

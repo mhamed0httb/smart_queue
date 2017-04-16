@@ -17,6 +17,7 @@ class CreateCompaniesTable extends Migration
             $table->increments('id');
             $table->string('identifier');
             $table->string('name');
+            $table->string('category');
             $table->string('description');
             $table->string('phone');
             $table->string('email');

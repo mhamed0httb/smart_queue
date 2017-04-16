@@ -44,5 +44,9 @@ class Office extends Model
         return $this->hasMany('App\Advertisement','office_id');
     }
 
+    function config() {
+        return $this->hasOne('App\OfficeConfig','office_id');
+    }
+
 
 }
