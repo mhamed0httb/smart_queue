@@ -227,6 +227,14 @@ class OfficesController extends Controller
         $ticket = DB::table('tickets')
             ->where('office_id', '=', $request->office_id)
             ->count();
+        $config = DB::table('office_config')
+            ->where('office_id', '=', $request->office_id)
+            ->first();
+        $result['opening_morning'] = $config->opening_time_morning;
+        $result['closing_morning'] = $config->closing_time_morning;
+        $result['opening_evening'] = $config->opening_time_evening;
+        $result['closing_eveing'] = $config->closing_time_evening;
+        $result['capacity'] = $config->capacity;
         return $result;
     }
 

@@ -6,6 +6,7 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Company;
+use App\Token;
 use App\OfficeConfig;
 use Illuminate\Support\Facades\Storage;
 use App;
@@ -136,5 +137,53 @@ class ManagerController extends Controller
         $config->save();
         Session::flash('update', 'Successfully updated the office configuration!');
         return redirect('/manager/basicConfiguration/edit');
+    }
+
+    public function send_notification($tokens, $message)
+    {
+        $url = 'https://fcm.googleapis.com/fcm/send';
+        $fields = array(
+            'registration_ids' => $tokens,
+            'data' => $message
+        );
+        $headers = array(
+            'Authorization:key = AAAAJHz9G48:APA91bGs1TrXvJdDoyVoXuFZsHtTPuYw7zuOt3P047YDmS3DImqqxvrOcHCd20j3o12JeplXmYp4OlPaC7m_QojNHHBQFpJJRboeMEO-qWvQMDIsTvG7j1FbjzXRlEF5NqtzR2SPov9m ',
+            'Content-Type: application/json'
+        );
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt ($ch, CURLOPT_SSL_VERIFYHOST, 0);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($fields));
+        $result = curl_exec($ch);
+        if ($result === FALSE) {
+            die('Curl failed: ' . curl_error($ch));
+        }
+        curl_close($ch);
+        return $result;
+    }
+
+    public function sendNotifMsg()
+    {
+        $tokens = array();
+        $allTokens = Token::all();
+        foreach ($allTokens as $one){
+            array_push($tokens,$one->token);
+        }
+        $message = array("message" => " FCM PUSH NOTIFICATION TEST MESSAGE");
+        $message_status = ManagerController::send_notification($tokens, $message);
+        return $message_status;
+    }
+
+    public function tokenStore(Request $request)
+    {
+        $token = new Token;
+        $token->token = $request->token;
+        $token->user_id = $request->user_id;
+        $token->save();
+        return 'token_added';
     }
 }

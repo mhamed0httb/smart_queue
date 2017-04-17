@@ -603,6 +603,9 @@ Route::group(['middleware' => 'cors'], function(){
 
     Route::get('/offices/byComapny/category', 'OfficesController@getOfficesByCompanyCategory');
     Route::get('/companies/byCategory', 'CompanyController@getCompaniesByCategory');
+
+    Route::get('/sendNotif', 'ManagerController@sendNotifMsg');
+    Route::get('/tokens/store', 'ManagerController@tokenStore');
 });
 
 
