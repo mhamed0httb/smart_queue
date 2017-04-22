@@ -113,13 +113,15 @@ class TicketsController extends Controller
             ->where('owner_id', '=', $request->owner_id)
             ->whereDate('created_at', Carbon::now()->toDateString())
             ->get();
+
         if ($checkTickets->count() == 0) {
             $allTicketsByOffice = DB::table('tickets') //GET ALL TICKETS WAITING
-                ->where('expired', '=', false)
+                //->where('expired', '=', false)
                 ->where('office_id', '=', $request->office_id)
                 ->whereDate('created_at', Carbon::now()->toDateString())
                 ->orderBy('number', 'desc')
                 ->get();
+
             /*if($allTicketsByOffice->count() == 0){
                 $newNumber = 1;
             }else{
@@ -136,26 +138,34 @@ class TicketsController extends Controller
                     $newNumber = $maximumNumber + 1;
                 }
             }*/
+            //return $allTicketsByOffice->count();
+            if($allTicketsByOffice->count() == 0){
+                $ticket = new Ticket;
+                $ticket->office_id = $request->office_id;
+                $ticket->owner_id = $request->owner_id;
+                $ticket->number = 1;
+                $ticket->expired = false;
+                $ticket->service_id = $request->service_id;
+                $ticket->save();
+                return $ticket;
+            }else{
+                $initTicket = DB::table('tickets')
+                    ->where('office_id', '=', $request->office_id)
+                    ->whereDate('created_at', Carbon::now()->toDateString())
+                    ->orderBy('number', 'desc')
+                    ->first();
+                $maximumNumber = $initTicket->number;
+                $newNumber = $maximumNumber + 1;
 
-
-
-            $initTicket = DB::table('tickets')
-                ->where('office_id', '=', $request->office_id)
-                ->orderBy('number', 'desc')
-                ->first();
-            $maximumNumber = $initTicket->number;
-            $newNumber = $maximumNumber + 1;
-
-
-
-
-            $ticket = new Ticket;
-            $ticket->office_id = $request->office_id;
-            $ticket->owner_id = $request->owner_id;
-            $ticket->number = $newNumber;
-            $ticket->expired = false;
-            $ticket->save();
-            return $ticket;
+                $ticket = new Ticket;
+                $ticket->office_id = $request->office_id;
+                $ticket->owner_id = $request->owner_id;
+                $ticket->number = $newNumber;
+                $ticket->expired = false;
+                $ticket->service_id = $request->service_id;
+                $ticket->save();
+                return $ticket;
+            }
         }else{
             return('user have already a ticket');
         }
@@ -172,12 +182,14 @@ class TicketsController extends Controller
                 ->where('expired', '=', false)
                 ->where('office_id', '=', $ticketWindow->office_id)
                 ->where('status', '=', 'waiting')
+                ->where('service_id', '=', $ticketWindow->service_id) //ADDED NEW TO SERVE THE APPROPRIATE TICKET WITH THE APPROPRIATE SERVICE
                 ->get();
             if(! $allTicketsWaiting->count() == 0){ //IF THERE ARE TICKETS WAITING
                 $initTicket = DB::table('tickets')  //GET FIRST RESULT FOR TICKETS WAITING
                     ->where('expired', '=', false)
                     ->where('office_id', '=', $ticketWindow->office_id)
                     ->where('status', '=', 'waiting')
+                    ->where('service_id', '=', $ticketWindow->service_id) //ADDED NEW TO SERVE THE APPROPRIATE TICKET WITH THE APPROPRIATE SERVICE
                     ->orderBy('number', 'asc')
                     ->first();
                 $minimumNumber = $initTicket->number; //INITIALIZE MINIMUM NUMBER OF TICKETS
@@ -215,12 +227,14 @@ class TicketsController extends Controller
                 ->where('expired', '=', false)
                 ->where('office_id', '=', $ticketWindow->office_id)
                 ->where('status', '=', 'waiting')
+                ->where('service_id', '=', $ticketWindow->service_id) //ADDED NEW TO SERVE THE APPROPRIATE TICKET WITH THE APPROPRIATE SERVICE
                 ->get();
             if(! $allTicketsWaiting->count() == 0){
                 $initTicket = DB::table('tickets')
                     ->where('expired', '=', false)
                     ->where('office_id', '=', $ticketWindow->office_id)
                     ->where('status', '=', 'waiting')
+                    ->where('service_id', '=', $ticketWindow->service_id) //ADDED NEW TO SERVE THE APPROPRIATE TICKET WITH THE APPROPRIATE SERVICE
                     ->orderBy('number', 'asc')
                     ->first();
                 $minimumNumber = $initTicket->number;

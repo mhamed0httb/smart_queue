@@ -22,4 +22,9 @@ class Service extends Model
     {
         return $this->hasMany('App\TicketWindow','service_id');
     }
+
+    public function tickets()
+    {
+        return $this->hasMany('App\Ticket','service_id');
+    }
 }

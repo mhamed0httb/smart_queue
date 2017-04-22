@@ -21,6 +21,7 @@ class CreateOfficesTable extends Migration
             $table->integer('region_id');
             $table->float('office_lat', 20, 18);
             $table->float('office_lng', 20, 18);
+            $table->text('raspberry_id')->nullable();
             $table->timestamps();
         });
     }

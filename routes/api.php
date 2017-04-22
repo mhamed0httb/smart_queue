@@ -7,6 +7,10 @@ use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use App\Ticket;
 use App\Service;
+use App\Office;
+use App\Company;
+use App\Advertisement;
+use App\OfficePub;
 
 /*
 |--------------------------------------------------------------------------
@@ -578,7 +582,10 @@ Route::group(['middleware' => 'cors'], function(){
             ->where('expired', '=', false)
             ->whereDate('created_at', Carbon::now()->toDateString())
             ->orderBy('number', 'desc')
-            ->count();
+            ->get();
+        if(count($ticketsCount) == 0){
+            return 0;
+        }
         return $totalTime / $result['total_clients_served'] * $ticketsCount;
     });
 
@@ -605,7 +612,78 @@ Route::group(['middleware' => 'cors'], function(){
     Route::get('/companies/byCategory', 'CompanyController@getCompaniesByCategory');
 
     Route::get('/sendNotif', 'ManagerController@sendNotifMsg');
-    Route::get('/tokens/store', 'ManagerController@tokenStore');
+    Route::post('/tokens/store', 'ManagerController@tokenStore');
+
+    Route::get('/offices/allServices', function(Request $req)
+    {
+        $office = DB::table('offices')
+            ->where('raspberry_id', '=', $req->raspberry_id)
+            ->first();
+        $company = Company::find($office->company_id);
+        $services = DB::table('services')
+            ->where('company_id', '=', $company->id)
+            ->get();
+        $result = array();
+        foreach ($services as $one){
+            $oneArray = array();
+            $oneArray['service_name'] = $one->name;
+            $oneArray['id_service'] = $one->id;
+            array_push($result, $oneArray);
+        }
+        $bigResult = array();
+        $bigResult['office_name'] = $office->identifier;
+        $bigResult['services'] = $result;
+        return $bigResult;
+    });
+
+    Route::get('/offices/ad/request', function(Request $req)
+    {
+        $office = DB::table('offices')
+            ->where('raspberry_id', '=', $req->raspberry_id)
+            ->first();
+        $ad = DB::table('advertisements')
+            ->where('office_id', '=', $office->id)
+            ->first();
+        $officePub = DB::table('office_pub')
+            ->where('raspberry_id', '=', $req->raspberry_id)
+            ->first();
+        return asset($ad->file_path);
+    });
+
+    Route::get('/tickets/byServices', function(Request $req)
+    {
+
+        $office = DB::table('offices')
+            ->where('raspberry_id', '=', $req->raspberry_id)
+            ->first();
+
+        $company = Company::find($office->company_id);
+
+        $services = DB::table('services')
+            ->where('company_id', '=', $company->id)
+            ->get();
+
+        $result = array();
+
+        foreach ($services as $one){
+            $oneArray = array();
+            $oneArray['service_name'] = $one->name;
+            $tickets = DB::table('tickets')
+                ->where('office_id', '=', $office->id)
+                ->whereDate('created_at', Carbon::now()->toDateString())
+                ->where('status', '=', 'waiting')
+                ->where('expired', '=', false)
+                ->where('service_id', '=', $one->id)
+                ->get();
+            $oneArray['tickets'] = $tickets;
+            $oneArray['number_tickets_waiting'] = $tickets->count();
+            array_push($result,$oneArray);
+        }
+
+
+        return $result;
+
+    });
 });
 
 

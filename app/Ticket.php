@@ -18,6 +18,11 @@ class Ticket extends Model
         return $this->belongsTo('App\TicketWindow','ticket_window_id');
     }
 
+    public function getService()
+    {
+        return $this->belongsTo('App\Service','service_id');
+    }
+
     function history() {
         return $this->hasOne('App\History','ticket_id');
     }

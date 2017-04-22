@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateTicketsTable extends Migration
+class CreateTableOfficePub extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +13,12 @@ class CreateTicketsTable extends Migration
      */
     public function up()
     {
-        Schema::create('tickets', function (Blueprint $table) {
+        Schema::create('office_pub', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('number');
-            $table->integer('owner_id')->nullable();
-            $table->integer('service_id')->nullable();
+            $table->integer('user_id')->nullable();
+            $table->text('raspberry_id');
             $table->integer('office_id');
-            $table->integer('ticket_window_id')->nullable();
-            $table->boolean('expired')->default(false);
-            $table->string('status')->default('waiting');
+            $table->string('status');
             $table->timestamps();
         });
     }
@@ -33,6 +30,6 @@ class CreateTicketsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tickets');
+        Schema::dropIfExists('office_pub');
     }
 }
