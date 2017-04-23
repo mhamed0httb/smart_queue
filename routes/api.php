@@ -644,10 +644,67 @@ Route::group(['middleware' => 'cors'], function(){
         $ad = DB::table('advertisements')
             ->where('office_id', '=', $office->id)
             ->first();
+        if($ad == null){
+            return 'no_ad_yet';
+        }
         $officePub = DB::table('office_pub')
             ->where('raspberry_id', '=', $req->raspberry_id)
             ->first();
-        return asset($ad->file_path);
+        if($officePub == null){
+            return 'nothing_yet';
+            return asset($ad->file_path);
+        }else{
+            if($officePub->status == 'start'){
+                return asset($ad->file_path);
+            }
+            else if($officePub->status == 'in_progress'){
+                return 'in_progress';
+            }
+            else{
+                return 'done';
+            }
+
+        }
+
+    });
+
+    Route::get('/offices/ad/userRequest', function(Request $req)
+    {
+        $office = DB::table('offices')
+            ->where('raspberry_id', '=', $req->raspberry_id)
+            ->first();
+        $ad = DB::table('advertisements')
+            ->where('office_id', '=', $office->id)
+            ->first();
+        if($ad == null){
+            return 'no_ad_yet';
+        }
+        $officePub = DB::table('office_pub')
+            ->where('raspberry_id', '=', $req->raspberry_id)
+            ->first();
+        if($officePub == null){
+            $pub = new OfficePub;
+            $pub->status = 'start';
+            $pub->raspberry_id = $office->raspberry_id;
+            $pub->office_id = $office->id;
+            $pub->user_id = $req->user_id;
+            $pub->save();
+            return asset($ad->file_path);
+        }else{
+            if($officePub->status == 'in_progress'){
+                return 'look_up';
+            }
+            else if($officePub->status == 'start'){
+                return 'look_up';
+            }
+            else{
+                $officePub->status = 'start';
+                $officePub->save();
+                return 'starting';
+            }
+
+        }
+
     });
 
     Route::get('/tickets/byServices', function(Request $req)
@@ -679,7 +736,6 @@ Route::group(['middleware' => 'cors'], function(){
             $oneArray['number_tickets_waiting'] = $tickets->count();
             array_push($result,$oneArray);
         }
-
 
         return $result;
 
