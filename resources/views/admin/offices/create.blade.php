@@ -73,6 +73,14 @@
                             </div>
                         </div>
 
+                        <div class="form-group">
+                            <label for="identifier" class="col-sm-2 control-label">Raspberry ID</label>
+
+                            <div class="col-sm-6">
+                                <input type="text" name="raspberry_id" class="form-control" id="raspberry_id" placeholder="raspberry id" required>
+                            </div>
+                        </div>
+
                         <input type="hidden" name="office_lat" class="form-control" id="office_lat" value="0"  required>
                         <input type="hidden" name="office_lng" class="form-control" id="office_lng" value="0"  required>
                         <input type="hidden" name="company_id" class="form-control" id="company_id" >

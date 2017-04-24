@@ -10,9 +10,9 @@
         <small>{{ $page_description or null }}</small>
     </h1>
     <ol class="breadcrumb">
-        <li><a href="{{url('/dashboard')}}"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li><a href="#">{{ $sub_page_title or null }}</a></li>
-        <li class="active">{{ $page_title or null }}</li>
+        <li><a href="{{url('/manager')}}"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li><a href="#">{{ $sub_page_title or 'statistics' }}</a></li>
+        <li class="active">{{ $page_title or 'services' }}</li>
     </ol>
 
     <!-- /.row -->
@@ -35,10 +35,7 @@
                 </div>
                 <!-- /.box-header -->
                 <div class="box-body table-responsive no-padding">
-                    <div style="width: 100%; height: 100%;">
-                        <canvas id="myChart" style="width: 100%; height: auto;"></canvas>
-                    </div>
-                    <div id="js-legend" class="chart-legend"></div>
+                    <div id="container" style="min-width: 310px; max-width: 800px; height: 400px; margin: 0 auto"></div>
                 </div>
                 <!-- /.box-body -->
             </div>
@@ -57,15 +54,12 @@
 @endsection
 
 @section('scripts')
-    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.0.6/angular.js"></script>
-    <script src="http://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.1/Chart.min.js"></script>
-    <script type="text/javascript" src="oXHR.js"></script>
 
-    <script >
+    <script src="{{ asset('js/jquery-3.1.1.min.js') }}"></script>
+    <script src="{{ asset('js/highcharts.js') }}"></script>
+    <script src="{{ asset('js/exporting.js') }}"></script>
 
-
-
-
+    <script>
 
 
 
@@ -77,9 +71,9 @@
         var nbrC = new Array();
         var nbCli = new Array();
 
-
         var url = "{{ url('/api/statistics/service/allDay?office_id=' . $office->id) }}";
         $.getJSON(url, function(tickets){
+
             this.tickets = tickets;
 
             console.log(tickets.services[1].nbr_clients_served);
@@ -105,41 +99,70 @@
             console.log(nbCli);
 
 
-            var data = {
-                labels: serName,
-                datasets: [
-                    {
-                        label: "My First dataset",
-                        fillColor: "rgba(220,220,220,0.5)",
-                        strokeColor: "rgba(220,220,220,0.8)",
-                        highlightFill: "rgba(220,220,220,0.75)",
-                        highlightStroke: "rgba(220,220,220,1)",
 
-                        data :  nbCli// nbr client servi mèyetzèdech automatiquement
+            Highcharts.chart('container', {
+                chart: {
+                    type: 'bar'
+                },
+                title: {
+                    text: 'Services statistics'
+                },
+                subtitle: {
+                    text: 'According to the number of clients'
+                },
+                xAxis: {
+                    categories: serName,
+                    title: {
+                        text: null
+                    }
+                },
+                yAxis: {
+                    min: 0,
+                    title: {
+                        text: 'Services',
+                        align: 'high'
                     },
-
-                ]
-            };
-
-
-            var ctx = document.getElementById("myChart").getContext("2d");
-            ctx.canvas.width = 1000;
-            ctx.canvas.height = 800;
-
-            var myChart = new Chart(ctx).Bar(data);
-
-
+                    labels: {
+                        overflow: 'justify'
+                    }
+                },
+                tooltip: {
+                    valueSuffix: ' Clients/service'
+                },
+                plotOptions: {
+                    bar: {
+                        dataLabels: {
+                            enabled: true
+                        }
+                    }
+                },
+                legend: {
+                    layout: 'vertical',
+                    align: 'right',
+                    verticalAlign: 'top',
+                    x: -40,
+                    y: 80,
+                    floating: false,
+                    borderWidth: 1,
+                    backgroundColor: ((Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'),
+                    shadow: false
+                },
+                credits: {
+                    enabled: false
+                },
+                series: [{
+                    name: 'Nb.Clients',
+                    data: nbCli
+                }]
+            });
 
 
 
         }.bind(this));
 
-
-
-
-
-
-
-
     </script>
+
+
+
+
 @endsection

@@ -35,10 +35,7 @@
                 </div>
                 <!-- /.box-header -->
                 <div class="box-body table-responsive no-padding">
-                    <div style="width: 100%; height: 100%;">
-                        <canvas id="myChart" style="width: 100%; height: auto;"></canvas>
-                    </div>
-                    <div id="js-legend" class="chart-legend"></div>
+                    <div id="container" style="min-width: 310px; max-width: 800px; height: 400px; margin: 0 auto"></div>
                 </div>
                 <!-- /.box-body -->
             </div>
@@ -57,9 +54,10 @@
 @endsection
 
 @section('scripts')
-    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.0.6/angular.js"></script>
-    <script src="http://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.1/Chart.min.js"></script>
-    <script type="text/javascript" src="oXHR.js"></script>
+    <script src="{{ asset('js/jquery-3.1.1.min.js') }}"></script>
+    <script src="{{ asset('js/highcharts.js') }}"></script>
+    <script src="{{ asset('js/exporting.js') }}"></script>
+
 
     <script >
 
@@ -240,6 +238,174 @@
                 var myChart = new Chart(ctx).Bar(data);
 
             }.bind(this));
+
+
+    </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <script>
+
+        var staff = new Array();
+        var totalClients = 0;
+        var nameEmp = "";
+        var services = new Array();
+        var serviceName = new Array();
+        var nbrClient = new Array();
+        var clients = [[]];
+        var timeDif = new Array();
+        var sommeTime = 0;
+        var timeFinal = new Array();
+
+        var url = "{{ url('/api/statistics/staff/allDays?staff_id=' . $member->id . '&office_id=' . $member->getOffice->id) }}";
+        url = url.replace(/\&amp;/g, '&');
+        $.getJSON(url,
+            function(staff){
+
+                this.staff = staff;
+                console.log(staff);
+                totalClients = staff.total_clients_served;//hethi
+                console.log(totalClients);
+                nameEmp = staff.staff_name;//hethi
+                console.log(nameEmp);
+                services = staff.services;
+                console.log(services);
+
+                for (var i = 0; i < services.length; i++) {
+
+                    serviceName[i] = services[i].service_name;
+                    nbrClient[i] = services[i].nbr_services_served;
+                    clients[i] = services[i].clients_served;
+                };
+
+                console.log(serviceName);//hethi
+                console.log(nbrClient);//hethi
+                console.log(clients);
+
+                for (var i = 0; i < clients.length; i++) {
+
+                    for (var j = 0; j < clients[i].length; j++) {
+
+                        timeDif[j] = clients[i][j].time_difference_minutes
+
+
+
+                    };
+                };
+
+                console.log(timeDif);
+
+                for (var j = 0; j < services.length; j++) {
+
+                    for (var i = 0; i < timeDif.length; i++) {
+
+                        if(Math.round(timeDif[i],2) > 0){
+
+                            sommeTime += timeDif[i];
+                            console.log("timeD",sommeTime);
+
+                            timeFinal[j] = Math.round(sommeTime/60,2);
+
+                        }
+
+                    };
+
+                };
+
+                console.log(timeFinal);//hethi
+
+
+                Highcharts.chart('container', {
+                    chart: {
+                        type: 'bar'
+                    },
+                    title: {
+                        text: nameEmp
+                    },
+                    subtitle: {
+                        text: 'Total clients served '+totalClients
+                    },
+                    xAxis: {
+                        categories: serviceName,
+                        title: {
+                            text: null
+                        }
+                    },
+                    yAxis: {
+                        min: 0,
+                        title: {
+                            text: 'Services/Hours',
+                            align: 'high'
+                        },
+                        labels: {
+                            overflow: 'justify'
+                        }
+                    },
+                    tooltip: {
+                        valueSuffix: ' Clients/Hours'
+                    },
+                    plotOptions: {
+                        bar: {
+                            dataLabels: {
+                                enabled: true
+                            }
+                        }
+                    },
+                    legend: {
+                        layout: 'vertical',
+                        align: 'right',
+                        verticalAlign: 'top',
+                        x: -40,
+                        y: 80,
+                        floating: false,
+                        borderWidth: 1,
+                        backgroundColor: ((Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'),
+                        shadow: false
+                    },
+                    credits: {
+                        enabled: false
+                    },
+                    series: [{
+                        name: 'Nb.Clients',
+                        data: nbrClient
+                    },
+                        {
+                            name: 'Nb.hours',
+                            data: timeFinal
+                        }]
+                });
+
+
+
+            }.bind(this));
+
 
 
     </script>

@@ -145,5 +145,11 @@ class StaffsController extends Controller
             ->with('member',$stafMember);
     }
 
+    public function staffsStatAllDay()
+    {
+        $office = EloquentUser::find(Sentinel::getUser()->id)->office;
+        return view('manager.staff.statistics_all')->with('office',$office);
+    }
+
 
 }

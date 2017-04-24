@@ -50,6 +50,13 @@
                             </div>
                         </div>
                         <div class="form-group">
+                            <label for="identifier" class="col-sm-2 control-label">Raspberry ID</label>
+
+                            <div class="col-sm-6">
+                                <input type="text" value="{{ $office->raspberry_id }}" name="raspberry_id" class="form-control" id="raspberry_id" placeholder="raspberry id" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
                             <label for="region_id" class="col-sm-2 control-label">Region</label>
                             <div class="col-sm-6">
                                 <select class="form-control" id="region_id" name="region_id" required>

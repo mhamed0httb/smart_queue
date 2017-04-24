@@ -632,6 +632,7 @@ Route::group(['middleware' => 'cors'], function(){
         }
         $bigResult = array();
         $bigResult['office_name'] = $office->identifier;
+        $bigResult['office_id'] = $office->id;
         $bigResult['services'] = $result;
         return $bigResult;
     });
@@ -663,48 +664,64 @@ Route::group(['middleware' => 'cors'], function(){
             else{
                 return 'done';
             }
-
         }
-
     });
 
-    Route::get('/offices/ad/userRequest', function(Request $req)
+    Route::get('/offices/walkthrough/userRequest', function(Request $req)
     {
         $office = DB::table('offices')
             ->where('raspberry_id', '=', $req->raspberry_id)
             ->first();
-        $ad = DB::table('advertisements')
-            ->where('office_id', '=', $office->id)
-            ->first();
-        if($ad == null){
-            return 'no_ad_yet';
+
+        if($office == null){
+            $result = array();
+            $result['success'] = 0;
+            $result['message'] = 'No products found';
+            return $result;
+        }else{
+            $officePub = DB::table('office_pub')
+                ->where('raspberry_id', '=', $req->raspberry_id)
+                ->where('user_id', '=', $req->user_id)
+                ->where('status', '=', 'in_progress')
+                ->get();
+            $officePub2 = DB::table('office_pub')
+                ->where('raspberry_id', '=', $req->raspberry_id)
+                ->where('user_id', '=', $req->user_id)
+                ->where('status', '=', 'done')
+                ->get();
+            $result = array();
+            $numResult = array();
+            $littleResult = array();
+            $numResult['num'] = $officePub->count() + $officePub2->count();
+            array_push($littleResult, $numResult);
+            $result['check'] = $littleResult;
+            $result['success'] = 1;
+            return $result;
         }
-        $officePub = DB::table('office_pub')
+    });
+
+    Route::get('/offices/walkthrough/submitRequest', function(Request $req)
+    {
+        $office = DB::table('offices')
             ->where('raspberry_id', '=', $req->raspberry_id)
             ->first();
-        if($officePub == null){
-            $pub = new OfficePub;
-            $pub->status = 'start';
-            $pub->raspberry_id = $office->raspberry_id;
-            $pub->office_id = $office->id;
-            $pub->user_id = $req->user_id;
-            $pub->save();
-            return asset($ad->file_path);
+
+        $result = array();
+        if($office == null){
+            $result['success'] = 0;
+            $result['message'] = 'Oops! An error occurred.';
+            return $result;
         }else{
-            if($officePub->status == 'in_progress'){
-                return 'look_up';
-            }
-            else if($officePub->status == 'start'){
-                return 'look_up';
-            }
-            else{
-                $officePub->status = 'start';
-                $officePub->save();
-                return 'starting';
-            }
-
+            $officePub = new OfficePub;
+            $officePub->user_id = $req->user_id;
+            $officePub->raspberry_id = $req->raspberry_id;
+            $officePub->office_id = $office->id;
+            $officePub->status = 'start';
+            $officePub->save();
+            $result['success'] = 1;
+            $result['message'] = 'Tutorial will start.';
+            return $result;
         }
-
     });
 
     Route::get('/tickets/byServices', function(Request $req)

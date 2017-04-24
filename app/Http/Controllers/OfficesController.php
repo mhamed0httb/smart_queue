@@ -61,6 +61,7 @@ class OfficesController extends Controller
         $office->region_id = $request->region_id;
         $office->office_lat = $request->office_lat;
         $office->office_lng = $request->office_lng;
+        $office->raspberry_id = $request->raspberry_id;
         $office->save();
 
         //WE WILL KEEP THE OFFICE_ID ON USERS TABLE
@@ -162,6 +163,7 @@ class OfficesController extends Controller
             $office->office_lng = $request->office_lng;
         }
 
+        $office->raspberry_id = $request->raspberry_id;
         $office->save();
 
         $request->session()->flash('update', 'Office was successfully updated!');

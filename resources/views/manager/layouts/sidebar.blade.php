@@ -75,15 +75,19 @@
             <li class=""><a href="{{url('/manager/services')}}"><i class="fa fa-thumbs-up"></i> <span>Services</span></a></li>
 
             <!--li class=""><a href="#"><i class="fa fa-link"></i> <span>Request Services</span></a></li-->
-            <li class="treeview">
-                <a href="#"><i class="fa fa-area-chart"></i> <span>Statistics</span>
+
+
+            <li class="treeview active">
+                <a href="#">
+                    <i class="fa fa-area-chart"></i>
+                    <span>Statistics</span>
                     <span class="pull-right-container">
-                        <i class="fa fa-angle-left pull-right"></i>
-                    </span>
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
                 </a>
                 <ul class="treeview-menu">
-                    <li ><a href="{{url('/manager/statistics/services')}}">Services</a></li>
-                    <li><a href="#"></a></li>
+                    <li class=""><a href="{{url('/manager/statistics/services')}}"><i class="fa fa-circle-o"></i> Services</a></li>
+                    <li><a href="{{url('/manager/statistics/staffs')}}"><i class="fa fa-circle-o"></i> Staff Members</a></li>
                 </ul>
             </li>
 
