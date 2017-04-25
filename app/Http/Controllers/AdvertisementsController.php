@@ -133,4 +133,9 @@ class AdvertisementsController extends Controller
 
         return $res;
     }
+
+    public function calendar()
+    {
+        return view('admin.ads.calendar');
+    }
 }

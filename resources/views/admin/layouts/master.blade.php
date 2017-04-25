@@ -37,6 +37,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
 
     <link rel="stylesheet" type="text/css" href="{{ URL::asset("/css/sweetalert.css")}}">
+
+    @yield('css')
 </head>
 <!--
 BODY TAG OPTIONS:
