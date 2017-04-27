@@ -32,16 +32,19 @@
                 <div class="col-md-3">
                     <div class="box box-solid">
                         <div class="box-header with-border">
-                            <h4 class="box-title">Draggable Events</h4>
+                            <h4 class="box-title">All Ads</h4>
                         </div>
                         <div class="box-body">
                             <!-- the events -->
                             <div id="external-events">
-                                <div class="external-event bg-green">Lunch</div>
+                                @foreach ($ads as $ad)
+                                    <div id="{{ $ad->id }}" class="external-event bg-aqua">{{ $ad->name }}</div>
+                                @endforeach
+                                <!--div class="external-event bg-green">Lunch</div>
                                 <div class="external-event bg-yellow">Go home</div>
                                 <div class="external-event bg-aqua">Do homework</div>
                                 <div class="external-event bg-light-blue">Work on UI design</div>
-                                <div class="external-event bg-red">Sleep tight</div>
+                                <div class="external-event bg-red">Sleep tight</div-->
                                 <div class="checkbox">
                                     <label for="drop-remove">
                                         <input type="checkbox" id="drop-remove">
@@ -107,6 +110,40 @@
         <!-- /.content -->
 
     <!-- /.content-wrapper -->
+
+
+
+
+
+
+
+
+    <!-- Button trigger modal -->
+    <button type="button" class="btn btn-primary btn-lg hide" data-toggle="modal" data-target="#modal_delete" id="btn_delete_modal">
+        Launch modal
+    </button>
+
+    <!-- Modal -->
+    <div class="modal fade" id="modal_delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Delete office</h4>
+                </div>
+                <div class="modal-body" id="modal_delete_body">
+                    Are you sure you want to delete this office ?
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-danger" id="btn_delete_confirm">Delete</button>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
 
 @endsection
 
@@ -211,7 +248,16 @@
                 },
                 //Random default events
                 events: [
+                    @foreach ($ads as $ad)
                     {
+                        title: '{{ $ad->name }}',
+                        start: new Date(y, m, 1),
+                        backgroundColor: "#f56954", //red
+                        borderColor: "#f56954", //red
+                        id: "{{ $ad->id }}" //red
+                    },
+                    @endforeach
+                    /*{
                         title: 'All Day Event',
                         start: new Date(y, m, 1),
                         backgroundColor: "#f56954", //red
@@ -254,10 +300,14 @@
                         url: 'http://google.com/',
                         backgroundColor: "#3c8dbc", //Primary (light-blue)
                         borderColor: "#3c8dbc" //Primary (light-blue)
-                    }
+                    }*/
                 ],
                 editable: true,
                 droppable: true, // this allows things to be dropped onto the calendar !!!
+                eventClick: function(event) {
+                    openModal(event.id, event.title, event);
+
+                },
                 drop: function (date, allDay) { // this function is called when something is dropped
 
                     // retrieve the dropped element's stored Event Object
@@ -271,6 +321,11 @@
                     copiedEventObject.allDay = allDay;
                     copiedEventObject.backgroundColor = $(this).css("background-color");
                     copiedEventObject.borderColor = $(this).css("border-color");
+                    copiedEventObject.id = $(this).attr('id');
+                    console.log(date.format('h:mm a'))
+
+
+
 
                     // render the event on the calendar
                     // the last `true` argument determines if the event "sticks" (http://arshaw.com/fullcalendar/docs/event_rendering/renderEvent/)
@@ -317,6 +372,31 @@
                 $("#new-event").val("");
             });
         });
+
+        function openModal(id,title, event) {
+            console.log(event);
+
+            swal({
+                    title: "Delete '" + title + "' ?",
+                    text: "This Ad  will be deleted from plan !",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#DD6B55",
+                    confirmButtonText: "Yes, delete it!",
+                    cancelButtonText: "No, cancel!",
+                    closeOnConfirm: true,
+                    closeOnCancel: true
+                },
+                function(isConfirm){
+                    if (isConfirm) {
+                        //swal("Deleted!", "Ad has been deleted.", "success");
+                        $('#calendar').fullCalendar( 'removeEvents', id );
+
+                    } else {
+                        //swal("Cancelled", "Your imaginary file is safe :)", "error");
+                    }
+                });
+        }
     </script>
 
 @endsection

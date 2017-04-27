@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateAdvertisementsTable extends Migration
+class CreateAdResponsiblesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,14 @@ class CreateAdvertisementsTable extends Migration
      */
     public function up()
     {
-        Schema::create('advertisements', function (Blueprint $table) {
+        Schema::create('ad_responsibles', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
-            $table->string('file_path');
-            $table->string('type');
-            $table->string('video_length')->nullable();
-            $table->integer('company_id');
-            $table->boolean('active')->default(false);
+            $table->string('email');
+            $table->string('phone1');
+            $table->string('phone2')->nullable();
+            $table->string('fax')->nullable();
+            $table->string('title');
             $table->timestamps();
         });
     }
@@ -32,6 +32,6 @@ class CreateAdvertisementsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('advertisements');
+        Schema::dropIfExists('ad_responsibles');
     }
 }

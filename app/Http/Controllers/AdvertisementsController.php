@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Storage;
 use Sentinel;
 use App\Region;
 use App\Company;
+use App\AdCompany;
 use Cartalyst\Sentinel\Users\EloquentUser;
 use Session;
 use Illuminate\Support\Facades\DB;
@@ -36,13 +37,15 @@ class AdvertisementsController extends Controller
     {
         $allOffices = Office::all();
         $allRegions = Region::all();
-        $allCompanies = Company::all();
+        $allCompanies = AdCompany::all();
+        $allAdCompanies = AdCompany::all();
         $role = Sentinel::findRoleBySlug('manager');
         $allManagers = $role->users()->with('roles')->get();
         return view('admin.ads.create')
             ->with('allRegions',$allRegions)
             ->with('allManagers',$allManagers)
             ->with('allCompanies',$allCompanies)
+            ->with('allAdCompanies',$allAdCompanies)
             ->with('allOffices',$allOffices);
     }
 
@@ -56,7 +59,9 @@ class AdvertisementsController extends Controller
     {
         $ad = new Advertisement;
         $ad->video_length = $request->video_length;
-        $ad->office_id = $request->office_id;
+        $ad->company_id = $request->company_id;
+        $ad->name = $request->name;
+        $ad->type = $request->file('file')->getMimeType();
 
         $shortPATH = $request->file('file')->store('storage/ads');
         App::make('files')->link(storage_path('app/storage'), public_path('storage')); //create Symbolic link between "storage/app/..." AND "public/..."
@@ -136,6 +141,7 @@ class AdvertisementsController extends Controller
 
     public function calendar()
     {
-        return view('admin.ads.calendar');
+        $ads = Advertisement::all();
+        return view('admin.ads.calendar')->with('ads',$ads);
     }
 }

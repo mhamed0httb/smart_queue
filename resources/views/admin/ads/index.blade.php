@@ -38,23 +38,28 @@
                 <div class="box-body table-responsive no-padding">
                     <table class="table table-hover">
                         <tr>
-                            <th>Office</th>
+                            <th>Name</th>
+                            <th>Company</th>
+                            <th>Type</th>
                             <th>File</th>
                             <th>Date Creation</th>
                             <th>Action</th>
+                            <th>Activation</th>
                             <!--th>Status</th>
                             <th>Reason</th-->
                         </tr>
                         @foreach ($allAds as $ad)
                             <tr>
 
-                                <td>{{ $ad->getOffice->identifier }}</td>
+                                <td>{{ $ad->name }}</td>
+                                <td>{{ $ad->getCompany->name }}</td>
+                                <td>{{ $ad->type }}</td>
                                 <td>{{ $ad->file_path }}</td>
 
                                 <td>{{ $ad->created_at }}</td>
                                 <td>
                                     <div class="row">
-                                        <a class="btn btn-warning  pull-left" href="{{ url('/dashboard/ads/' . $ad->id . '/edit') }}"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                                        <a style="margin-right: 10px" class="btn btn-warning  pull-left" href="{{ url('/dashboard/ads/' . $ad->id . '/edit') }}"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                                             Edit</a>
                                         &nbsp
                                     <!--a onclick="deleteOffice({{$ad->id}})" class="btn btn-danger"><i class="fa fa-trash-o" aria-hidden="true"></i>
@@ -71,6 +76,12 @@
                                     </div>
 
                                 </td>
+                                <td>
+                                    <a  class="btn btn-success disabled" href="{{ url('/dashboard/ads/' . $ad->id . '/edit') }}"><i class="fa fa-check-circle-o" aria-hidden="true"></i>
+                                    </a>
+                                    <a  class="btn btn-danger disabled" href="{{ url('/dashboard/ads/' . $ad->id . '/edit') }}"><i class="fa fa-ban" aria-hidden="true"></i>
+                                    </a>
+                                </td>
                                 <!--td><span class="label label-success">Approved</span></td>
                             <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td-->
                             </tr>
@@ -84,40 +95,6 @@
     </div>
     <!-- /.row -->
 
-
-    <div class="modal" id="modal_assign_manager">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title">Choose a MANAGER for the office : <span id="modal_office_name">office name here</span></h4>
-                </div>
-                <div class="modal-body">
-                    <div class="callout callout-warning" id="warning_no_manager_available">
-                        <p><i class="icon fa fa-warning"></i> No manager found. you can add a manager <a href="{{ url('/dashboard/manager/create') }}">here</a></p>
-                    </div>
-
-                    <div class="col-sm-6" id="select_manager_holder">
-                        <select class="form-control" id="manager_id" name="manager_id" required>
-
-                        </select>
-                    </div>
-                    <br>
-                    <br>
-                    <input type="hidden" id="manager_chosen" />
-                    <input type="hidden" id="office_chosen" />
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" id="btn_confirm_assign_manager" onclick="confirmAssign()">Save changes</button>
-                </div>
-            </div>
-            <!-- /.modal-content -->
-        </div>
-        <!-- /.modal-dialog -->
-    </div>
-    <!-- /.modal -->
 
 
 

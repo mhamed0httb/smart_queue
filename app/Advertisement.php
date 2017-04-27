@@ -8,8 +8,8 @@ class Advertisement extends Model
 {
     protected $table = 'advertisements';
 
-    public function getOffice()
+    public function getCompany()
     {
-        return $this->belongsTo('App\Office','office_id');
+        return $this->belongsTo('App\AdCompany','company_id');
     }
 }

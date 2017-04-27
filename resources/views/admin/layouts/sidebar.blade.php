@@ -89,6 +89,8 @@
                 </ul>
             </li-->
             <li class=""><a href="{{ url('/dashboard/ads') }}"><i class="fa fa-newspaper-o"></i> <span>Advertisements</span></a></li>
+            <li class=""><a href="{{ url('/dashboard/adCompanies') }}"><i class="fa fa-twitch"></i> <span>Ad Companies</span></a></li>
+            <li class=""><a href="{{ url('/dashboard/calendar') }}"><i class="fa fa-calendar"></i> <span>Ad Plans</span></a></li>
 
         </ul>
         <!-- /.sidebar-menu -->

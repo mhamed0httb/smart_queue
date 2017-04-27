@@ -1,7 +1,4 @@
 
-
-
-
 @extends('admin.layouts.master')
 
 @section('content')
@@ -21,21 +18,22 @@
             <!-- Horizontal Form -->
             <div class="box box-info">
                 <div class="box-header with-border">
-                    <h3 class="box-title col-sm-6">Create Advertisement for : </h3>
-                    <div class="col-sm-6 pull-right">
-                        <strong>Company : </strong>
-                        <select class="" onchange="companyChanged(this.value)" id="select_company">
-                            @foreach ($allCompanies as $company)
-                                <option value="{{ $company->id }}">{{ $company->name }}</option>
-                            @endforeach
-                        </select>
-                    </div>
+                    <h3 class="box-title col-sm-6">Create Advertisement  </h3>
+
                 </div>
                 <!-- /.box-header -->
                 <!-- form start -->
                 <form enctype="multipart/form-data" class="form-horizontal" action="{{ url('/dashboard/ads') }}" method="POST" id="form_create_office">
                     {{csrf_field()}}
                     <div class="box-body">
+                        <div class="form-group">
+                            <label for="video_length" class="col-sm-2 control-label">Name</label>
+
+                            <div class="col-sm-6">
+                                <input type="text" name="name" class="form-control" id="name" placeholder="name">
+                            </div>
+
+                        </div>
                         <div class="form-group">
                             <label for="identifier" class="col-sm-2 control-label">File</label>
 
@@ -52,17 +50,18 @@
                             </div>
 
                         </div>
-                        <div class="form-group">
-                            <label for="region_id" class="col-sm-2 control-label">Office</label>
-                            <div class="col-sm-6">
-                                <select class="form-control" id="office_id" name="office_id" required>
 
+                        <div class="form-group">
+                            <label for="region_id" class="col-sm-2 control-label">Comapny</label>
+                            <div class="col-sm-6">
+                                <select class="form-control" id="company_id" name="company_id" required>
+                                    @foreach ($allAdCompanies as $adCompany)
+                                        <option value="{{ $adCompany->id }}">{{ $adCompany->name }}</option>
+                                    @endforeach
                                 </select>
                             </div>
-
                         </div>
 
-                        <input type="hidden" name="company_id" class="form-control" id="company_id" >
                     </div>
                     <!-- /.box-body -->
                     <div class="box-footer">
@@ -251,10 +250,11 @@
         }
 
         function checkCompanyExists() {
-            var company = $('#select_company').val();
-            if(company == null){
+            //var company = $('#company_id').val();
+            var company = "{{ $allCompanies->count() }}";
+            if(company == 0){
                 $('#btn_submit_form').prop('disabled', true);
-                var urlAddCompany = "{{ url('/dashboard/companies/create') }}";
+                var urlAddCompany = "{{ url('/dashboard/adCompanies/create') }}";
                 $('#div_alert').html('<div class="alert alert-warning alert-dismissible"> <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button><h4><i class="icon fa fa-warning"></i> Alert!</h4>No companies are available. Please add a company <a target="_blank" href="'+urlAddCompany+'">here</a>.</div>');
                 $('#div_alert').fadeIn();
             }else{

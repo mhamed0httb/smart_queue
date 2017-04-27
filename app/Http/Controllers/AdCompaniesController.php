@@ -3,12 +3,12 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Company;
-use App\CompanyResponsible;
+use App\AdCompany;
+use App\AdResponsible;
 use Session;
 use Illuminate\Support\Facades\DB;
 
-class CompanyController extends Controller
+class AdCompaniesController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -17,12 +17,12 @@ class CompanyController extends Controller
      */
     public function index()
     {
-        $allCompanies = Company::all();
+        $allCompanies = AdCompany::all();
         //$allStaff = Staff::whereFirstName("dzd")->get();
-        return view('admin.companies.index')
+        return view('admin.ad_companies.index')
             ->with('allCompanies',$allCompanies)
-            ->with('page_title','All Companies')
-            ->with('sub_page_title', 'Companies');
+            ->with('page_title','All Ad Companies')
+            ->with('sub_page_title', 'Ad Companies');
     }
 
     /**
@@ -32,9 +32,9 @@ class CompanyController extends Controller
      */
     public function create()
     {
-        return view('admin.companies.create')
-            ->with('page_title','Create Company')
-            ->with('sub_page_title', 'Companies');
+        return view('admin.ad_companies.create')
+            ->with('page_title','Create Ad Company')
+            ->with('sub_page_title', 'Ad Companies');
     }
 
     /**
@@ -45,14 +45,11 @@ class CompanyController extends Controller
      */
     public function store(Request $request)
     {
-        $company = new Company;
-        $companyResponsible = new CompanyResponsible;
+        $company = new AdCompany;
+        $companyResponsible = new AdResponsible;
         $company->name = $request->name;
-        $company->identifier = $request->identifier;
-        $company->description = $request->description;
         $company->email = $request->email;
-        $company->phone = $request->phone;
-        $company->category = $request->category;
+        $company->service_category = $request->category;
         $company->address = $request->address;
         $companyResponsible->name = $request->responsible_name;
         $companyResponsible->title = $request->responsible_title;
@@ -63,8 +60,8 @@ class CompanyController extends Controller
         $companyResponsible->save();
         $company->responsible_id = $companyResponsible->id;
         $company->save();
-        Session::flash('success', 'Company was successfully added!');
-        return redirect('/dashboard/companies');
+        Session::flash('success', 'Ad Company was successfully added!');
+        return redirect('/dashboard/adCompanies');
     }
 
     /**
@@ -75,11 +72,7 @@ class CompanyController extends Controller
      */
     public function show($id)
     {
-        $company = Company::find($id);
-        $companyResponsible = CompanyResponsible::find($company->responsible_id);
-        return view('admin.companies.details')
-            ->with('company', $company)
-            ->with('responsible', $companyResponsible);
+        //
     }
 
     /**
@@ -90,8 +83,8 @@ class CompanyController extends Controller
      */
     public function edit($id)
     {
-        $company = Company::find($id);
-        return view('admin.companies.edit')->with('company', $company);
+        $company = AdCompany::find($id);
+        return view('admin.ad_companies.edit')->with('company', $company);
     }
 
     /**
@@ -103,14 +96,11 @@ class CompanyController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $company = Company::find($id);
-        $responsible = CompanyResponsible::find($company->responsible_id);
+        $company = AdCompany::find($id);
+        $responsible = AdResponsible::find($company->responsible_id);
         $company->name = $request->name;
-        $company->identifier = $request->identifier;
-        $company->description = $request->description;
         $company->email = $request->email;
-        $company->phone = $request->phone;
-        $company->category = $request->category;
+        $company->service_category = $request->category;
         $company->address = $request->address;
         $responsible->name = $request->responsible_name;
         $responsible->title = $request->responsible_title;
@@ -120,8 +110,8 @@ class CompanyController extends Controller
         $responsible->fax = $request->responsible_fax;
         $responsible->save();
         $company->save();
-        Session::flash('update', 'Company was successfully updated!');
-        return redirect('/dashboard/companies');
+        Session::flash('update', 'Ad Company was successfully updated!');
+        return redirect('/dashboard/adCompanies');
     }
 
     /**
@@ -132,47 +122,14 @@ class CompanyController extends Controller
      */
     public function destroy($id)
     {
-        $company  = Company::find($id);
-        $services = $company->service;
-        $managers = $company->manager;
-        $offices = $company->office;
-        foreach ($services as $one){
-            //$one->getCategory->delete();
-            $one->delete();
-        }
-        foreach ($managers as $one){
-            $one->delete();
-        }
-        foreach ($offices as $one){
-            $one->ticketWindow()->delete();
-            $one->staff()->delete();
-            $one->ticket()->delete();
-            $one->ad()->delete();
+        $company  = AdCompany::find($id);
+        $ads = $company->ad;
+        foreach ($ads as $one){
             $one->delete();
         }
         $company->responsible()->delete();
         $company->delete();
         Session::flash('delete', 'Successfully deleted the comapny!');
-        return redirect('/dashboard/companies');
-    }
-
-    public function getAllCompanies()
-    {
-        $resCompanies = Company::all();
-        /*$managers = Company::find($request->company_id)->manager;
-        foreach ($managers as $one) {
-            $office = EloquentUser::find($one->id)->office;
-            array_push($resOffices,$office);
-        }
-        //$offices = EloquentUser::find($manager->id)->office;*/
-        return($resCompanies);
-    }
-
-    public function getCompaniesByCategory(Request $request)
-    {
-        $companies = DB::table('companies')
-            ->where('category', '=', $request->category)
-            ->get();
-        return $companies;
+        return redirect('/dashboard/adCompanies');
     }
 }

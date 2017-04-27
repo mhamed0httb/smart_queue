@@ -38,6 +38,7 @@ Route::group(['middleware' => 'admin'], function(){
         'as' => 'manager.update', 'uses' => 'AdminController@updateManager'
     ]);
     Route::resource('/dashboard/companies', 'CompanyController');
+    Route::resource('/dashboard/adCompanies', 'AdCompaniesController');
     Route::resource('/dashboard/categories', 'CategoryController');
     Route::get('/dashboard/categories/', 'AdminController@index');
     Route::resource('/dashboard/offices', 'OfficesController');

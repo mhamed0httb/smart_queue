@@ -600,7 +600,7 @@ Route::group(['middleware' => 'cors'], function(){
             ->first();
 
         if($ticket == null){
-            return 1;
+            return 0;
         }else{
             return $ticket->number + 1;
         }
@@ -687,7 +687,7 @@ Route::group(['middleware' => 'cors'], function(){
             $officePub2 = DB::table('office_pub')
                 ->where('raspberry_id', '=', $req->raspberry_id)
                 ->where('user_id', '=', $req->user_id)
-                ->where('status', '=', 'done')
+                ->where('status', '=', 'start')
                 ->get();
             $result = array();
             $numResult = array();
@@ -756,6 +756,32 @@ Route::group(['middleware' => 'cors'], function(){
 
         return $result;
 
+    });
+
+    Route::get('/services/serving', function(Request $req)
+    {
+        $office = Office::find($req->office_id);
+
+
+        $windows = DB::table('ticket_windows')
+            ->where('office_id', '=', $req->office_id)
+            ->where('status', '=', 'Online')
+            ->get();
+
+        if($windows->count() == 0){
+            return 'no_services_found';
+        }
+
+        $result = array();
+
+        foreach ($windows as $one){
+            $oneArray = array();
+            $service = Service::find($one->service_id);
+            $oneArray['service_name'] = $service->name;
+            $oneArray['service_id'] = $service->id;
+            array_push($result,$oneArray);
+        }
+        return $result;
     });
 });
 
