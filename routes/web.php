@@ -45,6 +45,8 @@ Route::group(['middleware' => 'admin'], function(){
     Route::resource('/dashboard/regions', 'RegionsController');
     Route::resource('/dashboard/ads', 'AdvertisementsController');
     Route::get('/dashboard/calendar', 'AdvertisementsController@calendar');
+    Route::post('/dashboard/calendar/changeOffices', 'AdvertisementsController@changeOffices');
+    Route::resource('/dashboard/adsPlanning', 'AdPlanningController');
 });
 
 Route::group(['middleware' => 'manager'], function(){

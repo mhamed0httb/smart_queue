@@ -12,4 +12,8 @@ class Advertisement extends Model
     {
         return $this->belongsTo('App\AdCompany','company_id');
     }
+
+    function plan() {
+        return $this->hasOne('App\AdPlanning','ad_id');
+    }
 }

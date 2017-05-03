@@ -98,8 +98,6 @@ Route::group(['middleware' => 'cors'], function(){
                 $windArr['object'] = $window;
                 $windows[$window->id] = $windArr;
             }
-
-
         }
         //return (Carbon::now()->toDateString());
         $allRes['windows'] = $windows;
@@ -586,6 +584,9 @@ Route::group(['middleware' => 'cors'], function(){
         if(count($ticketsCount) == 0){
             return 0;
         }
+        if($result['total_clients_served'] == 0){
+            return 0;
+        }
         return $totalTime / $result['total_clients_served'] * $ticketsCount;
     });
 
@@ -604,8 +605,6 @@ Route::group(['middleware' => 'cors'], function(){
         }else{
             return $ticket->number + 1;
         }
-
-
     });
 
     Route::get('/offices/byComapny/category', 'OfficesController@getOfficesByCompanyCategory');
@@ -753,9 +752,7 @@ Route::group(['middleware' => 'cors'], function(){
             $oneArray['number_tickets_waiting'] = $tickets->count();
             array_push($result,$oneArray);
         }
-
         return $result;
-
     });
 
     Route::get('/services/serving', function(Request $req)
@@ -783,6 +780,10 @@ Route::group(['middleware' => 'cors'], function(){
         }
         return $result;
     });
+
+    Route::get('/adsPlan/savePlan', 'AdPlanningController@savePlan');
+    Route::get('/adsPlan/deletePlan', 'AdPlanningController@deletePlan');
+    Route::get('/adsPlan/details', 'AdPlanningController@planDetails');
 });
 
 

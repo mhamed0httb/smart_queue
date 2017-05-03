@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Advertisement;
+use App\AdPlanning;
 use App\Office;
+use App\PlanOffices;
 use Illuminate\Support\Facades\Storage;
 use Sentinel;
 use App\Region;
@@ -129,19 +131,89 @@ class AdvertisementsController extends Controller
 
     public function getAdsByOffice(Request $request)
     {
-        $ad = DB::table('advertisements')
+        /*$ad = DB::table('advertisements')
             ->where('office_id', '=', $request->office_id)
             ->first();
         $res = array();
         $res['file_url'] = asset($ad->file_path);
         $res['video_length'] = $ad->video_length;
 
-        return $res;
+        return $res;*/
+
+
+        $adPlan = DB::table('ad_planning')
+            ->where('office_id', '=', $request->office_id)
+            ->first();
+
+        if($adPlan == null){
+            return 'no_ads_available';
+        }else{
+            $ad = Advertisement::find($adPlan->ad_id);
+            $res = array();
+            $res['file_url'] = asset($ad->file_path);
+            $res['video_length'] = $ad->video_length;
+            $res['file_type'] = $ad->type;
+
+            return $res;
+        }
     }
 
     public function calendar()
     {
         $ads = Advertisement::all();
-        return view('admin.ads.calendar')->with('ads',$ads);
+        $adsPlan = AdPlanning::all();
+        $offices = Office::all();
+        return view('admin.ads.calendar')
+            ->with('ads',$ads)
+            ->with('plans', $adsPlan)
+            ->with('offices', $offices);
+    }
+
+    public function changeOffices(Request $request)
+    {
+
+        /*foreach ($request->office_checkbox as $one){
+
+        }*/
+        if($request->office_checkbox == null){
+            return redirect('/dashboard/calendar');
+        }else{
+            $ad = Advertisement::find($request->change_offices_ad_id);
+
+            $plan = DB::table('ad_planning')
+                ->where('ad_id', '=', $request->change_offices_ad_id)
+                ->first();
+
+            if($plan == null){
+                return redirect('/dashboard/calendar');
+            }else{
+                $allPlanOffices = DB::table('plan_offices')
+                    ->where('plan_id', '=', $plan->id)
+                    ->get();
+                if(count($allPlanOffices) == 0){
+                    foreach ($request->office_checkbox as $one){
+                        $planOffices = new PlanOffices;
+                        $planOffices->office_id = $one;
+                        $planOffices->plan_id = $plan->id;
+                        $planOffices->save();
+                    }
+                    Session::flash('success', 'the Ad '.$ad->name.' is now assigned to the new offices');
+                    return redirect('/dashboard/calendar');
+                }else{
+                    foreach ($allPlanOffices as $onePlan){
+                        $PlanOfficeToDelete = PlanOffices::find($onePlan->id);
+                        $PlanOfficeToDelete->delete();
+                    }
+                    foreach ($request->office_checkbox as $one){
+                        $planOffices = new PlanOffices;
+                        $planOffices->office_id = $one;
+                        $planOffices->plan_id = $plan->id;
+                        $planOffices->save();
+                    }
+                    Session::flash('success', 'the Ad '.$ad->name.' is now assigned to the new offices');
+                    return redirect('/dashboard/calendar');
+                }
+            }
+        }
     }
 }
