@@ -16,6 +16,7 @@ use Cartalyst\Sentinel\Users\EloquentUser;
 use Session;
 use Illuminate\Support\Facades\DB;
 use App;
+use Carbon\Carbon;
 
 class AdvertisementsController extends Controller
 {
@@ -140,20 +141,70 @@ class AdvertisementsController extends Controller
 
         return $res;*/
 
+        $res = array();
 
-        $adPlan = DB::table('ad_planning')
-            ->where('office_id', '=', $request->office_id)
+        $office = DB::table('offices')
+            ->where('raspberry_id', '=', $request->raspberry_id)
             ->first();
 
-        if($adPlan == null){
-            return 'no_ads_available';
+        $planOffices = DB::table('plan_offices')
+            ->where('office_id', '=', $office->id)
+            ->get();
+        if(count($planOffices) == 0){
+            $res['status'] = 'no_ads_available';
+            return $res;
         }else{
-            $ad = Advertisement::find($adPlan->ad_id);
-            $res = array();
+            $firstPlanOffices = DB::table('plan_offices')
+                ->where('office_id', '=', $office->id)
+                ->first();
+            $firstPlan = AdPlanning::find($firstPlanOffices->plan_id);
+            $minShownAd = $firstPlan->nbr_shown;
+            $chosenAdId = $firstPlan->ad_id;
+            $chosenPlanId = $firstPlan->id;
+            foreach ($planOffices as $one){
+                $plan = AdPlanning::find($one->plan_id);
+                if($plan->nbr_shown < $minShownAd ){
+                    $chosenAdId = $plan->ad_id;
+                    $chosenPlanId = $plan->id;
+                }
+            }
+            $planToPass = AdPlanning::find($chosenPlanId);
+            $formattedStart = Carbon::parse($planToPass->start);
+            $formattedEnd = Carbon::parse($planToPass->end);
+
+            $now = Carbon::now()->format('H');
+            //return $now;
+            //return $formattedEnd->format('H');
+
+            //Verify Time
+            /*if($now > $formattedStart->format('H')&& $now < $formattedEnd->format('H')){
+                $ad = Advertisement::find($chosenAdId);
+                $res['status'] = 'ok';
+                $res['file_url'] = asset($ad->file_path);
+                $res['video_length'] = $ad->video_length;
+                $res['file_type'] = $ad->type;
+                $res['start_time'] = $formattedStart->format('H:m a');
+                $res['end_time'] = $formattedEnd->format('H:m a');
+                return $res;
+            }else{
+                $res['status'] = 'request_another_time';
+                $res['start_time'] = $formattedStart->format('H:m A');
+                $res['end_time'] = $formattedEnd->format('H:m A');
+                return $res;
+            }*/
+
+
+            //Without Time Verefication
+            $pplan = AdPlanning::find($chosenPlanId);
+            $pplan->nbr_shown = $pplan->nbr_shown + 1;
+            $pplan->save();
+            $ad = Advertisement::find($chosenAdId);
+            $res['status'] = 'ok';
             $res['file_url'] = asset($ad->file_path);
             $res['video_length'] = $ad->video_length;
             $res['file_type'] = $ad->type;
-
+            $res['start_time'] = $formattedStart->format('H:m a');
+            $res['end_time'] = $formattedEnd->format('H:m a');
             return $res;
         }
     }

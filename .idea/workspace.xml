@@ -2,13 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="6f1eec14-85c6-42a6-929c-e3f665c2977f" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Advertisement.php" afterPath="$PROJECT_DIR$/app/Advertisement.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Http/Controllers/AdPlanningController.php" afterPath="$PROJECT_DIR$/app/Http/Controllers/AdPlanningController.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Http/Controllers/AdvertisementsController.php" afterPath="$PROJECT_DIR$/app/Http/Controllers/AdvertisementsController.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/admin/ads/calendar.blade.php" afterPath="$PROJECT_DIR$/resources/views/admin/ads/calendar.blade.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/routes/api.php" afterPath="$PROJECT_DIR$/routes/api.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/routes/web.php" afterPath="$PROJECT_DIR$/routes/web.php" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -33,11 +27,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="AdvertisementsController.php" pinned="false" current-in-tab="false">
+      <file leaf-file-name="AdvertisementsController.php" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/Http/Controllers/AdvertisementsController.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="277">
-              <caret line="199" column="105" lean-forward="true" selection-start-line="199" selection-start-column="20" selection-end-line="199" selection-end-column="105" />
+            <state relative-caret-position="410">
+              <caret line="199" column="27" lean-forward="false" selection-start-line="199" selection-start-column="27" selection-end-line="199" selection-end-column="27" />
               <folding>
                 <element signature="e#40#68#0#PHP" expanded="true" />
               </folding>
@@ -48,8 +42,8 @@
       <file leaf-file-name="api.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/routes/api.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="359">
-              <caret line="785" column="18" lean-forward="false" selection-start-line="785" selection-start-column="18" selection-end-line="785" selection-end-column="32" />
+            <state relative-caret-position="183">
+              <caret line="59" column="17" lean-forward="true" selection-start-line="59" selection-start-column="17" selection-end-line="59" selection-end-column="29" />
               <folding />
             </state>
           </provider>
@@ -113,11 +107,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="AdPlanningController.php" pinned="false" current-in-tab="true">
+      <file leaf-file-name="AdPlanningController.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/Http/Controllers/AdPlanningController.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="410">
-              <caret line="138" column="9" lean-forward="true" selection-start-line="138" selection-start-column="9" selection-end-line="138" selection-end-column="9" />
+            <state relative-caret-position="291">
+              <caret line="164" column="65" lean-forward="false" selection-start-line="164" selection-start-column="34" selection-end-line="164" selection-end-column="65" />
               <folding>
                 <element signature="e#40#59#0#PHP" expanded="true" />
               </folding>
@@ -147,10 +141,7 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>draggable event</find>
-      <find>external-events</find>
       <find>adver</find>
-      <find>getAdsByOffice</find>
       <find>alert</find>
       <find>serve</find>
       <find>/serve</find>
@@ -177,6 +168,9 @@
       <find>change_offices_ad_id</find>
       <find>planDetails</find>
       <find>plan_details_offices</find>
+      <find>raspberry_id</find>
+      <find>ad</find>
+      <find>getAdsByOffice</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -232,10 +226,10 @@
         <option value="$PROJECT_DIR$/app/PlanOffices.php" />
         <option value="$PROJECT_DIR$/resources/views/admin/offices/index.blade.php" />
         <option value="$PROJECT_DIR$/routes/web.php" />
-        <option value="$PROJECT_DIR$/app/Http/Controllers/AdvertisementsController.php" />
         <option value="$PROJECT_DIR$/routes/api.php" />
         <option value="$PROJECT_DIR$/app/Http/Controllers/AdPlanningController.php" />
         <option value="$PROJECT_DIR$/resources/views/admin/ads/calendar.blade.php" />
+        <option value="$PROJECT_DIR$/app/Http/Controllers/AdvertisementsController.php" />
       </list>
     </option>
   </component>
@@ -587,15 +581,15 @@
       <workItem from="1493203894356" duration="24923000" />
       <workItem from="1493463557579" duration="8625000" />
       <workItem from="1493653287104" duration="2487000" />
-      <workItem from="1493675492773" duration="20759000" />
+      <workItem from="1493675492773" duration="25508000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="496797000" />
+    <option name="totallyTimeSpent" value="501546000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
+    <frame x="-8" y="-8" width="1382" height="744" extended-state="7" />
     <editor active="true" />
     <layout>
       <window_info id="Gulp" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="true" content_ui="tabs" />
@@ -966,24 +960,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/routes/api.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="359">
-          <caret line="785" column="18" lean-forward="false" selection-start-line="785" selection-start-column="18" selection-end-line="785" selection-end-column="32" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/AdvertisementsController.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="277">
-          <caret line="199" column="105" lean-forward="true" selection-start-line="199" selection-start-column="20" selection-end-line="199" selection-end-column="105" />
-          <folding>
-            <element signature="e#40#68#0#PHP" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/resources/views/admin/ads/calendar.blade.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="192">
@@ -1030,12 +1006,30 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/routes/api.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="183">
+          <caret line="59" column="17" lean-forward="true" selection-start-line="59" selection-start-column="17" selection-end-line="59" selection-end-column="29" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/app/Http/Controllers/AdPlanningController.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="410">
-          <caret line="138" column="9" lean-forward="true" selection-start-line="138" selection-start-column="9" selection-end-line="138" selection-end-column="9" />
+        <state relative-caret-position="291">
+          <caret line="164" column="65" lean-forward="false" selection-start-line="164" selection-start-column="34" selection-end-line="164" selection-end-column="65" />
           <folding>
             <element signature="e#40#59#0#PHP" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/AdvertisementsController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="410">
+          <caret line="199" column="27" lean-forward="false" selection-start-line="199" selection-start-column="27" selection-end-line="199" selection-end-column="27" />
+          <folding>
+            <element signature="e#40#68#0#PHP" expanded="true" />
           </folding>
         </state>
       </provider>
