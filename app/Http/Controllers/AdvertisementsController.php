@@ -66,6 +66,9 @@ class AdvertisementsController extends Controller
         $ad->name = $request->name;
         $ad->type = $request->file('file')->getMimeType();
 
+        $pos = strpos($ad->type, '/');
+        $ad->type = substr($ad->type, 0,$pos);
+
         $shortPATH = $request->file('file')->store('storage/ads');
         App::make('files')->link(storage_path('app/storage'), public_path('storage')); //create Symbolic link between "storage/app/..." AND "public/..."
         //$fullPATH = asset($shortPATH);
