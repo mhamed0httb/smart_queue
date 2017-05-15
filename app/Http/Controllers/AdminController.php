@@ -6,6 +6,7 @@ use Cartalyst\Sentinel\Users\EloquentUser;
 use Illuminate\Http\Request;
 use Sentinel;
 use Session;
+use Activation;
 use App\Company;
 use Illuminate\Support\Facades\DB;
 
@@ -72,10 +73,25 @@ class AdminController extends Controller
 
     public function signUp(Request $request)
     {
-        $user = Sentinel::registerAndActivate($request->all());
+        /*$user = Sentinel::registerAndActivate($request->all());
         $role = Sentinel::findRoleBySlug('simple_user');
         $role->users()->attach($user);
-        return($user);
+        return($user);*/
+        //***************************************************** WOKING CODE *****************************
+
+
+        /*$user = Sentinel::register($request->all(),false);
+        $role = Sentinel::findRoleBySlug('admin');
+        $role->users()->attach($user);
+        return $user;*/
+
+        /*$user = Sentinel::findById(4);
+        $activationCode = Activation::exists($user)->code;
+        $resp = Activation::complete($user, $activationCode);
+        return json_encode($resp);*/
+
+        /*$user = Sentinel::findById(4);
+        return json_encode($user->delete());*/
     }
 
     public function signIn(Request $req)
@@ -84,6 +100,8 @@ class AdminController extends Controller
         if(Sentinel::check()){
             if(Sentinel::getUser()->roles()->first()->slug == 'simple_user'){
                 return Sentinel::getUser();
+            }else{
+                return "u must be a simple user";
             }
         }else{
             return ("error");

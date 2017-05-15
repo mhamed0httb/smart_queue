@@ -72,6 +72,8 @@
                                             <a href="#" onclick="deactivateWindow({{$window->id}})">
                                                 <i class="fa fa-circle-o text-green"></i>
                                                 <span>{{ $window->status }}</span>
+                                                <span class="label label-success">Online</span>
+                                                <span class="label label-danger">Offline</span>
                                             </a>
                                         @endif
                                     </div>

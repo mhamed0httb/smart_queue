@@ -784,6 +784,13 @@ Route::group(['middleware' => 'cors'], function(){
     Route::get('/adsPlan/savePlan', 'AdPlanningController@savePlan');
     Route::get('/adsPlan/deletePlan', 'AdPlanningController@deletePlan');
     Route::get('/adsPlan/details', 'AdPlanningController@planDetails');
+
+
+    Route::get('/companies/allCategories', function(Request $req)
+    {
+        $companies = DB::table('companies')->select('category')->distinct()->get();
+        return $companies;
+    });
 });
 
 
