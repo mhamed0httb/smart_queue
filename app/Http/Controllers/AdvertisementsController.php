@@ -252,14 +252,22 @@ class AdvertisementsController extends Controller
                 $res['end_time'] = $formattedEnd->format('H:m a');*/
 
 
-
+                $noww = Carbon::now();
+                //return $noww;
                 //FOR 5OU5A
                 $oneArr = array();
                 foreach ($planOffices as $one){
                     $plan = AdPlanning::find($one->plan_id);
                     if ($plan->getAd->type == 'image' && $plan->getAd->active == true){
-                        array_push($oneArr,asset($plan->getAd->file_path));
-                        //$oneArr['file_path'] = $plan->getAd->file_path;
+                        $formattedS = Carbon::parse($plan->start);
+                        $formattedE = Carbon::parse($plan->end);
+                        $diff = $noww->between($formattedS, $formattedE);
+                        if($diff){
+                            array_push($oneArr,asset($plan->getAd->file_path));
+                            //$oneArr['file_path'] = $plan->getAd->file_path;
+                        }else{
+                            //return json_encode($diff);
+                        }
                     }
                 }
                 if(count($oneArr) == 0){

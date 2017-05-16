@@ -3,8 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="6f1eec14-85c6-42a6-929c-e3f665c2977f" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Http/Controllers/AdvertisementsController.php" afterPath="$PROJECT_DIR$/app/Http/Controllers/AdvertisementsController.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/admin/ads/calendar.blade.php" afterPath="$PROJECT_DIR$/resources/views/admin/ads/calendar.blade.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/routes/api.php" afterPath="$PROJECT_DIR$/routes/api.php" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -32,8 +30,8 @@
       <file leaf-file-name="AdvertisementsController.php" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/Http/Controllers/AdvertisementsController.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="342">
-              <caret line="262" column="21" lean-forward="true" selection-start-line="262" selection-start-column="21" selection-end-line="262" selection-end-column="21" />
+            <state relative-caret-position="206">
+              <caret line="265" column="76" lean-forward="false" selection-start-line="265" selection-start-column="67" selection-end-line="265" selection-end-column="76" />
               <folding>
                 <element signature="e#40#68#0#PHP" expanded="true" />
               </folding>
@@ -674,12 +672,12 @@
       <workItem from="1494623553935" duration="100000" />
       <workItem from="1494851289076" duration="3548000" />
       <workItem from="1494886176667" duration="1000" />
-      <workItem from="1494886186329" duration="11580000" />
+      <workItem from="1494886186329" duration="14055000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="519020000" />
+    <option name="totallyTimeSpent" value="521495000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
@@ -1129,8 +1127,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/Http/Controllers/AdvertisementsController.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="342">
-          <caret line="262" column="21" lean-forward="true" selection-start-line="262" selection-start-column="21" selection-end-line="262" selection-end-column="21" />
+        <state relative-caret-position="206">
+          <caret line="265" column="76" lean-forward="false" selection-start-line="265" selection-start-column="67" selection-end-line="265" selection-end-column="76" />
           <folding>
             <element signature="e#40#68#0#PHP" expanded="true" />
           </folding>
