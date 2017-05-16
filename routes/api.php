@@ -636,7 +636,7 @@ Route::group(['middleware' => 'cors'], function(){
         return $bigResult;
     });
 
-    Route::get('/offices/ad/request', function(Request $req)
+    /*Route::get('/offices/ad/request', function(Request $req)
     {
         $office = DB::table('offices')
             ->where('raspberry_id', '=', $req->raspberry_id)
@@ -664,7 +664,7 @@ Route::group(['middleware' => 'cors'], function(){
                 return 'done';
             }
         }
-    });
+    });*/
 
     Route::get('/offices/walkthrough/userRequest', function(Request $req)
     {

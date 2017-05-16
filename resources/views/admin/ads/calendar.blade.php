@@ -527,6 +527,7 @@
                             //var obj = jQuery.parseJSON(data);
                             //alert(data);
                             $('#calendar').fullCalendar( 'removeEvents', id );
+                            location.reload();
                         });
                     } else {
                         //swal("Cancelled", "Your imaginary file is safe :)", "error");

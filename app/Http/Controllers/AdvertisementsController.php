@@ -188,65 +188,88 @@ class AdvertisementsController extends Controller
             ->where('raspberry_id', '=', $request->raspberry_id)
             ->first();
 
-        $planOffices = DB::table('plan_offices')
-            ->where('office_id', '=', $office->id)
-            ->get();
-        if(count($planOffices) == 0){
-            $res['status'] = 'no_ads_available';
+        if($office == null){
+            $res['status'] = 'no_office_found';
             return $res;
         }else{
-            $firstPlanOffices = DB::table('plan_offices')
+            $planOffices = DB::table('plan_offices')
                 ->where('office_id', '=', $office->id)
-                ->first();
-            $firstPlan = AdPlanning::find($firstPlanOffices->plan_id);
-            $minShownAd = $firstPlan->nbr_shown;
-            $chosenAdId = $firstPlan->ad_id;
-            $chosenPlanId = $firstPlan->id;
-            foreach ($planOffices as $one){
-                $plan = AdPlanning::find($one->plan_id);
-                if($plan->nbr_shown < $minShownAd ){
-                    $chosenAdId = $plan->ad_id;
-                    $chosenPlanId = $plan->id;
+                ->get();
+            if(count($planOffices) == 0){
+                $res['status'] = 'no_ads_available';
+                return $res;
+            }else{
+                $firstPlanOffices = DB::table('plan_offices')
+                    ->where('office_id', '=', $office->id)
+                    ->first();
+                $firstPlan = AdPlanning::find($firstPlanOffices->plan_id);
+                $minShownAd = $firstPlan->nbr_shown;
+                $chosenAdId = $firstPlan->ad_id;
+                $chosenPlanId = $firstPlan->id;
+                foreach ($planOffices as $one){
+                    $plan = AdPlanning::find($one->plan_id);
+                    if($plan->nbr_shown < $minShownAd ){
+                        $chosenAdId = $plan->ad_id;
+                        $chosenPlanId = $plan->id;
+                    }
                 }
-            }
-            $planToPass = AdPlanning::find($chosenPlanId);
-            $formattedStart = Carbon::parse($planToPass->start);
-            $formattedEnd = Carbon::parse($planToPass->end);
+                $planToPass = AdPlanning::find($chosenPlanId);
+                $formattedStart = Carbon::parse($planToPass->start);
+                $formattedEnd = Carbon::parse($planToPass->end);
 
-            $now = Carbon::now()->format('H');
-            //return $now;
-            //return $formattedEnd->format('H');
+                $now = Carbon::now()->format('H');
+                //return $now;
+                //return $formattedEnd->format('H');
 
-            //Verify Time
-            /*if($now > $formattedStart->format('H')&& $now < $formattedEnd->format('H')){
+                //Verify Time
+                /*if($now > $formattedStart->format('H')&& $now < $formattedEnd->format('H')){
+                    $ad = Advertisement::find($chosenAdId);
+                    $res['status'] = 'ok';
+                    $res['file_url'] = asset($ad->file_path);
+                    $res['video_length'] = $ad->video_length;
+                    $res['file_type'] = $ad->type;
+                    $res['start_time'] = $formattedStart->format('H:m a');
+                    $res['end_time'] = $formattedEnd->format('H:m a');
+                    return $res;
+                }else{
+                    $res['status'] = 'request_another_time';
+                    $res['start_time'] = $formattedStart->format('H:m A');
+                    $res['end_time'] = $formattedEnd->format('H:m A');
+                    return $res;
+                }*/
+
+
+                //Without Time Verefication
+                /*$pplan = AdPlanning::find($chosenPlanId);
+                $pplan->nbr_shown = $pplan->nbr_shown + 1;
+                $pplan->save();
                 $ad = Advertisement::find($chosenAdId);
                 $res['status'] = 'ok';
                 $res['file_url'] = asset($ad->file_path);
                 $res['video_length'] = $ad->video_length;
                 $res['file_type'] = $ad->type;
                 $res['start_time'] = $formattedStart->format('H:m a');
-                $res['end_time'] = $formattedEnd->format('H:m a');
-                return $res;
-            }else{
-                $res['status'] = 'request_another_time';
-                $res['start_time'] = $formattedStart->format('H:m A');
-                $res['end_time'] = $formattedEnd->format('H:m A');
-                return $res;
-            }*/
+                $res['end_time'] = $formattedEnd->format('H:m a');*/
 
 
-            //Without Time Verefication
-            $pplan = AdPlanning::find($chosenPlanId);
-            $pplan->nbr_shown = $pplan->nbr_shown + 1;
-            $pplan->save();
-            $ad = Advertisement::find($chosenAdId);
-            $res['status'] = 'ok';
-            $res['file_url'] = asset($ad->file_path);
-            $res['video_length'] = $ad->video_length;
-            $res['file_type'] = $ad->type;
-            $res['start_time'] = $formattedStart->format('H:m a');
-            $res['end_time'] = $formattedEnd->format('H:m a');
-            return $res;
+
+                //FOR 5OU5A
+                $oneArr = array();
+                foreach ($planOffices as $one){
+                    $plan = AdPlanning::find($one->plan_id);
+                    if ($plan->getAd->type == 'image' && $plan->getAd->active == true){
+                        array_push($oneArr,asset($plan->getAd->file_path));
+                        //$oneArr['file_path'] = $plan->getAd->file_path;
+                    }
+                }
+                if(count($oneArr) == 0){
+                    $res['status'] = 'no_ads_available';
+                }else{
+                    $res['status'] = 'ok';
+                    $res['ads'] = $oneArr;
+                }
+                return $res;
+            }
         }
     }
 
