@@ -38,7 +38,7 @@
                             <!-- the events -->
                             <div id="external-events">
                                 @foreach ($ads as $ad)
-                                    @if($ad->active == false)
+                                    @if($ad->active == true && $ad->plan == null)
                                         <div id="{{ $ad->id }}" class="external-event bg-aqua">{{ $ad->name }}</div>
                                     @endif
                                 @endforeach
@@ -295,7 +295,7 @@
                 //Random default events
                 events: [
                     @foreach ($ads as $ad)
-                        @if($ad->active == true)
+                        @if($ad->active == true && $ad->plan != null)
                     {
                         title: '{{ $ad->name }}',
                         start: '{{ $ad->plan->start }}',
@@ -493,7 +493,7 @@
                     $('#plan_details_title').html('<strong>Ad</strong> : '+title);
                     $('#plan_details_ad_id').val(id);
                     $('#plan_details_ad_title').val(title);
-                    $('#plan_details_date').html('&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <strong>start : </strong>'+data.plan_start+'<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>end : </strong>'+data.plan_end);
+                    $('#plan_details_date').html('&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <strong>start : </strong>'+data.plan_start+'<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>end : </strong>'+data.plan_end);
 
                     $('#change_offices_ad_id').val(id);
 
@@ -680,7 +680,7 @@
         }
             @foreach ($ads as $ad)
             @if($ad->active == true)
-            //alert('{{ $ad->plan->end }}');
+
         @endif
         @endforeach
     </script>

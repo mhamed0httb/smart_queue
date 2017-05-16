@@ -54,7 +54,7 @@
                                 <td>{{ $ad->name }}</td>
                                 <td>{{ $ad->getCompany->name }}</td>
                                 <td>{{ $ad->type }}</td>
-                                <td>{{ $ad->file_path }}</td>
+                                <td><a class="btn btn-info" data-toggle="modal" data-target="#modal_show_ad_{{ $ad->id }}">View Ad</a></td>
 
                                 <td>{{ $ad->created_at }}</td>
                                 <td>
@@ -77,14 +77,58 @@
 
                                 </td>
                                 <td>
-                                    <a  class="btn btn-success disabled" href="{{ url('/dashboard/ads/' . $ad->id . '/edit') }}"><i class="fa fa-check-circle-o" aria-hidden="true"></i>
-                                    </a>
-                                    <a  class="btn btn-danger disabled" href="{{ url('/dashboard/ads/' . $ad->id . '/edit') }}"><i class="fa fa-ban" aria-hidden="true"></i>
-                                    </a>
+                                    @if($ad->active == true)
+                                        <a  class="btn btn-success disabled" href="{{ url('/dashboard/ads/' . $ad->id . '/activate') }}"><i class="fa fa-check-circle-o" aria-hidden="true"></i>
+                                        </a>
+                                        <a  class="btn btn-danger" href="{{ url('/dashboard/ads/' . $ad->id . '/deactivate') }}"><i class="fa fa-ban" aria-hidden="true"></i>
+                                        </a>
+                                    @else
+                                        <a  class="btn btn-success" href="{{ url('/dashboard/ads/' . $ad->id . '/activate') }}"><i class="fa fa-check-circle-o" aria-hidden="true"></i>
+                                        </a>
+                                        <a  class="btn btn-danger disabled" href="{{ url('/dashboard/ads/' . $ad->id . '/deactivate') }}"><i class="fa fa-ban" aria-hidden="true"></i>
+                                        </a>
+                                    @endif
                                 </td>
                                 <!--td><span class="label label-success">Approved</span></td>
                             <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td-->
                             </tr>
+
+
+
+
+
+
+
+
+                            <!-- Modal view Ad -->
+                            <div class="modal fade" id="modal_show_ad_{{ $ad->id }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                            <h4 class="modal-title" id="myModalLabel">AD : {{ $ad->name }}</h4>
+                                        </div>
+                                        <div class="modal-body">
+                                            <center>
+                                                @if($ad->type == 'image')
+                                                    <img class="img-responsive center" src="{{ asset($ad->file_path) }}" />
+                                                @elseif($ad->type == 'video')
+                                                    <video controls autoplay  style="width: 100%">
+                                                        <source src="{{ asset($ad->file_path) }}" type="video/mp4">
+                                                        <source src="movie.ogg" type="video/ogg">
+                                                        Your browser does not support the video tag.
+                                                    </video>
+                                                @endif
+                                            </center>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
                         @endforeach
                     </table>
                 </div>

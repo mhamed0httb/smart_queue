@@ -17,4 +17,9 @@ class AdPlanning extends Model
     {
         return $this->belongsTo('App\Advertisement','ad_id');
     }
+
+    public function getPlanOffices()
+    {
+        return $this->hasMany('App\PlanOffices','plan_id');
+    }
 }

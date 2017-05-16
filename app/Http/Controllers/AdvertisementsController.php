@@ -97,7 +97,11 @@ class AdvertisementsController extends Controller
      */
     public function edit($id)
     {
-        //
+        $ad = Advertisement::find($id);
+        $allAdCompanies = AdCompany::all();
+        return view('admin.ads.edit')
+            ->with('ad',$ad)
+            ->with('allAdCompanies',$allAdCompanies);
     }
 
     /**
@@ -109,7 +113,26 @@ class AdvertisementsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $ad = Advertisement::find($id);
+        $ad->video_length = $request->video_length;
+        $ad->company_id = $request->company_id;
+        $ad->name = $request->name;
+
+        if(!$request->file('file') == null){
+            $ad->type = $request->file('file')->getMimeType();
+
+            $pos = strpos($ad->type, '/');
+            $ad->type = substr($ad->type, 0,$pos);
+
+            $shortPATH = $request->file('file')->store('storage/ads');
+            App::make('files')->link(storage_path('app/storage'), public_path('storage')); //create Symbolic link between "storage/app/..." AND "public/..."
+            //$fullPATH = asset($shortPATH);
+            $ad->file_path = $shortPATH;
+        }
+
+        $ad->save();
+        $request->session()->flash('success', 'Advertisement was successfully updated!');
+        return redirect('/dashboard/ads');
     }
 
     /**
@@ -120,7 +143,22 @@ class AdvertisementsController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $ad = Advertisement::find($id);
+        //return $ad;
+        if(!$ad->plan == null){
+            if(!$ad->plan->getPlanOffices->count() == 0){
+                foreach ($ad->plan->getPlanOffices as $one) {
+                    $one->delete();
+                }
+            }
+            $ad->plan->delete();
+        }
+        $ad->delete();
+
+        return redirect('/dashboard/ads');
+
+
+
     }
 
     public function getOfficesByCompany(Request $request)
@@ -269,5 +307,23 @@ class AdvertisementsController extends Controller
                 }
             }
         }
+    }
+
+    public function activate($id)
+    {
+        $ad = Advertisement::find($id);
+        $ad->active = true;
+        $ad->save();
+        Session::flash('assign', 'the Ad '.$ad->name.' is now active');
+        return redirect('/dashboard/ads');
+    }
+
+    public function deactivate($id)
+    {
+        $ad = Advertisement::find($id);
+        $ad->active = false;
+        $ad->save();
+        Session::flash('assign', 'the Ad '.$ad->name.' is now not active');
+        return redirect('/dashboard/ads');
     }
 }

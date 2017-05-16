@@ -103,8 +103,8 @@ class AdPlanningController extends Controller
             $plan->office_id = 0;
             $plan->nbr_shown = 0;
             $plan->save();
-            $ad->active = true;
-            $ad->save();
+            //$ad->active = true;
+            //$ad->save();
             return 'success';
         }else{
             $planToUpdate = AdPlanning::find($checkPlanExist->id);
@@ -125,8 +125,8 @@ class AdPlanningController extends Controller
         $planToDelete = AdPlanning::find($plan->id);
         $planToDelete->delete();
 
-        $ad->active = false;
-        $ad->save();
+        //$ad->active = false;
+        //$ad->save();
 
         $allPlanOffices = DB::table('plan_offices')
             ->where('plan_id', '=', $plan->id)
@@ -161,8 +161,8 @@ class AdPlanningController extends Controller
             $formattedStart = Carbon::parse($plan->start);
             $formattedEnd = Carbon::parse($plan->end);
 
-            $result['plan_start'] = $formattedStart->format('H:m a');
-            $result['plan_end'] = $formattedEnd->format('H:m a');
+            $result['plan_start'] = $formattedStart->format('d-M-Y H:m A');
+            $result['plan_end'] = $formattedEnd->format('d-M-Y H:m A');
 
             $allPlanOffices = DB::table('plan_offices')
                 ->where('plan_id', '=', $plan->id)
