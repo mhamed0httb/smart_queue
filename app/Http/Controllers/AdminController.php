@@ -73,10 +73,10 @@ class AdminController extends Controller
 
     public function signUp(Request $request)
     {
-        /*$user = Sentinel::registerAndActivate($request->all());
+        $user = Sentinel::registerAndActivate($request->all());
         $role = Sentinel::findRoleBySlug('simple_user');
         $role->users()->attach($user);
-        return($user);*/
+        return($user);
         //***************************************************** WOKING CODE *****************************
 
 
@@ -85,13 +85,14 @@ class AdminController extends Controller
         $role->users()->attach($user);
         return $user;*/
 
-        /*$user = Sentinel::findById(4);
-        $activationCode = Activation::exists($user)->code;
+        /*$user = Sentinel::findById(5);
+        //$activationCode = Activation::exists($user);
+        $activationCode = Activation::create($user)->code;
         $resp = Activation::complete($user, $activationCode);
         return json_encode($resp);*/
 
-        /*$user = Sentinel::findById(4);
-        return json_encode($user->delete());*/
+        $user = Sentinel::findById(5);
+        return json_encode($user->delete());
     }
 
     public function signIn(Request $req)

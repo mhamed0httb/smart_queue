@@ -791,6 +791,9 @@ Route::group(['middleware' => 'cors'], function(){
         $companies = DB::table('companies')->select('category')->distinct()->get();
         return $companies;
     });
+
+    Route::get('/tickets/scanQR', 'TicketsController@scanQR');
+    Route::get('/tickets/byUser', 'TicketsController@allTicketsByUser');
 });
 
 

@@ -21,6 +21,11 @@ Route::post('/register', 'RegistrationController@postRegister');
 Route::get('/login', 'LoginController@login');
 Route::post('/login', 'LoginController@postLogin');
 
+Route::get('/forget-password', 'LoginController@forgetPassword');
+Route::post('/forget-password', 'LoginController@postForgetPassword');
+Route::get('/reset/{email}/{resetCode}', 'LoginController@resetPassword');
+Route::post('/reset/{email}/{resetCode}', 'LoginController@postResetPassword');
+
 Route::post('/logout', 'LoginController@logout');
 
 Route::group(['middleware' => 'admin'], function(){

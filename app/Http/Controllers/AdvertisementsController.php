@@ -61,7 +61,7 @@ class AdvertisementsController extends Controller
     public function store(Request $request)
     {
         $ad = new Advertisement;
-        $ad->video_length = $request->video_length;
+        $ad->video_length = $request->video_length * 1000;
         $ad->company_id = $request->company_id;
         $ad->name = $request->name;
         $ad->type = $request->file('file')->getMimeType();
@@ -114,7 +114,7 @@ class AdvertisementsController extends Controller
     public function update(Request $request, $id)
     {
         $ad = Advertisement::find($id);
-        $ad->video_length = $request->video_length;
+        $ad->video_length = $request->video_length * 1000;
         $ad->company_id = $request->company_id;
         $ad->name = $request->name;
 

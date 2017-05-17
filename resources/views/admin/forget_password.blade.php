@@ -35,27 +35,17 @@
 
 <div class="login-box">
     <div class="login-logo">
-        <a href="#"><b>Smart Queue</b> Login</a>
+        <a href="#"><b>Forget Password</b> </a>
     </div>
     <!-- /.login-logo -->
     <div class="login-box-body">
-        <p class="login-box-msg">Sign in to start your session</p>
+        <p class="login-box-msg">Enter your Email</p>
 
-        <form action="{{url('/login')}}" method="post">
+        <form action="{{url('/forget-password')}}" method="post">
             {{csrf_field()}}
-            <div class="callout callout-danger hide" id="ban_callout">
-                <h4>BANNED!</h4>
-                <p id="ban_content">You are banned for 80 seconds</p>
-            </div>
-            @if(Session::has('success_reset_password'))
+            @if(Session::has('success'))
                 <div class="callout callout-success " id="ban_callout">
-                    <p id="ban_content">{{ session('success_reset_password') }}</p>
-                </div>
-            @endif
-
-            @if(Session::has('error_credentials'))
-                <div class="callout callout-danger" id="ban_callout">
-                    <p id="ban_content">{{ session('error_credentials') }}</p>
+                    <p id="ban_content">{{ session('success') }}</p>
                 </div>
             @endif
             <div class="form-group has-feedback" id="div_has_error_email">
@@ -63,38 +53,18 @@
                 <span class="fa fa-envelope form-control-feedback"></span>
                 <label class="control-label hide" for="input_email" id="label_error_email"><i class="fa fa-times-circle-o"></i> Wrong Email</label>
             </div>
-            <div class="form-group has-feedback" id="div_has_error_password">
-                <input type="password" class="form-control" name="password" id="input_password" placeholder="Password" required>
-                <span class="fa fa-lock form-control-feedback"></span>
-                <label class="control-label hide" for="input_password" id="label_error_password"><i class="fa fa-times-circle-o"></i> Wrong Password</label>
-            </div>
             <div class="row">
                 <div class="col-xs-8">
-                    <!--div class="checkbox icheck">
-                        <label>
-                            <input type="checkbox"> Remember Me
-                        </label>
-                    </div-->
+
                 </div>
                 <!-- /.col -->
                 <div class="col-xs-4">
-                    <button type="submit" class="btn btn-primary btn-block btn-flat">Sign In</button>
+                    <button type="submit" class="btn btn-primary btn-block btn-flat">Send Code</button>
                 </div>
                 <!-- /.col -->
             </div>
         </form>
 
-        <!--div class="social-auth-links text-center">
-            <p>- OR -</p>
-            <a href="#" class="btn btn-block btn-social btn-facebook btn-flat"><i class="fa fa-facebook"></i> Sign in using
-                Facebook</a>
-            <a href="#" class="btn btn-block btn-social btn-google btn-flat"><i class="fa fa-google-plus"></i> Sign in using
-                Google+</a>
-        </div-->
-        <!-- /.social-auth-links -->
-
-        <a href="{{ url('/forget-password') }}">I forgot my password</a><br>
-        <!--a href="#" class="text-center">Register a new membership</a-->
 
     </div>
     <!-- /.login-box-body -->
@@ -132,12 +102,14 @@
 
 @if(Session::has('error_credentials'))
     <script>
+        //$('#input_email').css('border','1px solid red');
+        //$('#input_password').css('border','1px solid red');
         $('#div_has_error_email').addClass('has-error');
         $('#div_has_error_password').addClass('has-error');
         $('#label_error_email').removeClass('hide');
         $('#label_error_password').removeClass('hide');
-        /*$('#div_alert').html('<div class="alert alert-danger alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button> <h4><i class="icon fa fa-ban"></i> ERROR!</h4>{{ Session::get('error_credentials') }}</div>');
-        dismissAlertMessage();*/
+        $('#div_alert').html('<div class="alert alert-danger alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button> <h4><i class="icon fa fa-ban"></i> ERROR!</h4>{{ Session::get('error_credentials') }}</div>');
+        dismissAlertMessage();
     </script>
 @endif
 @if(Session::has('banned'))

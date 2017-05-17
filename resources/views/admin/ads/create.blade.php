@@ -27,7 +27,7 @@
                     {{csrf_field()}}
                     <div class="box-body">
                         <div class="form-group">
-                            <label for="video_length" class="col-sm-2 control-label">Name</label>
+                            <label for="video_length" class="col-sm-3 control-label">Name</label>
 
                             <div class="col-sm-6">
                                 <input type="text" name="name" class="form-control" id="name" placeholder="name">
@@ -35,7 +35,7 @@
 
                         </div>
                         <div class="form-group">
-                            <label for="identifier" class="col-sm-2 control-label">File</label>
+                            <label for="identifier" class="col-sm-3 control-label">File</label>
 
                             <div class="col-sm-6">
                                 <input class="form-control" id="file" name="file" type="file" required>
@@ -43,16 +43,16 @@
 
                         </div>
                         <div class="form-group">
-                            <label for="video_length" class="col-sm-2 control-label">Video Length</label>
+                            <label for="video_length" class="col-sm-3 control-label">Video Length (seconds)</label>
 
                             <div class="col-sm-6">
-                                <input type="text" name="video_length" class="form-control" id="video_length" placeholder="video length">
+                                <input type="text" name="video_length" class="form-control" id="video_length" placeholder="video length in seconds">
                             </div>
 
                         </div>
 
                         <div class="form-group">
-                            <label for="region_id" class="col-sm-2 control-label">Comapny</label>
+                            <label for="region_id" class="col-sm-3 control-label">Comapny</label>
                             <div class="col-sm-6">
                                 <select class="form-control" id="company_id" name="company_id" required>
                                     @foreach ($allAdCompanies as $adCompany)

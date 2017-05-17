@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\TicketWindow;
+use App\User;
 use Illuminate\Http\Request;
 use App\Ticket;
 use App\Office;
@@ -386,5 +387,60 @@ class TicketsController extends Controller
         }else{
             return 'no data found';
         }
+    }
+
+    public function scanQR(Request $req)
+    {
+        $ticket = Ticket::find($req->ticket_id);
+        $user = User::find($req->user_id);
+        if($user == null){
+            return 'no_user';
+        }else{
+            if($ticket == null){
+                return 'no_ticket';
+            }else{
+                if($ticket->owner_id != null){
+                    return 'ticket_has_already_user';
+                }else{
+                    $ticket->owner_id = $user->id;
+                    $ticket->save();
+                    return $ticket;
+                }
+            }
+        }
+    }
+
+    public function allTicketsByUser(Request $req)
+    {
+        $user = User::find($req->user_id);
+        $res = array();
+        if($user == null){
+            return 'no_user_found';
+        }else{
+            $tickets = DB::table('tickets')
+                ->where('owner_id', '=', $user->id)
+                ->get();
+            if($tickets == null){
+                return 'no_tickets_found';
+            }else{
+                foreach ($tickets as $one){
+                    $oneArr = array();
+                    $oneArr['ticket_id'] = $one->id;
+                    $oneArr['ticket_number'] = $one->number;
+                    $off = Office::find($one->office_id);
+                    $oneArr['office_name'] = $off->identifier;
+                    $oneArr['status'] = $one->status;
+                    $bokingDate = Carbon::parse($one->created_at);
+                    $servedDate = Carbon::parse($one->updated_at);
+                    $oneArr['booking_date'] = $bokingDate->toDateString();
+                    $oneArr['booking_time'] = $bokingDate->toTimeString();
+                    $oneArr['served_date'] = $servedDate->toDateString();
+                    $oneArr['served_time'] = $servedDate->toTimeString();
+                    array_push($res,$oneArr);
+                }
+                return $res;
+            }
+        }
+
     }
 }
