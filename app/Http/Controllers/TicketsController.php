@@ -358,6 +358,19 @@ class TicketsController extends Controller
         }
     }
 
+    public function cancelMyTicket(Request $req)
+    {
+        $ticket = Ticket::find($req->ticket_id);
+        if($ticket != null){
+            $ticket->expired = true;
+            $ticket->status = 'canceled';
+            $ticket->save();
+            return 'ticekt canceled';
+        }else{
+            return 'no ticket found';
+        }
+    }
+
     public function getHistoryTicketsByOwner(Request $request){
         $historyResults = DB::table('history')
             ->where('user_id', '=', $request->owner_id)
@@ -429,6 +442,7 @@ class TicketsController extends Controller
                     $oneArr['ticket_number'] = $one->number;
                     $off = Office::find($one->office_id);
                     $oneArr['office_name'] = $off->identifier;
+                    $oneArr['office_id'] = $off->id;
                     $oneArr['status'] = $one->status;
                     $bokingDate = Carbon::parse($one->created_at);
                     $servedDate = Carbon::parse($one->updated_at);

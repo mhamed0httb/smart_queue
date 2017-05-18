@@ -52,6 +52,7 @@ Route::group(['middleware' => 'cors'], function(){
 
     Route::get('/tickets/create', 'TicketsController@createTicket');
     Route::get('/tickets/cancel', 'TicketsController@cancelTicket');
+    Route::get('/tickets/myCancel', 'TicketsController@cancelMyTicket');
     Route::get('/tickets/serve', 'TicketsController@ServeTicket');
     Route::get('/tickets/waiting', 'TicketsController@getTicketsWaiting');
 
@@ -587,7 +588,7 @@ Route::group(['middleware' => 'cors'], function(){
         if($result['total_clients_served'] == 0){
             return 0;
         }
-        return $totalTime / $result['total_clients_served'] * $ticketsCount;
+        return $totalTime / $result['total_clients_served'] * count($ticketsCount);
     });
 
     Route::get('/tickets/lastTicket', function(Request $req)
